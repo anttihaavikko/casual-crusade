@@ -1,0 +1,49 @@
+import { Card, Direction, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { Entity } from "./engine/entity";
+import { Mouse } from "./engine/mouse";
+import { Vector } from "./engine/vector";
+
+export class Tile extends Entity {
+    public content: Card;
+    public marked: boolean;
+
+    public index: Vector;
+    
+    public constructor(x: number, y: number) {
+        super(x * TILE_WIDTH, y * TILE_HEIGHT, 80, 60);
+        this.index = { x, y };
+        this.depth = -100;
+    }
+
+    public update(tick: number, mouse: Mouse): void {
+    }
+
+    public draw(ctx: CanvasRenderingContext2D): void {
+        ctx.fillStyle = "#999";
+        ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
+        
+        if(this.marked) {
+            ctx.strokeStyle = "#aaa";
+            ctx.lineWidth = 5;
+            ctx.strokeRect(this.position.x + 10, this.position.y + 10, this.size.x - 20, this.size.y - 20);
+        }
+    }
+
+    public isIn(snapped: Vector): boolean {
+        return !this.content && this.position.x == snapped.x && this.position.y == snapped.y;
+    }
+
+    public accepts(card: Card, board: Tile[]): boolean {
+        return board.some(tile => {
+            if(tile.index.x == this.index.x && tile.index.y == this.index.y - 1 && tile.content && tile.content.has(Direction.Down) && card.has(Direction.Up)) return true;
+            if(tile.index.x == this.index.x && tile.index.y == this.index.y + 1 && tile.content && tile.content.has(Direction.Up) && card.has(Direction.Down)) return true;
+            if(tile.index.x == this.index.x + 1 && tile.index.y == this.index.y && tile.content && tile.content.has(Direction.Left) && card.has(Direction.Right)) return true;
+            if(tile.index.x == this.index.x - 1 && tile.index.y == this.index.y && tile.content && tile.content.has(Direction.Right) && card.has(Direction.Left)) return true;
+            return false;
+        });
+    }
+
+    public getNeighbours(board: Tile[]): Tile[] {
+        return board.filter(tile => tile.content && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
+    }
+}
