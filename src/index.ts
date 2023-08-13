@@ -1,4 +1,5 @@
 import { TILE_HEIGHT, TILE_WIDTH, Card, Direction } from "./card";
+import { Dude } from "./dude";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
@@ -28,14 +29,18 @@ const board: Tile[] = [
   new Tile(2, 2, center),
 ];
 
-const mouse: Mouse = { x: 0, y: 0 };
-const hand = new Hand(board);
+const dude = new Dude(board[4]);
 
-const entities: Entity[] = [
-  hand
-];
+const mouse: Mouse = { x: 0, y: 0 };
+const hand = new Hand(board, dude);
 
 const p = board[4].getPosition();
+
+const entities: Entity[] = [
+  hand,
+  dude
+];
+
 const starter = new Card(p.x, p.y, board, hand, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
 starter.lock();
 entities.push(starter);

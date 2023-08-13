@@ -62,6 +62,7 @@ export class Card extends Draggable {
             this.position = this.tile.getPosition();
             this.tile.content = this;
             this.hand.add();
+            this.hand.findPath(this.tile);
             return;
         }
 
@@ -112,6 +113,16 @@ export class Card extends Draggable {
 
     public has(dir: Direction): boolean {
         return this.directions && this.directions.includes(dir);
+    }
+
+    public getConnections(): Tile[] {
+        const index = this.board.find(tile => tile.content === this).index;
+        return this.directions.map(d => {
+            if(d == Direction.Up) return this.board.find(tile => tile.index.x === index.x && tile.index.y === index.y - 1 && tile.content && tile.content.has(Direction.Down));
+            if(d == Direction.Down) return this.board.find(tile => tile.index.x === index.x && tile.index.y === index.y + 1 && tile.content && tile.content.has(Direction.Up));
+            if(d == Direction.Left) return this.board.find(tile => tile.index.x === index.x - 1 && tile.index.y === index.y && tile.content && tile.content.has(Direction.Right));
+            if(d == Direction.Right) return this.board.find(tile => tile.index.x === index.x + 1 && tile.index.y === index.y && tile.content && tile.content.has(Direction.Left));
+        }).filter(tile => tile && tile.content);
     }
 
     private lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {

@@ -1,4 +1,5 @@
 import { Card, TILE_WIDTH } from "./card";
+import { Dude } from "./dude";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
@@ -7,11 +8,15 @@ import { Tile } from "./tile";
 export class Hand extends Entity {
     private cards: Card[] = [];
 
-    constructor(private board: Tile[]) {
+    constructor(private board: Tile[], private dude: Dude) {
         super(360, 500, 0, 0);
         this.add();
         this.add();
         this.add();
+    }
+
+    public findPath(to: Tile): void {
+        this.dude.findPath(to, this.board);
     }
 
     public add(): void {
@@ -25,6 +30,7 @@ export class Hand extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         this.cards.sort((a, b) => a.depth - b.depth).forEach(c => c.draw(ctx));
+        this.dude.draw(ctx);
     }
 
     private reposition(): void {
