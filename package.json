@@ -1,0 +1,27 @@
+{
+  "name": "js13k-webpack-typescript-party",
+  "version": "2.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "check-file-size": "node ./scripts/check-file-size.js",
+    "build-zipped": "npm run build && node ./scripts/zip-file.js",
+    "party": "npm run build-zipped && npm run check-file-size"
+  },
+  "devDependencies": {
+    "archiver": "^3.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-minimizer-webpack-plugin": "^4.3.0",
+    "html-webpack-plugin": "^5.0.0",
+    "raw-loader": "^4.0.0",
+    "ts-loader": "^9.0.0",
+    "typescript": "^4.0.0",
+    "url-loader": "^4.1.0",
+    "webpack": "^5.0.0",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.0.0",
+    "webpack-dev-server": "^4.13.1",
+    "webpack-merge": "^5.1.1"
+  }
+}
