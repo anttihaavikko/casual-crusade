@@ -23,3 +23,5 @@ export abstract class Entity {
         this.position = { x, y };
     }
 }
+
+export const sortByDepth = (a: Entity, b: Entity) => a.depth - b.depth;

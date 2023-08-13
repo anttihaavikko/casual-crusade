@@ -12,6 +12,7 @@ export class Dude extends Entity {
         const p = tile.getPosition();
         super(p.x, p.y, TILE_WIDTH, TILE_HEIGHT);
         this.tweener = new Tween(this);
+        this.depth = 50;
     }
 
     public update(tick: number, mouse: Mouse): void {

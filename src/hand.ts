@@ -1,6 +1,6 @@
 import { Card, TILE_WIDTH } from "./card";
 import { Dude } from "./dude";
-import { Entity } from "./engine/entity";
+import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
 import { Tile } from "./tile";
@@ -25,12 +25,12 @@ export class Hand extends Entity {
     }
 
     public update(tick: number, mouse: Mouse): void {
+        this.dude.update(tick, mouse);
         this.cards.forEach(c => c.update(tick, mouse));
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        this.cards.sort((a, b) => a.depth - b.depth).forEach(c => c.draw(ctx));
-        this.dude.draw(ctx);
+        [...this.cards, this.dude].sort(sortByDepth).forEach(c => c.draw(ctx));
     }
 
     private reposition(): void {
@@ -41,7 +41,6 @@ export class Hand extends Entity {
                 y: this.position.y
             };
             c.move(p, 0.15);
-            // c.setPosition(p.x, p.y);
         });
     }
 }
