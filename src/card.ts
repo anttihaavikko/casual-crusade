@@ -29,6 +29,10 @@ export class Card extends Draggable {
         }
     }
 
+    public isLocked(): boolean {
+        return this.locked;
+    }
+
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
         const sorted = [...this.board]

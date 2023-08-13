@@ -18,4 +18,8 @@ export abstract class Entity {
     public getPosition(): Vector {
         return this.position;
     }
+
+    public setPosition(x: number, y: number): void {
+        this.position = { x, y };
+    }
 }
