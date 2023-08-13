@@ -1,6 +1,6 @@
 import { Draggable } from "./engine/draggable";
 import { Mouse } from "./engine/mouse";
-import { Vector } from "./engine/vector";
+import { Vector, distance } from "./engine/vector";
 import { Hand } from "./hand";
 import { Tile } from "./tile";
 
@@ -19,7 +19,6 @@ export enum Direction {
 }
 
 export class Card extends Draggable {
-    private previewing: boolean;
     private tile: Tile;
 
     public constructor(x: number, y: number, private board: Tile[], private hand: Hand, private directions?: Direction[]) {
@@ -32,8 +31,10 @@ export class Card extends Draggable {
 
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
-        this.tile = this.board.find(tile => tile.isIn(this.getSnapPosition()) && tile.accepts(this, this.board));
-        this.previewing = this.dragging && !!this.tile;
+        const sorted = [...this.board]
+            .filter(tile => !tile.content && tile.accepts(this, this.board) && distance(this.position, tile.getPosition()) < 100)
+            .sort((a, b) => distance(this.position, a.getPosition()) - distance(this.position, b.getPosition()));
+        this.tile = sorted.length > 0 ? sorted[0]: null;
     }
 
     protected pick(): void {
@@ -43,14 +44,11 @@ export class Card extends Draggable {
 
     protected drop(): void {
         this.board.forEach(tile => tile.marked = false);
-
-        const snapped = this.getSnapPosition();
-
         this.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
 
         if(this.tile) {
             this.locked = true;
-            this.position = snapped;
+            this.position = this.tile.getPosition();
             this.tile.content = this;
             this.hand.add();
             return;
@@ -60,12 +58,13 @@ export class Card extends Draggable {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        if(this.dragging && this.previewing) {
+        if(this.dragging && this.tile) {
             ctx.strokeStyle = "#ddd";
             ctx.lineWidth = 7;
+            const tilePos = this.tile.getPosition();
             ctx.strokeRect(
-                this.snap(this.position.x, TILE_WIDTH) + BORDER + GAP, 
-                this.snap(this.position.y, TILE_HEIGHT) + BORDER + GAP,
+                tilePos.x + BORDER + GAP, 
+                tilePos.y + BORDER + GAP,
                 this.size.x - BORDER * 2 - GAP * 2,
                 this.size.y - BORDER * 2 - GAP * 2
             );

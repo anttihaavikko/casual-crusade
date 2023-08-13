@@ -14,4 +14,8 @@ export abstract class Entity {
 
     public abstract update(tick: number, mouse: Mouse): void;
     public abstract draw(ctx: CanvasRenderingContext2D): void;
+
+    public getPosition(): Vector {
+        return this.position;
+    }
 }
