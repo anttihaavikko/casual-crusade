@@ -7,12 +7,12 @@ export class Hand extends Entity {
     private cards: Card[] = [];
 
     constructor(private board: Tile[]) {
-        super(0, 0, 0, 0);
+        super(360, 500, 0, 0);
         this.add();
     }
 
     public add(): void {
-        this.cards.push(new Card(100, 400, this.board, this))
+        this.cards.push(new Card(this.position.x, this.position.y, this.board, this))
     }
 
     public update(tick: number, mouse: Mouse): void {

@@ -11,16 +11,21 @@ const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 const WIDTH = 800;
 const HEIGHT = 600;
 
+const center: Vector = {
+  x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
+  y: HEIGHT * 0.5 - TILE_HEIGHT * 1.5
+}
+
 const board: Tile[] = [
-  new Tile(0, 0),
-  new Tile(0, 1),
-  new Tile(0, 2),
-  new Tile(1, 0),
-  new Tile(1, 1),
-  new Tile(1, 2),
-  new Tile(2, 0),
-  new Tile(2, 1),
-  new Tile(2, 2),
+  new Tile(0, 0, center),
+  new Tile(0, 1, center),
+  new Tile(0, 2, center),
+  new Tile(1, 0, center),
+  new Tile(1, 1, center),
+  new Tile(1, 2, center),
+  new Tile(2, 0, center),
+  new Tile(2, 1, center),
+  new Tile(2, 2, center),
 ];
 
 const mouse: Mouse = { x: 0, y: 0 };
@@ -30,7 +35,8 @@ const entities: Entity[] = [
   hand
 ];
 
-const starter = new Card(TILE_WIDTH, TILE_HEIGHT, board, hand, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
+const p = board[4].getPosition();
+const starter = new Card(p.x, p.y, board, hand, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
 starter.lock();
 entities.push(starter);
 board[4].content = starter;

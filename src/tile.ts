@@ -9,8 +9,8 @@ export class Tile extends Entity {
 
     public index: Vector;
     
-    public constructor(x: number, y: number) {
-        super(x * TILE_WIDTH, y * TILE_HEIGHT, 80, 60);
+    public constructor(x: number, y: number, offset: Vector) {
+        super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, 80, 60);
         this.index = { x, y };
         this.depth = -100;
     }
