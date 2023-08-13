@@ -1,6 +1,7 @@
 import { Card, TILE_WIDTH } from "./card";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
+import { Vector } from "./engine/vector";
 import { Tile } from "./tile";
 
 export class Hand extends Entity {
@@ -14,7 +15,7 @@ export class Hand extends Entity {
     }
 
     public add(): void {
-        this.cards.push(new Card(this.position.x + TILE_WIDTH * this.cards.filter(c => !c.isLocked()).length, this.position.y, this.board, this));
+        this.cards.push(new Card(this.position.x, this.position.y + 200, this.board, this));
         this.reposition();
     }
 
@@ -28,6 +29,13 @@ export class Hand extends Entity {
 
     private reposition(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
-        handCards.forEach((c, i) => c.setPosition(this.position.x + (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH, this.position.y));
+        handCards.forEach((c, i) => {
+            const p: Vector = {
+                x: this.position.x + (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH,
+                y: this.position.y
+            };
+            c.move(p, 0.15);
+            // c.setPosition(p.x, p.y);
+        });
     }
 }

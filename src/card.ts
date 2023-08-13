@@ -1,5 +1,6 @@
 import { Draggable } from "./engine/draggable";
 import { Mouse } from "./engine/mouse";
+import { Tween } from "./engine/tween";
 import { Vector, distance } from "./engine/vector";
 import { Hand } from "./hand";
 import { Tile } from "./tile";
@@ -10,7 +11,6 @@ export const TILE_HEIGHT = 60;
 const BORDER = 7;
 const GAP = 2;
 
-
 export enum Direction {
     Up,
     Right,
@@ -20,9 +20,11 @@ export enum Direction {
 
 export class Card extends Draggable {
     private tile: Tile;
+    private tween: Tween;
 
     public constructor(x: number, y: number, private board: Tile[], private hand: Hand, private directions?: Direction[]) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
+        this.tween = new Tween(this);
         if(!this.directions) {
             const count = 1 + Math.floor(Math.random() * 4);
             this.directions = [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count);
@@ -35,10 +37,15 @@ export class Card extends Draggable {
 
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
+        this.tween.update(tick);
         const sorted = [...this.board]
             .filter(tile => !tile.content && tile.accepts(this, this.board) && distance(this.position, tile.getPosition()) < 100)
             .sort((a, b) => distance(this.position, a.getPosition()) - distance(this.position, b.getPosition()));
         this.tile = sorted.length > 0 ? sorted[0]: null;
+    }
+
+    public move(to: Vector, duration: number): void {
+        this.tween.move(to, duration);
     }
 
     protected pick(): void {
@@ -58,7 +65,7 @@ export class Card extends Draggable {
             return;
         }
 
-        this.cancel();
+        this.move(this.getStartPosition(), 0.1);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -118,12 +125,5 @@ export class Card extends Draggable {
 
     private snap(value: number, grid: number): number {
         return Math.round(value / grid) * grid;
-    }
-
-    private getSnapPosition(): Vector {
-        return {
-            x: this.snap(this.position.x, TILE_WIDTH),
-            y: this.snap(this.position.y, TILE_HEIGHT)
-        };
     }
 }
