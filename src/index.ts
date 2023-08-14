@@ -1,10 +1,11 @@
 import { TILE_HEIGHT, TILE_WIDTH, Card, Direction } from "./card";
 import { Dude } from "./dude";
+import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
 import { Hand } from "./hand";
-import { clamp } from "./math";
+import { TextEntity } from "./text";
 import { Tile } from "./tile";
 
 const canvas: HTMLCanvasElement = document.createElement("canvas");
@@ -12,32 +13,40 @@ const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 const WIDTH = 800;
 const HEIGHT = 600;
 
-const center: Vector = {
+const boardPos: Vector = {
   x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
   y: HEIGHT * 0.5 - TILE_HEIGHT * 1.5
-}
+};
+
+const ZERO = { x: 0, y: 0 };
+
+const testText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
+const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
+const effects = new Container();
 
 const board: Tile[] = [
-  new Tile(0, 0, center),
-  new Tile(0, 1, center),
-  new Tile(0, 2, center),
-  new Tile(1, 0, center),
-  new Tile(1, 1, center),
-  new Tile(1, 2, center),
-  new Tile(2, 0, center),
-  new Tile(2, 1, center),
-  new Tile(2, 2, center),
+  new Tile(0, 0, boardPos),
+  new Tile(0, 1, boardPos),
+  new Tile(0, 2, boardPos),
+  new Tile(1, 0, boardPos),
+  new Tile(1, 1, boardPos),
+  new Tile(1, 2, boardPos),
+  new Tile(2, 0, boardPos),
+  new Tile(2, 1, boardPos),
+  new Tile(2, 2, boardPos),
 ];
 
 const dude = new Dude(board[4]);
 
 const mouse: Mouse = { x: 0, y: 0 };
-const hand = new Hand(board, dude);
+const hand = new Hand(board, dude, effects);
 
 const p = board[4].getPosition();
 
 const entities: Entity[] = [
-  hand
+  hand,
+  testText,
+  scoreText
 ];
 
 const starter = new Card(p.x, p.y, board, hand, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
@@ -63,11 +72,14 @@ document.onmousedown = (e: MouseEvent) => mouse.pressing = true;
 document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
 function tick(t: number) {
+  scoreText.content = hand.score.toString();
   requestAnimationFrame(tick);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  entities.sort(sortByDepth);
   entities.forEach(e => e.update(t, mouse));
-  entities.forEach(e => e.draw(ctx));
+  effects.update(t, mouse);
+  const all = [...entities, ...effects.getChildren()];
+  all.sort(sortByDepth);
+  all.forEach(e => e.draw(ctx));
 }
 
 requestAnimationFrame(tick);

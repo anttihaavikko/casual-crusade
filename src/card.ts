@@ -4,6 +4,7 @@ import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
 import { Vector, distance } from "./engine/vector";
 import { Hand } from "./hand";
+import { TextEntity } from "./text";
 import { Tile } from "./tile";
 
 export const TILE_WIDTH = 80;
@@ -156,6 +157,19 @@ export class Card extends Draggable {
         }).filter(tile => tile && tile.content);
     }
 
+    public pop(amt: number): void {
+        this.hand.score += amt;
+        this.hand.effects.add(new TextEntity(
+            amt.toString(),
+            30,
+            this.position.x + this.size.x * 0.5,
+            this.position.y + this.size.y * 0.5 + 5,
+            0.5 + Math.random(),
+            { x: 0, y: -1 - Math.random() },
+            { shadow: 4, align: "center", scales: true }
+        ));
+    }
+
     private lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
         ctx.beginPath();
         ctx.strokeStyle = "#000";
@@ -163,9 +177,5 @@ export class Card extends Draggable {
         ctx.moveTo(this.position.x + this.size.x * 0.5, this.position.y + this.size.y * 0.5);
         ctx.lineTo(x, y);
         ctx.stroke();
-    }
-
-    private snap(value: number, grid: number): number {
-        return Math.round(value / grid) * grid;
     }
 }

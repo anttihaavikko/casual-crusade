@@ -1,14 +1,16 @@
 import { Card, TILE_WIDTH } from "./card";
 import { Dude } from "./dude";
+import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
 import { Tile } from "./tile";
 
 export class Hand extends Entity {
+    public score = 0;
     private cards: Card[] = [];
 
-    constructor(private board: Tile[], private dude: Dude) {
+    constructor(private board: Tile[], private dude: Dude, public effects: Container) {
         super(360, 500, 0, 0);
         this.add();
         this.add();
@@ -16,7 +18,7 @@ export class Hand extends Entity {
     }
 
     public findPath(to: Tile): void {
-        this.dude.findPath(to, this.board);
+        this.dude.findPath(to);
     }
 
     public add(): void {

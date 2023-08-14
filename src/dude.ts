@@ -24,12 +24,17 @@ export class Dude extends Entity {
         ctx.fillRect(this.position.x + this.size.x * 0.5 - 10, this.position.y + this.size.y * 0.5 - 10, 20, 20);
     }
 
-    public findPath(to: Tile, board: Tile[]): void {
+    public findPath(to: Tile): void {
         this.path = [];
         this.findNext(this.tile, to, [this.tile]);
         this.tile = this.path[this.path.length - 1];
         this.path.forEach((tile, index) => {
-            setTimeout(() => this.tweener.move(tile.getPosition(), 0.3), index * 300);
+            setTimeout(() => {
+                this.tweener.move(tile.getPosition(), 0.3);
+                if(index > 0) {
+                    tile.content.pop(index);
+                }
+            }, index * 300);
         });
     }
 
