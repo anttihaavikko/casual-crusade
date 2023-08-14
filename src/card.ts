@@ -1,6 +1,7 @@
 import { Draggable } from "./engine/draggable";
 import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
+import { Pulse } from "./engine/pulse";
 import { Tween } from "./engine/tween";
 import { Vector, distance } from "./engine/vector";
 import { Hand } from "./hand";
@@ -159,11 +160,16 @@ export class Card extends Draggable {
 
     public pop(amt: number): void {
         this.hand.score += amt;
+        const p = {
+            x: this.position.x + this.size.x * 0.5,
+            y: this.position.y + this.size.y * 0.5 + 5
+        };
+        this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
         this.hand.effects.add(new TextEntity(
             amt.toString(),
             30,
-            this.position.x + this.size.x * 0.5,
-            this.position.y + this.size.y * 0.5 + 5,
+            p.x,
+            p.y,
             0.5 + Math.random(),
             { x: 0, y: -1 - Math.random() },
             { shadow: 4, align: "center", scales: true }

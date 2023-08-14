@@ -3,6 +3,8 @@ export interface Vector {
     y: number;
 }
 
+export const ZERO = { x: 0, y: 0 };
+
 export function distance(a: Vector, b: Vector): number {
     const dx = Math.abs(a.x - b.x);
     const dy = Math.abs(a.y - b.y);

@@ -3,7 +3,7 @@ import { Dude } from "./dude";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
-import { Vector } from "./engine/vector";
+import { Vector, ZERO } from "./engine/vector";
 import { Hand } from "./hand";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
@@ -17,8 +17,6 @@ const boardPos: Vector = {
   x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
   y: HEIGHT * 0.5 - TILE_HEIGHT * 1.5
 };
-
-const ZERO = { x: 0, y: 0 };
 
 const testText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
 const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
