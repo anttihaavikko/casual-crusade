@@ -1,4 +1,5 @@
 import { Card, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
@@ -7,6 +8,7 @@ import { Tile } from "./tile";
 export class Dude extends Entity {
     private tweener: Tween;
     private path: Tile[] = [];
+    private phase = 0;
 
     constructor(private tile: Tile) {
         const p = tile.getPosition();
@@ -17,11 +19,33 @@ export class Dude extends Entity {
 
     public update(tick: number, mouse: Mouse): void {
         this.tweener.update(tick);
+        this.phase = Math.abs(Math.sin(tick * 0.005));
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = "#ff0000";
-        ctx.fillRect(this.position.x + this.size.x * 0.5 - 10, this.position.y + this.size.y * 0.5 - 10, 20, 20);
+        const center = {
+            x: this.position.x + this.size.x * 0.5, 
+            y: this.position.y + this.size.y * 0.5
+        };
+        const head = {
+            x: this.position.x + this.size.x * 0.5, 
+            y: this.position.y + this.size.y * 0.5 - 30 - 5 * this.phase
+        };
+        drawEllipse(ctx, center, 24, 12, "#00000033");
+        drawCircle(ctx, head, 14, "#000");
+        ctx.beginPath();
+        ctx.moveTo(center.x, this.position.y - 10 - 5 * this.phase);
+        ctx.lineTo(center.x + 14, this.position.y + 32);
+        ctx.lineTo(center.x, this.position.y + 30);
+        ctx.lineTo(center.x - 14, this.position.y + 32);
+        ctx.fill();
+        drawCircle(ctx, head, 8, "#fff");
+        ctx.beginPath();
+        ctx.moveTo(center.x, this.position.y - 2 - 5 * this.phase);
+        ctx.lineTo(center.x + 6, this.position.y + 26);
+        ctx.lineTo(center.x, this.position.y + 28);
+        ctx.lineTo(center.x - 6, this.position.y + 26);
+        ctx.fill();
     }
 
     public findPath(to: Tile): void {
