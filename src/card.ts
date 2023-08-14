@@ -103,6 +103,9 @@ export class Card extends Draggable {
             if(this.data.gem == Gem.Blue) {
                 this.game.pull();
             }
+            if(this.data.gem == Gem.Red) {
+                this.game.heal(1);
+            }
             return;
         }
 

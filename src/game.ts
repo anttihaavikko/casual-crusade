@@ -1,9 +1,10 @@
-import { Card, CardData, Direction, Gem, TILE_WIDTH, randomCard } from "./card";
+import { Card, CardData, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, randomCard } from "./card";
 import { Dude } from "./dude";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
+import { Pulse } from "./engine/pulse";
 import { Vector } from "./engine/vector";
 import { Level } from "./level";
 import { Tile } from "./tile";
@@ -12,7 +13,8 @@ export class Game extends Entity {
     public score = 0;
     public multi = 1;
     public handSize = 3;
-    public life = 10;
+    public life = 5;
+    public maxLife: number;
 
     private cards: Card[] = [];
     private all: CardData[] = [
@@ -25,22 +27,41 @@ export class Game extends Entity {
 
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level) {
         super(360, 500, 0, 0);
+        this.maxLife = this.life;
         this.shuffle();
         this.fill();
+    }
+
+    public heal(amount: number): void {
+        this.life = Math.min(this.maxLife, this.life + amount);
     }
 
     public nextLevel(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
         if(handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0))  {
-            this.life -= this.level.board.filter(tile => !tile.content).length;
-            if(this.life <= 0) return;
-            this.level.next();
-            this.cards = [];
-            this.dude.reset(this.level.board[2]);
-            this.shuffle();
-            this.add(randomCard(), true, true);
-            this.add(randomCard(), true, true);
-            this.fill();
+            const hits = this.level.board.filter(tile => !tile.content);
+            const delay = 200;
+
+            hits.forEach((hit, i) => {
+                const p = hit.getPosition();
+                setTimeout(() => {
+                    this.camera.shake(15, 0.15);
+                    this.effects.add(new Pulse(p.x + TILE_WIDTH * 0.5, p.y + TILE_HEIGHT * 0.5, 40 + Math.random() * 40));
+                    this.life--;
+                }, 100 + i * delay);
+            })
+
+            if(this.life - hits.length <= 0) return;
+            
+            setTimeout(() => {
+                this.level.next();
+                this.cards = [];
+                this.dude.reset(this.level.board[2]);
+                this.shuffle();
+                this.add(randomCard(), true, true);
+                this.add(randomCard(), true, true);
+                this.fill();
+            }, hits.length * delay + 600);
         }
     }
 

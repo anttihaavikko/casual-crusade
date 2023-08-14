@@ -61,7 +61,7 @@ document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
 function tick(t: number) {
   scoreText.content = game.score.toString();
-  lifeText.content = `LIFE: ${game.life}`;
+  lifeText.content = `LIFE: ${game.life}/${game.maxLife}`;
   requestAnimationFrame(tick);
   ctx.resetTransform();
   camera.update();
