@@ -170,7 +170,7 @@ export class Card extends Draggable {
             this.hand.multi *= 2;
             this.popText(`x${this.hand.multi}`, {
                 x: this.position.x + this.size.x * 0.5,
-                y: this.position.y + this.size.y * 0.5 - 25
+                y: this.position.y + this.size.y * 0.5 - 40
             });
         }
     }
@@ -189,7 +189,7 @@ export class Card extends Draggable {
         this.hand.score += addition;
         const p = {
             x: this.position.x + this.size.x * 0.5,
-            y: this.position.y + this.size.y * 0.5 + 5
+            y: this.position.y + this.size.y * 0.5 - 10
         };
         this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
         this.popText(addition.toString(), p);
