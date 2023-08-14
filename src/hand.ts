@@ -1,5 +1,6 @@
 import { Card, TILE_WIDTH } from "./card";
 import { Dude } from "./dude";
+import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
@@ -10,7 +11,7 @@ export class Hand extends Entity {
     public score = 0;
     private cards: Card[] = [];
 
-    constructor(private board: Tile[], private dude: Dude, public effects: Container) {
+    constructor(private board: Tile[], private dude: Dude, public effects: Container, public camera: Camera) {
         super(360, 500, 0, 0);
         this.add();
         this.add();

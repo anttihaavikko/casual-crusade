@@ -1,5 +1,6 @@
 import { TILE_HEIGHT, TILE_WIDTH, Card, Direction } from "./card";
 import { Dude } from "./dude";
+import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
@@ -21,6 +22,7 @@ const boardPos: Vector = {
 const testText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
 const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
 const effects = new Container();
+const camera = new Camera();
 
 const board: Tile[] = [
   new Tile(0, 0, boardPos),
@@ -37,7 +39,7 @@ const board: Tile[] = [
 const dude = new Dude(board[4]);
 
 const mouse: Mouse = { x: 0, y: 0 };
-const hand = new Hand(board, dude, effects);
+const hand = new Hand(board, dude, effects, camera);
 
 const p = board[4].getPosition();
 
@@ -73,6 +75,8 @@ function tick(t: number) {
   scoreText.content = hand.score.toString();
   requestAnimationFrame(tick);
   ctx.resetTransform();
+  camera.update();
+  ctx.translate(camera.offset.x, camera.offset.y);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   entities.forEach(e => e.update(t, mouse));
   effects.update(t, mouse);

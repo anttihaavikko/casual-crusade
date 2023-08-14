@@ -159,21 +159,24 @@ export class Card extends Draggable {
     }
 
     public pop(amt: number): void {
-        this.hand.score += amt;
-        const p = {
-            x: this.position.x + this.size.x * 0.5,
-            y: this.position.y + this.size.y * 0.5 + 5
-        };
-        this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
-        this.hand.effects.add(new TextEntity(
-            amt.toString(),
-            30,
-            p.x,
-            p.y,
-            0.5 + Math.random(),
-            { x: 0, y: -1 - Math.random() },
-            { shadow: 4, align: "center", scales: true }
-        ));
+        setTimeout(() => {
+            this.hand.camera.shake(3, 0.08);
+            this.hand.score += amt;
+            const p = {
+                x: this.position.x + this.size.x * 0.5,
+                y: this.position.y + this.size.y * 0.5 + 5
+            };
+            this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
+            this.hand.effects.add(new TextEntity(
+                amt.toString(),
+                40 + Math.random() * 10,
+                p.x,
+                p.y,
+                0.5 + Math.random(),
+                { x: 0, y: -1 - Math.random() },
+                { shadow: 4, align: "center", scales: true }
+            ));
+        }, 0.2);
     }
 
     private lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {
