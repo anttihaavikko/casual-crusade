@@ -10,13 +10,20 @@ import { Tile } from "./tile";
 export class Hand extends Entity {
     public score = 0;
     public multi = 1;
+    public handSize = 3;
+
     private cards: Card[] = [];
 
     constructor(private board: Tile[], private dude: Dude, public effects: Container, public camera: Camera) {
         super(360, 500, 0, 0);
-        this.add();
-        this.add();
-        this.add();
+        this.fill();
+    }
+
+    public fill(): void {
+        const handCards = this.cards.filter(c => !c.isLocked());
+        for(var i = 0; i < this.handSize - handCards.length; i++) {
+            this.add();
+        }
     }
 
     public findPath(to: Tile): void {
@@ -39,6 +46,9 @@ export class Hand extends Entity {
 
     public discard(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
+        const card = handCards[Math.floor(Math.random() * handCards.length)];
+        this.cards = this.cards.filter(c => c != card);
+        this.fill();
     }
 
     private reposition(): void {
