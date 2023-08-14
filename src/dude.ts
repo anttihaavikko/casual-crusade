@@ -3,6 +3,7 @@ import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
+import { Game } from "./game";
 import { Tile } from "./tile";
 
 export class Dude extends Entity {
@@ -15,6 +16,12 @@ export class Dude extends Entity {
         super(p.x, p.y, TILE_WIDTH, TILE_HEIGHT);
         this.tweener = new Tween(this);
         this.depth = 50;
+    }
+
+    public reset(tile: Tile): void {
+        const p = tile.getPosition();
+        this.tile = tile;
+        this.position = { x: p.x, y: p.y };
     }
 
     public update(tick: number, mouse: Mouse): void {
@@ -48,7 +55,7 @@ export class Dude extends Entity {
         ctx.fill();
     }
 
-    public findPath(to: Tile): void {
+    public findPath(to: Tile, game: Game): void {
         this.path = [];
         this.findNext(this.tile, to, [this.tile]);
         this.tile = this.path[this.path.length - 1];
@@ -60,6 +67,7 @@ export class Dude extends Entity {
                 }
             }, index * 300);
         });
+        setTimeout(() => game.nextLevel(), this.path.length * 300 + 600);
     }
 
     private findNext(from: Tile, to: Tile, visited: Tile[]): void {

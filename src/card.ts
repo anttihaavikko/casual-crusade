@@ -4,7 +4,8 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { Tween } from "./engine/tween";
 import { Vector, distance } from "./engine/vector";
-import { Hand } from "./hand";
+import { Game } from "./game";
+import { Level } from "./level";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
 
@@ -29,7 +30,7 @@ export enum Direction {
     Right,
     Down,
     Left
-}
+};
 
 export enum Gem {
     None,
@@ -41,21 +42,26 @@ export enum Gem {
     Green
 };
 
+export interface CardData {
+    directions: Direction[];
+    gem: Gem;
+}
+
+export function randomCard(canHaveGem = true, dirs?: Direction[]): CardData {
+    const count = 1 + Math.floor(Math.random() * 4);
+    return {
+        directions: dirs ?? [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count),
+        gem: canHaveGem && Math.random() < 0.2 ? 1 + Math.floor(Math.random() * 6): Gem.None
+    }
+}
+
 export class Card extends Draggable {
     private tile: Tile;
     private tween: Tween;
-    private gem: Gem;
 
-    public constructor(x: number, y: number, private board: Tile[], private hand: Hand, canHaveGem: boolean, private directions?: Direction[]) {
+    public constructor(x: number, y: number, private level: Level, private game: Game, public data: CardData) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
         this.tween = new Tween(this);
-        if(!this.directions) {
-            const count = 1 + Math.floor(Math.random() * 4);
-            this.directions = [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count);
-        }
-        if(canHaveGem && Math.random() < 0.2) {
-            this.gem = 1 + Math.floor(Math.random() * 6);
-        }
     }
 
     public isLocked(): boolean {
@@ -65,8 +71,8 @@ export class Card extends Draggable {
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
         this.tween.update(tick);
-        const sorted = [...this.board]
-            .filter(tile => !tile.content && tile.accepts(this, this.board) && distance(this.position, tile.getPosition()) < 100)
+        const sorted = [...this.level.board]
+            .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.position, tile.getPosition()) < 100)
             .sort((a, b) => distance(this.position, a.getPosition()) - distance(this.position, b.getPosition()));
         this.tile = sorted.length > 0 ? sorted[0]: null;
     }
@@ -75,24 +81,27 @@ export class Card extends Draggable {
         this.tween.move(to, duration);
     }
 
+    public getPossibleSpots(): Tile[] {
+        return this.level.board.filter(tile => !tile.content && tile.accepts(this, this.level.board))
+    }
+
     protected pick(): void {
-        const available = this.board.filter(tile => !tile.content && tile.accepts(this, this.board));
-        available.forEach(tile => tile.marked = true);
+        this.getPossibleSpots().forEach(tile => tile.marked = true);
     }
 
     protected drop(): void {
-        this.board.forEach(tile => tile.marked = false);
-        this.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
+        this.level.board.forEach(tile => tile.marked = false);
+        this.level.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
 
         if(this.tile) {
-            this.hand.multi = 1;
+            this.game.multi = 1;
             this.locked = true;
             this.position = this.tile.getPosition();
             this.tile.content = this;
-            this.hand.fill();
-            this.hand.findPath(this.tile);
-            if(this.gem == Gem.Blue) {
-                this.hand.add();
+            this.game.fill();
+            this.game.findPath(this.tile, this.game);
+            if(this.data.gem == Gem.Blue) {
+                this.game.pull();
             }
             return;
         }
@@ -118,16 +127,16 @@ export class Card extends Draggable {
         ctx.fillStyle = this.hovered ? "#ff9999" : "#fff";
         ctx.fillRect(this.position.x + BORDER + GAP, this.position.y + BORDER + GAP, this.size.x - BORDER * 2 - GAP * 2, this.size.y - BORDER * 2 - GAP * 2);
 
-        if(this.directions.includes(Direction.Up)) {
+        if(this.data.directions.includes(Direction.Up)) {
             this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + BORDER + GAP);
         }
-        if(this.directions.includes(Direction.Right)) {
+        if(this.data.directions.includes(Direction.Right)) {
             this.lineTo(ctx, this.position.x + this.size.x - BORDER - GAP, this.position.y + this.size.y * 0.5);
         }
-        if(this.directions.includes(Direction.Down)) {
+        if(this.data.directions.includes(Direction.Down)) {
             this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + this.size.y - BORDER - GAP);
         }
-        if(this.directions.includes(Direction.Left)) {
+        if(this.data.directions.includes(Direction.Left)) {
             this.lineTo(ctx, this.position.x + BORDER + GAP, this.position.y + this.size.y * 0.5);
         }
 
@@ -137,9 +146,9 @@ export class Card extends Draggable {
         };
         drawCircle(ctx, p, 8, "#000");
 
-        if(this.gem) {
+        if(this.data.gem) {
             drawCircle(ctx, p, 12, "#000");
-            drawCircle(ctx, p, 6, gemColors[this.gem]);
+            drawCircle(ctx, p, 6, gemColors[this.data.gem]);
         }
     }
 
@@ -149,26 +158,26 @@ export class Card extends Draggable {
     }
 
     public has(dir: Direction): boolean {
-        return this.directions && this.directions.includes(dir);
+        return this.data.directions && this.data.directions.includes(dir);
     }
 
     public getConnections(): Tile[] {
-        const index = this.board.find(tile => tile.content === this).index;
-        return this.directions.map(d => {
-            if(d == Direction.Up) return this.board.find(tile => tile.index.x === index.x && tile.index.y === index.y - 1 && tile.content && tile.content.has(Direction.Down));
-            if(d == Direction.Down) return this.board.find(tile => tile.index.x === index.x && tile.index.y === index.y + 1 && tile.content && tile.content.has(Direction.Up));
-            if(d == Direction.Left) return this.board.find(tile => tile.index.x === index.x - 1 && tile.index.y === index.y && tile.content && tile.content.has(Direction.Right));
-            if(d == Direction.Right) return this.board.find(tile => tile.index.x === index.x + 1 && tile.index.y === index.y && tile.content && tile.content.has(Direction.Left));
+        const index = this.level.board.find(tile => tile.content === this).index;
+        return this.data.directions.map(d => {
+            if(d == Direction.Up) return this.level.board.find(tile => tile.index.x === index.x && tile.index.y === index.y - 1 && tile.content && tile.content.has(Direction.Down));
+            if(d == Direction.Down) return this.level.board.find(tile => tile.index.x === index.x && tile.index.y === index.y + 1 && tile.content && tile.content.has(Direction.Up));
+            if(d == Direction.Left) return this.level.board.find(tile => tile.index.x === index.x - 1 && tile.index.y === index.y && tile.content && tile.content.has(Direction.Right));
+            if(d == Direction.Right) return this.level.board.find(tile => tile.index.x === index.x + 1 && tile.index.y === index.y && tile.content && tile.content.has(Direction.Left));
         }).filter(tile => tile && tile.content);
     }
 
     public activate(): void {
-        if(this.gem == Gem.Purple) {
-            this.hand.discard();
+        if(this.data.gem == Gem.Purple) {
+            this.game.discard();
         }
-        if(this.gem == Gem.Orange) {
-            this.hand.multi *= 2;
-            this.popText(`x${this.hand.multi}`, {
+        if(this.data.gem == Gem.Orange) {
+            this.game.multi *= 2;
+            this.popText(`x${this.game.multi}`, {
                 x: this.position.x + this.size.x * 0.5,
                 y: this.position.y + this.size.y * 0.5 - 50
             });
@@ -178,25 +187,25 @@ export class Card extends Draggable {
     public pop(amt: number): void {
         setTimeout(() => {
             this.activate();
-            this.hand.camera.shake(3, 0.08);
+            this.game.camera.shake(3, 0.08);
             this.addScore(amt);
         }, 0.2);
     }
 
     private addScore(amt: number, ): void {
-        const mod = this.gem == Gem.Yellow ? 10 : 1;
-        const addition = amt * mod * this.hand.multi;
-        this.hand.score += addition;
+        const mod = this.data.gem == Gem.Yellow ? 10 : 1;
+        const addition = amt * mod * this.game.multi * this.level.level;
+        this.game.score += addition;
         const p = {
             x: this.position.x + this.size.x * 0.5,
             y: this.position.y + this.size.y * 0.5 - 20
         };
-        this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
+        this.game.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
         this.popText(addition.toString(), p);
     }
 
     private popText(content: string, p: Vector): void {
-        this.hand.effects.add(new TextEntity(
+        this.game.effects.add(new TextEntity(
             content,
             40 + Math.random() * 10,
             p.x,

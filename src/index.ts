@@ -1,16 +1,14 @@
-import { TILE_HEIGHT, TILE_WIDTH, Card, Direction } from "./card";
+import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Dude } from "./dude";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector, ZERO } from "./engine/vector";
-import { Hand } from "./hand";
+import { Game } from "./game";
+import { Level } from "./level";
 import { TextEntity } from "./text";
-import { Tile } from "./tile";
 
-const canvas: HTMLCanvasElement = document.createElement("canvas");
-const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 const WIDTH = 800;
 const HEIGHT = 600;
 
@@ -19,42 +17,32 @@ const boardPos: Vector = {
   y: HEIGHT * 0.5 - TILE_HEIGHT * 1.5
 };
 
+const canvas: HTMLCanvasElement = document.createElement("canvas");
+const ctx: CanvasRenderingContext2D = canvas.getContext("2d")
+
 const testText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
 const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
 const effects = new Container();
 const camera = new Camera();
+const level = new Level(boardPos);
 
-const board: Tile[] = [
-  new Tile(0, 0, boardPos),
-  new Tile(0, 1, boardPos),
-  new Tile(0, 2, boardPos),
-  new Tile(1, 0, boardPos),
-  new Tile(1, 1, boardPos),
-  new Tile(1, 2, boardPos),
-  new Tile(2, 0, boardPos),
-  new Tile(2, 1, boardPos),
-  new Tile(2, 2, boardPos),
-];
-
-const dude = new Dude(board[4]);
+const dude = new Dude(level.board[2]);
 
 const mouse: Mouse = { x: 0, y: 0 };
-const hand = new Hand(board, dude, effects, camera);
+const game = new Game(dude, effects, camera, level);
 
-const p = board[4].getPosition();
+const p = level.board[2].getPosition();
 
 const entities: Entity[] = [
-  hand,
+  game,
   testText,
   scoreText
 ];
 
-const starter = new Card(p.x, p.y, board, hand, false, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
-starter.lock();
-entities.push(starter);
-board[4].content = starter;
-
-board.forEach(tile => entities.push(tile));
+level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
+level.starter.lock();
+level.board[2].content = level.starter;
+entities.push(level.starter);
 
 canvas.id = "game";
 canvas.width = WIDTH;
@@ -72,7 +60,7 @@ document.onmousedown = (e: MouseEvent) => mouse.pressing = true;
 document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
 function tick(t: number) {
-  scoreText.content = hand.score.toString();
+  scoreText.content = game.score.toString();
   requestAnimationFrame(tick);
   ctx.resetTransform();
   camera.update();
@@ -80,7 +68,7 @@ function tick(t: number) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   entities.forEach(e => e.update(t, mouse));
   effects.update(t, mouse);
-  const all = [...entities, ...effects.getChildren()];
+  const all = [...entities, ...effects.getChildren(), ...level.board];
   all.sort(sortByDepth);
   all.forEach(e => e.draw(ctx));
 }
