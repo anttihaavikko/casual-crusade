@@ -9,6 +9,7 @@ import { Tile } from "./tile";
 
 export class Hand extends Entity {
     public score = 0;
+    public multi = 1;
     private cards: Card[] = [];
 
     constructor(private board: Tile[], private dude: Dude, public effects: Container, public camera: Camera) {
@@ -23,7 +24,7 @@ export class Hand extends Entity {
     }
 
     public add(): void {
-        this.cards.push(new Card(this.position.x, this.position.y + 200, this.board, this));
+        this.cards.push(new Card(this.position.x, this.position.y + 200, this.board, this, true));
         this.reposition();
     }
 
@@ -34,6 +35,10 @@ export class Hand extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         [...this.cards, this.dude].sort(sortByDepth).forEach(c => c.draw(ctx));
+    }
+
+    public discard(): void {
+        const handCards = this.cards.filter(c => !c.isLocked());
     }
 
     private reposition(): void {

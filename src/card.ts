@@ -46,14 +46,14 @@ export class Card extends Draggable {
     private tween: Tween;
     private gem: Gem;
 
-    public constructor(x: number, y: number, private board: Tile[], private hand: Hand, private directions?: Direction[]) {
+    public constructor(x: number, y: number, private board: Tile[], private hand: Hand, canHaveGem: boolean, private directions?: Direction[]) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
         this.tween = new Tween(this);
         if(!this.directions) {
             const count = 1 + Math.floor(Math.random() * 4);
             this.directions = [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count);
         }
-        if(Math.random() < 0.2) {
+        if(canHaveGem && Math.random() < 0.2) {
             this.gem = 1 + Math.floor(Math.random() * 6);
         }
     }
@@ -85,11 +85,15 @@ export class Card extends Draggable {
         this.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
 
         if(this.tile) {
+            this.hand.multi = 1;
             this.locked = true;
             this.position = this.tile.getPosition();
             this.tile.content = this;
             this.hand.add();
             this.hand.findPath(this.tile);
+            if(this.gem == Gem.Blue) {
+                this.hand.add();
+            }
             return;
         }
 
@@ -158,25 +162,49 @@ export class Card extends Draggable {
         }).filter(tile => tile && tile.content);
     }
 
+    public activate(): void {
+        if(this.gem == Gem.Purple) {
+            this.hand.discard();
+        }
+        if(this.gem == Gem.Orange) {
+            this.hand.multi *= 2;
+            this.popText(`x${this.hand.multi}`, {
+                x: this.position.x + this.size.x * 0.5,
+                y: this.position.y + this.size.y * 0.5 - 25
+            });
+        }
+    }
+
     public pop(amt: number): void {
         setTimeout(() => {
+            this.activate();
             this.hand.camera.shake(3, 0.08);
-            this.hand.score += amt;
-            const p = {
-                x: this.position.x + this.size.x * 0.5,
-                y: this.position.y + this.size.y * 0.5 + 5
-            };
-            this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
-            this.hand.effects.add(new TextEntity(
-                amt.toString(),
-                40 + Math.random() * 10,
-                p.x,
-                p.y,
-                0.5 + Math.random(),
-                { x: 0, y: -1 - Math.random() },
-                { shadow: 4, align: "center", scales: true }
-            ));
+            this.addScore(amt);
         }, 0.2);
+    }
+
+    private addScore(amt: number, ): void {
+        const mod = this.gem == Gem.Yellow ? 10 : 1;
+        const addition = amt * mod * this.hand.multi;
+        this.hand.score += addition;
+        const p = {
+            x: this.position.x + this.size.x * 0.5,
+            y: this.position.y + this.size.y * 0.5 + 5
+        };
+        this.hand.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
+        this.popText(addition.toString(), p);
+    }
+
+    private popText(content: string, p: Vector): void {
+        this.hand.effects.add(new TextEntity(
+            content,
+            40 + Math.random() * 10,
+            p.x,
+            p.y,
+            0.5 + Math.random(),
+            { x: 0, y: -1 - Math.random() },
+            { shadow: 4, align: "center", scales: true }
+        ));
     }
 
     private lineTo(ctx: CanvasRenderingContext2D, x: number, y: number): void {

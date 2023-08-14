@@ -49,7 +49,7 @@ const entities: Entity[] = [
   scoreText
 ];
 
-const starter = new Card(p.x, p.y, board, hand, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
+const starter = new Card(p.x, p.y, board, hand, false, [Direction.Up, Direction.Right, Direction.Down, Direction.Left]);
 starter.lock();
 entities.push(starter);
 board[4].content = starter;
