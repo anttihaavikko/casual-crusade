@@ -74,6 +74,7 @@ document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 function tick(t: number) {
   scoreText.content = hand.score.toString();
   requestAnimationFrame(tick);
+  ctx.resetTransform();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   entities.forEach(e => e.update(t, mouse));
   effects.update(t, mouse);
