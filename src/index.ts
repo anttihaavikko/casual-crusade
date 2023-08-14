@@ -20,7 +20,7 @@ const boardPos: Vector = {
 const canvas: HTMLCanvasElement = document.createElement("canvas");
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d")
 
-const testText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
+const lifeText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
 const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
 const effects = new Container();
 const camera = new Camera();
@@ -35,7 +35,7 @@ const p = level.board[2].getPosition();
 
 const entities: Entity[] = [
   game,
-  testText,
+  lifeText,
   scoreText
 ];
 
@@ -61,6 +61,7 @@ document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
 function tick(t: number) {
   scoreText.content = game.score.toString();
+  lifeText.content = `LIFE: ${game.life}`;
   requestAnimationFrame(tick);
   ctx.resetTransform();
   camera.update();

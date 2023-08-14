@@ -12,6 +12,7 @@ export class Game extends Entity {
     public score = 0;
     public multi = 1;
     public handSize = 3;
+    public life = 10;
 
     private cards: Card[] = [];
     private all: CardData[] = [
@@ -31,6 +32,8 @@ export class Game extends Entity {
     public nextLevel(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
         if(handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0))  {
+            this.life -= this.level.board.filter(tile => !tile.content).length;
+            if(this.life <= 0) return;
             this.level.next();
             this.cards = [];
             this.dude.reset(this.level.board[2]);
