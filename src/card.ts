@@ -1,4 +1,5 @@
 import { Draggable } from "./engine/draggable";
+import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
 import { Vector, distance } from "./engine/vector";
@@ -11,6 +12,16 @@ export const TILE_HEIGHT = 60;
 const BORDER = 7;
 const GAP = 2;
 
+const gemColors = [
+    "#fff",
+    "blue",
+    "purple",
+    "red",
+    "yellow",
+    "orange",
+    "green"
+];
+
 export enum Direction {
     Up,
     Right,
@@ -18,9 +29,20 @@ export enum Direction {
     Left
 }
 
+export enum Gem {
+    None,
+    Blue,
+    Purple,
+    Red,
+    Yellow,
+    Orange,
+    Green
+};
+
 export class Card extends Draggable {
     private tile: Tile;
     private tween: Tween;
+    private gem: Gem;
 
     public constructor(x: number, y: number, private board: Tile[], private hand: Hand, private directions?: Direction[]) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
@@ -28,6 +50,9 @@ export class Card extends Draggable {
         if(!this.directions) {
             const count = 1 + Math.floor(Math.random() * 4);
             this.directions = [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count);
+        }
+        if(Math.random() < 0.2) {
+            this.gem = 1 + Math.floor(Math.random() * 6);
         }
     }
 
@@ -100,10 +125,16 @@ export class Card extends Draggable {
             this.lineTo(ctx, this.position.x + BORDER + GAP, this.position.y + this.size.y * 0.5);
         }
 
-        ctx.beginPath();
-        ctx.fillStyle = "#000";
-        ctx.ellipse(this.position.x + this.size.x * 0.5, this.position.y + this.size.y * 0.5, 8, 8, 0, 0, Math.PI * 2);
-        ctx.fill();
+        const p = {
+            x: this.position.x + this.size.x * 0.5,
+            y: this.position.y + this.size.y * 0.5
+        };
+        drawCircle(ctx, p, 8, "#000");
+
+        if(this.gem) {
+            drawCircle(ctx, p, 12, "#000");
+            drawCircle(ctx, p, 6, gemColors[this.gem]);
+        }
     }
 
     public lock(): void {
