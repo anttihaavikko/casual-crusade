@@ -17,12 +17,12 @@ const GAP = 2;
 
 const gemColors = [
     "#fff",
-    "blue",
-    "purple",
-    "red",
-    "yellow",
-    "orange",
-    "green"
+    "#00BDE5",
+    "#846AC1",
+    "#E93988",
+    "#F3DC00",
+    "#F89F00",
+    "#B4D000"
 ];
 
 export enum Direction {
@@ -51,7 +51,7 @@ export function randomCard(canHaveGem = true, dirs?: Direction[]): CardData {
     const count = 1 + Math.floor(Math.random() * 4);
     return {
         directions: dirs ?? [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count),
-        gem: canHaveGem && Math.random() < 0.2 ? 1 + Math.floor(Math.random() * 6): Gem.None
+        gem: canHaveGem && Math.random() < 0.9 ? 1 + Math.floor(Math.random() * 6): Gem.None
     }
 }
 
