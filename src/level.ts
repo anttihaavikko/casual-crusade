@@ -27,17 +27,7 @@ export class Level {
         ];
 
         for(var i = 0; i < (this.level - 1) * 2; i++) {
-            const tiles = this.board.filter(tile => tile.getNeighbours(this.board).length < 4);
-            const spots: Vector[] = [];
-            tiles.forEach(tile => {
-                spots.push(...[
-                    this.edgeOrZero(tile, { x: 1, y: 0 }),
-                    this.edgeOrZero(tile, { x: -1, y: 0 }),
-                    this.edgeOrZero(tile, { x: 0, y: 1 }),
-                    this.edgeOrZero(tile, { x: 0, y: -1 })
-                ].filter(v => v != ZERO));
-            });
-            const spot = spots[Math.floor(Math.random() * spots.length)];
+            const spot = this.getFromAllEdgeTile();
             this.board.push(new Tile(spot.x, spot.y, this.offset));
         }
 
@@ -50,7 +40,36 @@ export class Level {
         const tiles = this.getPossibleRewardSpots().sort(() => Math.random() < 0.5 ? 1 : -1).sort((a, b) => {
             return distance(a.getPosition(), center) < distance(b.getPosition(), center) ? 1 : -1;
         });
-        tiles.slice(0, this.level).forEach(tile => tile.reward = true);
+        tiles.slice(0, this.level).forEach(tile => {
+            const edge = this.getEdgeTile(tile);
+            const chest = new Tile(edge.x, edge.y, this.offset);
+            chest.reward = true;
+            this.board.push(chest);
+        });
+    }
+
+    private getFromAllEdgeTile(): Vector {
+        const tiles = this.board.filter(tile => tile.getNeighbours(this.board).length < 4);
+            const spots: Vector[] = [];
+            tiles.forEach(tile => {
+                spots.push(...[
+                    this.edgeOrZero(tile, { x: 1, y: 0 }),
+                    this.edgeOrZero(tile, { x: -1, y: 0 }),
+                    this.edgeOrZero(tile, { x: 0, y: 1 }),
+                    this.edgeOrZero(tile, { x: 0, y: -1 })
+                ].filter(v => v != ZERO));
+            });
+            return spots[Math.floor(Math.random() * spots.length)];
+    }
+
+    private getEdgeTile(tile: Tile): Vector {
+        const spots = [
+            this.edgeOrZero(tile, { x: 1, y: 0 }),
+            this.edgeOrZero(tile, { x: -1, y: 0 }),
+            this.edgeOrZero(tile, { x: 0, y: 1 }),
+            this.edgeOrZero(tile, { x: 0, y: -1 })
+        ].filter(v => v != ZERO);
+        return spots[Math.floor(Math.random() * spots.length)];
     }
 
     private getPossibleRewardSpots(): Tile[] {

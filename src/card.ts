@@ -16,7 +16,7 @@ export const TILE_HEIGHT = 60;
 export const CARD_BORDER = 7;
 export const CARD_GAP = 2;
 
-const gemColors = [
+export const gemColors = [
     "#fff",
     "#00BDE5",
     "#846AC1",

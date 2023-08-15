@@ -60,7 +60,7 @@ export class Game extends Entity {
     }
 
     public nextLevel(): void {
-        const hits = this.level.board.filter(tile => !tile.content);
+        const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
             const delay = 200;
 
             hits.forEach((hit, i) => {
@@ -171,6 +171,18 @@ export class Game extends Entity {
             this.add(card.data, true, false);
             this.fill();
         }, 300);
+    }
+
+    public loot(tile: Tile): void {
+        const chests = tile.getChests(this.level.board).filter(n => n.reward);
+        if(chests.length > 0) {
+            setTimeout(() => {
+                this.audio.chest();
+                this.picker.rewards += chests.length;
+                this.picker.create();
+            }, 300);
+            chests.forEach(c => c.looted = true);
+        }
     }
 
     private reposition(): void {

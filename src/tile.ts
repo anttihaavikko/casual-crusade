@@ -1,5 +1,5 @@
-import { Card, Direction, TILE_HEIGHT, TILE_WIDTH } from "./card";
-import { drawCircle } from "./engine/drawing";
+import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors } from "./card";
+import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
@@ -10,6 +10,7 @@ export class Tile extends Entity {
     public hilite: boolean;
     public index: Vector;
     public reward: boolean;
+    public looted: boolean;
 
     private life = 0;
     private offset = Math.random() * 100;
@@ -25,11 +26,32 @@ export class Tile extends Entity {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        ctx.fillStyle = "#999";
-        ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
+        const center = this.getCenter();
+
+        if(!this.reward) {
+            ctx.fillStyle = "#999";
+            ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
+        }
 
         if(this.reward) {
-            drawCircle(ctx, this.getCenter(), 10, "yellow");
+            ctx.save();
+            ctx.translate(0, 7);
+            drawEllipse(ctx, this.getCenter(), 27, 12, "#00000033");
+            ctx.fillStyle = "#000";
+            ctx.fillRect(center.x - 20, center.y - 22, 40, 25);
+            ctx.fillStyle = gemColors[Gem.Yellow];
+            ctx.fillRect(center.x - 15, center.y - 17, 30, 15);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(center.x - 12, center.y - 16, 24, 7);
+
+            if(!this.looted) {
+                ctx.fillStyle = "#000";
+                ctx.fillRect(center.x - 22, center.y - 28, 44, 20);
+                ctx.fillStyle = gemColors[Gem.Yellow];
+                ctx.fillRect(center.x - 17, center.y - 23, 34, 10);
+            }
+            
+            ctx.restore();
         }
         
         if(this.marked || this.hilite) {
@@ -49,6 +71,7 @@ export class Tile extends Entity {
     }
 
     public accepts(card: Card, board: Tile[]): boolean {
+        if(this.reward) return false;
         return board.some(tile => {
             if(tile.index.x == this.index.x && tile.index.y == this.index.y - 1 && tile.content && tile.content.has(Direction.Down) && card.has(Direction.Up)) return true;
             if(tile.index.x == this.index.x && tile.index.y == this.index.y + 1 && tile.content && tile.content.has(Direction.Up) && card.has(Direction.Down)) return true;
@@ -58,13 +81,17 @@ export class Tile extends Entity {
         });
     }
 
+    public getChests(board: Tile[]): Tile[] {
+        return board.filter(tile => tile.reward && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
+    }
+
     public getNeighbours(board: Tile[]): Tile[] {
         return board.filter(tile => tile.content && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
     }
 
     public getFreeNeighbours(board: Tile[], includeDiagonals: boolean): Tile[] {
         return includeDiagonals ?
-            board.filter(tile => !tile.content && tile != this && Math.abs(tile.index.x - this.index.x) <= 1 && Math.abs(tile.index.y - this.index.y) <= 1) :
-            board.filter(tile => !tile.content && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
+            board.filter(tile => !tile.reward && !tile.content && tile != this && Math.abs(tile.index.x - this.index.x) <= 1 && Math.abs(tile.index.y - this.index.y) <= 1) :
+            board.filter(tile => !tile.reward && !tile.content && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
     }
 }

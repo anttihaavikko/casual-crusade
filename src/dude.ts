@@ -68,14 +68,7 @@ export class Dude extends Entity {
                     setTimeout(() => game.audio.move(), 0.3, 100);
                     tile.content.pop(index);
 
-                    if(tile.reward) {
-                        setTimeout(() => {
-                            game.audio.chest();
-                            tile.reward = false;
-                            game.picker.rewards++;
-                            game.picker.create();
-                        }, 300);
-                    }
+                    game.loot(tile);
                 }
             }, index * 300);
         });
