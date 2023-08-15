@@ -21,6 +21,7 @@ export class Picker extends Entity {
     }
 
     public update(tick: number, mouse: Mouse): void {
+        if(this.rewards <= 0 || this.picks.length <= 0) return;
         this.picks.forEach(card => card.update(tick, mouse));
     }
 
