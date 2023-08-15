@@ -14,6 +14,7 @@ export class Picker extends Entity {
 
     private picks: Card[] = [];
     private title = new TextEntity("PICK YOUR REWARD!", 55, WIDTH * 0.5, HEIGHT * 0.5 - 20, -1, ZERO, { shadow: 10 });
+    private locked: boolean;
     
     constructor(private level: Level, private game: Game) {
         super(WIDTH * 0.5, HEIGHT * 0.5, 0, 0);
@@ -25,7 +26,7 @@ export class Picker extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         if(this.rewards <= 0 || this.picks.length <= 0) return;
-        ctx.fillStyle = "#000000aa";
+        ctx.fillStyle = "#000000bb";
         ctx.fillRect(0, HEIGHT * 0.2, WIDTH, HEIGHT * 0.6);
         // ctx.translate(WIDTH * 0.5, 0);
         // ctx.scale(1.5, 1.5);
@@ -36,9 +37,17 @@ export class Picker extends Entity {
     }
 
     public remove(card: Card): void {
-        this.picks = this.picks.filter(c => c != card);
-        this.reposition();
-        this.rewards = Math.min(this.rewards - 1, this.picks.length);
+        if(this.locked) return;
+
+        card.move(this.game.pile.getPosition(), 0.2);
+        this.locked = true;
+        
+        setTimeout(() => {
+            this.picks = this.picks.filter(c => c != card);
+            this.reposition();
+            this.rewards = Math.min(this.rewards - 1, this.picks.length);
+            this.locked = false;
+        }, 200);
     }
 
     public create(): void {

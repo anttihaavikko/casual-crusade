@@ -18,6 +18,7 @@ export class Game extends Entity {
     public life = 5;
     public maxLife: number;
     public picker: Picker;
+    public pile: Pile;
 
     private cards: Card[] = [];
     private all: CardData[] = [
@@ -28,7 +29,6 @@ export class Game extends Entity {
         randomCard(true)
     ];
     private deck: CardData[] = [];
-    private pile: Pile;
 
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level) {
         super(360, 500, 0, 0);
