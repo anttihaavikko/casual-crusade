@@ -100,6 +100,10 @@ export class Game extends Entity {
     }
 
     public checkLevelEnd(): void {
+        if(this.picker.rewards > 0) {
+            setTimeout(() => this.checkLevelEnd(), 500);
+            return;
+        }
         const handCards = this.cards.filter(c => !c.isLocked());
         if(handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0))  {
             this.nextLevel();

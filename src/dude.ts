@@ -67,7 +67,6 @@ export class Dude extends Entity {
                 if(index > 0) {
                     setTimeout(() => game.audio.move(), 0.3, 100);
                     tile.content.pop(index);
-
                     game.loot(tile);
                 }
             }, index * 300);
