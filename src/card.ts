@@ -98,14 +98,18 @@ export class Card extends Draggable {
     }
 
     protected click(): void {
+        this.game.audio.pop();
+        this.game.audio.swoosh();
         this.game.pick(this);
     }
 
     protected pick(): void {
+        this.game.audio.click();
         this.getPossibleSpots().forEach(tile => tile.marked = true);
     }
 
     protected drop(): void {
+        this.game.audio.pong();
         this.level.board.forEach(tile => tile.marked = false);
         this.level.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
 
@@ -122,6 +126,7 @@ export class Card extends Draggable {
             this.game.fill();
             this.game.findPath(this.tile, this.game);
             if(this.data.gem == Gem.Blue) {
+                this.game.audio.discard();
                 this.game.pull();
             }
             if(this.data.gem == Gem.Red) {
@@ -204,14 +209,19 @@ export class Card extends Draggable {
 
     public activate(): void {
         if(this.data.gem == Gem.Purple) {
+            this.game.audio.discard();
             this.game.discard();
         }
         if(this.data.gem == Gem.Orange) {
+            this.game.audio.multi();
             this.game.multi *= 2;
             this.popText(`x${this.game.multi}`, {
                 x: this.position.x + this.size.x * 0.5,
                 y: this.position.y + this.size.y * 0.5 - 50
             });
+        }
+        if(this.data.gem == Gem.Yellow) {
+            this.game.audio.score();
         }
     }
 

@@ -48,6 +48,7 @@ export class Game extends Entity {
 
     public heal(amount: number): void {
         this.life = Math.min(this.maxLife, this.life + amount);
+        this.audio.frog();
     }
 
     public nextLevel(): void {
@@ -64,7 +65,10 @@ export class Game extends Entity {
                 }, 100 + i * delay);
             })
 
-            if(this.life - hits.length <= 0) return;
+            if(this.life - hits.length <= 0) {
+                this.audio.lose();
+                return;
+            }
             
             setTimeout(() => {
                 this.level.next();
@@ -130,6 +134,7 @@ export class Game extends Entity {
 
     public pull(): void {
         if(this.deck.length <= 0) return;
+        this.audio.swoosh();
         const card = this.deck.pop();
         const p = this.pile.getPosition();
         this.cards.push(new Card(p.x, p.y - 20, this.level, this, card));
