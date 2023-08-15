@@ -27,14 +27,21 @@ export class Pile extends Entity {
     public draw(ctx: CanvasRenderingContext2D): void {
         if(this.count <= 0) return;
 
+        const height = (Math.min(6, this.count) - 1) * 10;
+
         ctx.fillStyle = "#000";
         ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = "#ccc";
         ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
+
+        ctx.fillStyle = "#000";
+        ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP - height, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP - height, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
         ctx.font =`30px arial black`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#000";
-        ctx.fillText(this.count.toString(), this.position.x + this.size.x * 0.5, this.position.y + this.size.y * 0.5 + 10);
+        ctx.fillText(this.count.toString(), this.position.x + this.size.x * 0.5, this.position.y + this.size.y * 0.5 + 10 - height);
     }
 }
