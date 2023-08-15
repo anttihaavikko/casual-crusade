@@ -28,6 +28,7 @@ export class Level {
 
         for(var i = 0; i < (this.level - 1) * 2; i++) {
             const spot = this.getFromAllEdgeTile();
+            if(!spot) continue;
             this.board.push(new Tile(spot.x, spot.y, this.offset));
         }
 
@@ -42,6 +43,7 @@ export class Level {
         });
         tiles.slice(0, this.level).forEach(tile => {
             const edge = this.getEdgeTile(tile);
+            if(!edge) return;
             const chest = new Tile(edge.x, edge.y, this.offset);
             chest.reward = true;
             this.board.push(chest);
