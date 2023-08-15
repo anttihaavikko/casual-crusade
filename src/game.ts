@@ -126,9 +126,12 @@ export class Game extends Entity {
     public discard(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
         const card = handCards[Math.floor(Math.random() * handCards.length)];
-        this.cards = this.cards.filter(c => c != card);
-        this.add(card.data, true, false);
-        this.fill();
+        card.move(this.pile.getPosition(), 0.3);
+        setTimeout(() => {
+            this.cards = this.cards.filter(c => c != card);
+            this.add(card.data, true, false);
+            this.fill();
+        }, 300);
     }
 
     private reposition(): void {
