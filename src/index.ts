@@ -1,5 +1,6 @@
 import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Dude } from "./dude";
+import { AudioManager } from "./engine/audio";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
@@ -11,6 +12,8 @@ import { TextEntity } from "./text";
 
 export const WIDTH = 800;
 export const HEIGHT = 600;
+
+const audio = new AudioManager();
 
 const boardPos: Vector = {
   x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
@@ -29,7 +32,7 @@ const level = new Level(boardPos);
 const dude = new Dude(level.board[2]);
 
 const mouse: Mouse = { x: 0, y: 0 };
-const game = new Game(dude, effects, camera, level);
+const game = new Game(dude, effects, camera, level, audio);
 
 const p = level.board[2].getPosition();
 
@@ -56,12 +59,13 @@ canvas.onmousemove = (e: MouseEvent) => {
   mouse.y = e.offsetY;
 };
 
-document.onmousedown = (e: MouseEvent) => mouse.pressing = true;
-document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
+document.onkeydown = () => audio.playMusic();
 
-// document.onkeydown = (e: KeyboardEvent) => {
-//   if(e.key == 'n') game.nextLevel();
-// };
+document.onmousedown = (e: MouseEvent) => {
+  mouse.pressing = true;
+  audio.playMusic();
+};
+document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
 function tick(t: number) {
   scoreText.content = game.score.toString();

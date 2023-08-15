@@ -1,5 +1,6 @@
 import { Card, CardData, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, randomCard } from "./card";
 import { Dude } from "./dude";
+import { AudioManager } from "./engine/audio";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
@@ -30,7 +31,7 @@ export class Game extends Entity {
     ];
     private deck: CardData[] = [];
 
-    constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level) {
+    constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
         super(360, 500, 0, 0);
         this.pile = new Pile(this.position.x - 2 * TILE_WIDTH - 30, this.position.y);
         this.maxLife = this.life;
@@ -56,6 +57,7 @@ export class Game extends Entity {
             hits.forEach((hit, i) => {
                 const p = hit.getPosition();
                 setTimeout(() => {
+                    this.audio.explode();
                     this.camera.shake(15, 0.15);
                     this.effects.add(new Pulse(p.x + TILE_WIDTH * 0.5, p.y + TILE_HEIGHT * 0.5, 40 + Math.random() * 40));
                     this.life--;
@@ -70,6 +72,7 @@ export class Game extends Entity {
                 this.dude.reset(this.level.board[2]);
                 this.shuffle();
                 this.fill();
+                this.audio.win();
 
                 const sorted = [...this.level.board].map(t => t.index.y).sort((a, b) => a - b);
                 const first = sorted[0] - 1;

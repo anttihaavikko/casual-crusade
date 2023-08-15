@@ -63,11 +63,14 @@ export class Dude extends Entity {
             setTimeout(() => {
                 tile.content.visited = true;
                 this.tweener.move(tile.getPosition(), 0.3);
+
                 if(index > 0) {
+                    setTimeout(() => game.audio.move(), 0.3, 100);
                     tile.content.pop(index);
 
                     if(tile.reward) {
                         setTimeout(() => {
+                            game.audio.chest();
                             tile.reward = false;
                             game.picker.rewards++;
                             game.picker.create();
