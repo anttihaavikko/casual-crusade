@@ -13,13 +13,16 @@ export abstract class Draggable extends Entity {
     private pressed: boolean;
 
     public update(tick: number, mouse: Mouse): void {
+        const wasHovered = this.hovered;
         this.hovered = !mouse.dragging && this.isInside(mouse);
+        if(!wasHovered && this.hovered && (!this.locked || this.selectable)) this.hover();
         if(!mouse.pressing) {
             if(this.pressed && !mouse.dragging && this.hovered) {
                 this.click();
             }
             this.pressed = false;
         }
+        
         if(this.hovered && this.selectable && mouse.pressing && !this.pressed && !mouse.dragging) {
             this.pressed = true;
             return;
@@ -55,6 +58,8 @@ export abstract class Draggable extends Entity {
     protected getStartPosition(): Vector {
         return this.start;
     }
+
+    protected abstract hover(): void;
 
     protected abstract pick(): void;
 

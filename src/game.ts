@@ -178,6 +178,7 @@ export class Game extends Entity {
         if(chests.length > 0) {
             setTimeout(() => {
                 this.audio.frog();
+                this.audio.open();
                 chests.forEach(c => c.loot(this.effects));
             }, 150);
             setTimeout(() => {

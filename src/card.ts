@@ -142,7 +142,15 @@ export class Card extends Draggable {
         this.move(this.getStartPosition(), 0.1);
     }
 
+    public hover(): void {
+        this.game.audio.thud();
+    }
+
     public draw(ctx: CanvasRenderingContext2D): void {
+        ctx.save();
+        if(this.hovered && this.selectable) {
+            ctx.translate(0, -10);
+        }
         if(this.dragging) {
             ctx.fillStyle = "#00000022";
             const center =  { x: WIDTH * 0.5, y: HEIGHT * 0.5 };
@@ -186,6 +194,8 @@ export class Card extends Draggable {
             drawCircle(ctx, p, 12, "#000");
             drawCircle(ctx, p, 6, gemColors[this.data.gem]);
         }
+
+        ctx.restore();
     }
 
     public lock(): void {
