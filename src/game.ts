@@ -6,6 +6,7 @@ import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
+import { RectParticle } from "./engine/rect-particle";
 import { Vector } from "./engine/vector";
 import { Level } from "./level";
 import { Picker } from "./picker";
@@ -48,7 +49,14 @@ export class Game extends Entity {
 
     public heal(amount: number): void {
         this.life = Math.min(this.maxLife, this.life + amount);
-        this.audio.frog();
+        this.audio.heal();
+
+        for(var i = 0; i < 50; i++) {
+            const p = this.dude.getCenter();
+            const x = p.x + Math.random() * 40 - 20;
+            const y = p.y + Math.random() * 40 - 40;
+            this.effects.add(new RectParticle(x, y, 2, 5, 0.1 + Math.random() * 0.6, { x: 0, y: -0.25 - Math.random() * 1.5 }, "#B4D000"));
+        }
     }
 
     public nextLevel(): void {
