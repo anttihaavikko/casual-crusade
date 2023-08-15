@@ -218,7 +218,7 @@ export class Card extends Draggable {
             this.popText(`x${this.game.multi}`, {
                 x: this.position.x + this.size.x * 0.5,
                 y: this.position.y + this.size.y * 0.5 - 50
-            });
+            }, gemColors[Gem.Orange]);
         }
         if(this.data.gem == Gem.Yellow) {
             this.game.audio.score();
@@ -234,7 +234,8 @@ export class Card extends Draggable {
     }
 
     private addScore(amt: number, ): void {
-        const mod = this.data.gem == Gem.Yellow ? 10 : 1;
+        const isYellow = this.data.gem == Gem.Yellow;
+        const mod = isYellow ? 10 : 1;
         const addition = amt * mod * this.game.multi * this.level.level;
         this.game.score += addition;
         const p = {
@@ -242,10 +243,10 @@ export class Card extends Draggable {
             y: this.position.y + this.size.y * 0.5 - 20
         };
         this.game.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
-        this.popText(addition.toString(), p);
+        this.popText(addition.toString(), p, isYellow ? gemColors[Gem.Yellow] : "#fff");
     }
 
-    private popText(content: string, p: Vector): void {
+    private popText(content: string, p: Vector, color: string): void {
         this.game.effects.add(new TextEntity(
             content,
             40 + Math.random() * 10,
@@ -253,7 +254,7 @@ export class Card extends Draggable {
             p.y,
             0.5 + Math.random(),
             { x: 0, y: -1 - Math.random() },
-            { shadow: 4, align: "center", scales: true }
+            { shadow: 4, align: "center", scales: true, color }
         ));
     }
 

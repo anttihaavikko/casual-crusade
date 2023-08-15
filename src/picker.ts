@@ -7,7 +7,7 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { TextEntity } from "./text";
 
-const PICK_OFFSET = 50;
+const PICK_OFFSET = 30;
 
 export class Picker extends Entity {
     public rewards = 0;

@@ -14,12 +14,13 @@ export class TextEntity extends Particle {
             ctx.fillStyle = "#000";
             ctx.fillText(this.content, this.position.x + this.options.shadow, this.position.y + this.options.shadow);
         }
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = this.options?.color ?? "#fff";
         ctx.fillText(this.content, this.position.x, this.position.y);
     }
 }
 
 export interface TextOptions {
+    color?: string;
     align?: CanvasTextAlign;
     shadow?: number;
     scales?: boolean;
