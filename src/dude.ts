@@ -43,7 +43,7 @@ export class Dude extends Entity {
         ctx.beginPath();
         ctx.moveTo(center.x, this.position.y - 10 - 5 * this.phase);
         ctx.lineTo(center.x + 14, this.position.y + 32);
-        ctx.lineTo(center.x, this.position.y + 30);
+        ctx.lineTo(center.x, this.position.y + 34);
         ctx.lineTo(center.x - 14, this.position.y + 32);
         ctx.fill();
         drawCircle(ctx, head, 8, "#fff");
