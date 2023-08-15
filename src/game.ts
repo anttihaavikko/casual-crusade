@@ -110,6 +110,14 @@ export class Game extends Entity {
         this.dude.findPath(to, game);
     }
 
+    public createBlank(tile: Tile): void {
+        const p = tile.getPosition();
+        const card = new Card(p.x, p.y, this.level, this, { directions: [], gem: Gem.None });
+        card.lock();
+        tile.content = card;
+        this.cards.push(card);
+    }
+
     public add(card: CardData, shuffles = true, permanent = false): void {
         if(permanent) this.all.push(card);
         this.deck.push(card);

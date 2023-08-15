@@ -61,4 +61,10 @@ export class Tile extends Entity {
     public getNeighbours(board: Tile[]): Tile[] {
         return board.filter(tile => tile.content && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
     }
+
+    public getFreeNeighbours(board: Tile[], includeDiagonals: boolean): Tile[] {
+        return includeDiagonals ?
+            board.filter(tile => !tile.content && tile != this && Math.abs(tile.index.x - this.index.x) <= 1 && Math.abs(tile.index.y - this.index.y) <= 1) :
+            board.filter(tile => !tile.content && Math.abs(tile.index.x - this.index.x) + Math.abs(tile.index.y - this.index.y) == 1);
+    }
 }

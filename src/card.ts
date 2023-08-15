@@ -127,6 +127,10 @@ export class Card extends Draggable {
             if(this.data.gem == Gem.Red) {
                 this.game.heal(1);
             }
+            if(this.data.gem == Gem.Green) {
+                const neighbours = this.tile.getFreeNeighbours(this.level.board, true).filter(n => !n.content);
+                neighbours.forEach(n => this.game.createBlank(n));
+            }
             return;
         }
 
@@ -168,7 +172,10 @@ export class Card extends Draggable {
             x: this.position.x + this.size.x * 0.5,
             y: this.position.y + this.size.y * 0.5
         };
-        drawCircle(ctx, p, 8, "#000");
+
+        if(this.data.directions.length > 0) {
+            drawCircle(ctx, p, 8, "#000");
+        }
 
         if(this.data.gem) {
             drawCircle(ctx, p, 12, "#000");
