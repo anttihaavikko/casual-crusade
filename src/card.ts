@@ -57,6 +57,8 @@ export function randomCard(canHaveGem = true, dirs?: Direction[]): CardData {
 }
 
 export class Card extends Draggable {
+    public visited: boolean;
+
     private tile: Tile;
     private tween: Tween;
 
@@ -67,6 +69,11 @@ export class Card extends Draggable {
 
     public isLocked(): boolean {
         return this.locked;
+    }
+
+    public makeSelectable(): void {
+        this.lock();
+        this.selectable = true;
     }
 
     public update(tick: number, mouse: Mouse): void {
@@ -90,6 +97,10 @@ export class Card extends Draggable {
         return this.level.board.filter(tile => !tile.content && tile.accepts(this, this.level.board))
     }
 
+    protected click(): void {
+        this.game.pick(this);
+    }
+
     protected pick(): void {
         this.getPossibleSpots().forEach(tile => tile.marked = true);
     }
@@ -97,6 +108,11 @@ export class Card extends Draggable {
     protected drop(): void {
         this.level.board.forEach(tile => tile.marked = false);
         this.level.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
+
+        if(this.game.picker.rewards > 0) {
+            this.move(this.getStartPosition(), 0.1);
+            return;
+        }
 
         if(this.tile) {
             this.game.multi = 1;
@@ -131,7 +147,8 @@ export class Card extends Draggable {
         
         ctx.fillStyle = "#000";
         ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
-        ctx.fillStyle = this.hovered ? "#ff9999" : "#ddd";
+        ctx.fillStyle = this.hovered && (!this.locked || this.selectable) ? "#ff9999" : "#ddd";
+        if(this.visited) ctx.fillStyle = "#ffffaa";
         ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
         if(this.data.directions.includes(Direction.Up)) {

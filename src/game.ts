@@ -7,6 +7,7 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { Vector } from "./engine/vector";
 import { Level } from "./level";
+import { Picker } from "./picker";
 import { Pile } from "./pile";
 import { Tile } from "./tile";
 
@@ -16,6 +17,7 @@ export class Game extends Entity {
     public handSize = 3;
     public life = 5;
     public maxLife: number;
+    public picker: Picker;
 
     private cards: Card[] = [];
     private all: CardData[] = [
@@ -34,6 +36,13 @@ export class Game extends Entity {
         this.maxLife = this.life;
         this.shuffle();
         this.fill();
+        this.picker = new Picker(this.level, this);
+    }
+
+    public pick(card: Card): void {
+        if(this.picker.rewards <= 0) return;
+        this.add(card.data, true, true);
+        this.picker.remove(card);
     }
 
     public heal(amount: number): void {
@@ -62,8 +71,6 @@ export class Game extends Entity {
                 this.cards = [];
                 this.dude.reset(this.level.board[2]);
                 this.shuffle();
-                this.add(randomCard(), true, true);
-                this.add(randomCard(), true, true);
                 this.fill();
             }, hits.length * delay + 600);
         }
@@ -92,6 +99,7 @@ export class Game extends Entity {
         if(permanent) this.all.push(card);
         this.deck.push(card);
         if(shuffles) this.deck = [...this.deck].sort(() => Math.random() < 0.5 ? 1 : -1);
+        this.reposition();
     }
 
     public pull(): void {
@@ -107,10 +115,12 @@ export class Game extends Entity {
         this.cards.forEach(c => c.update(tick, mouse));
         this.pile.update(tick, mouse);
         this.level.board.forEach(tile => tile.update(tick, mouse));
+        this.picker.update(tick, mouse);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
+        this.picker.draw(ctx);
     }
 
     public discard(): void {

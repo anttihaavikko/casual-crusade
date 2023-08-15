@@ -61,12 +61,22 @@ export class Dude extends Entity {
         this.tile = this.path[this.path.length - 1];
         this.path.forEach((tile, index) => {
             setTimeout(() => {
+                tile.content.visited = true;
                 this.tweener.move(tile.getPosition(), 0.3);
                 if(index > 0) {
                     tile.content.pop(index);
+
+                    if(tile.reward) {
+                        setTimeout(() => {
+                            tile.reward = false;
+                            game.picker.rewards++;
+                            game.picker.create();
+                        }, 300);
+                    }
                 }
             }, index * 300);
         });
+        setTimeout(() => this.path.forEach(p => p.content.visited = false), this.path.length * 300 + 300);
         setTimeout(() => game.nextLevel(), this.path.length * 300 + 600);
     }
 

@@ -1,4 +1,5 @@
 import { Card, Direction, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { drawCircle } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
@@ -8,6 +9,7 @@ export class Tile extends Entity {
     public marked: boolean;
     public hilite: boolean;
     public index: Vector;
+    public reward: boolean;
 
     private life = 0;
     private offset = Math.random() * 100;
@@ -25,6 +27,10 @@ export class Tile extends Entity {
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = "#999";
         ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
+
+        if(this.reward) {
+            drawCircle(ctx, this.getCenter(), 10, "yellow");
+        }
         
         if(this.marked || this.hilite) {
             ctx.strokeStyle = this.hilite ? "#ddd" : "#bbb";

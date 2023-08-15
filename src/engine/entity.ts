@@ -15,6 +15,13 @@ export abstract class Entity {
     public abstract update(tick: number, mouse: Mouse): void;
     public abstract draw(ctx: CanvasRenderingContext2D): void;
 
+    public getCenter(): Vector {
+        return {
+            x: this.position.x + this.size.x * 0.5,
+            y: this.position.y + this.size.y * 0.5
+        };
+    }
+
     public getPosition(): Vector {
         return this.position;
     }
