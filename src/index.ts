@@ -9,8 +9,8 @@ import { Game } from "./game";
 import { Level } from "./level";
 import { TextEntity } from "./text";
 
-const WIDTH = 800;
-const HEIGHT = 600;
+export const WIDTH = 800;
+export const HEIGHT = 600;
 
 const boardPos: Vector = {
   x: WIDTH * 0.5 - TILE_WIDTH * 1.5,

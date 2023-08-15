@@ -5,6 +5,12 @@ export interface Vector {
 
 export const ZERO = { x: 0, y: 0 };
 
+export function normalize(v: Vector): Vector {
+    const magnitude = Math.sqrt(v.x * v.x + v.y * v.y);
+    if(magnitude == 0) return ZERO;
+    return { x: v.x / magnitude, y: v.y / magnitude };
+}
+
 export function distance(a: Vector, b: Vector): number {
     const dx = Math.abs(a.x - b.x);
     const dy = Math.abs(a.y - b.y);

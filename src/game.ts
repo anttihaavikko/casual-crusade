@@ -7,6 +7,7 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { Vector } from "./engine/vector";
 import { Level } from "./level";
+import { Pile } from "./pile";
 import { Tile } from "./tile";
 
 export class Game extends Entity {
@@ -21,12 +22,15 @@ export class Game extends Entity {
         { directions: [Direction.Up, Direction.Down], gem: Gem.None },
         { directions: [Direction.Up, Direction.Down], gem: Gem.None },
         { directions: [Direction.Left, Direction.Right], gem: Gem.None },
-        { directions: [Direction.Left, Direction.Right], gem: Gem.None }
+        { directions: [Direction.Left, Direction.Right], gem: Gem.None },
+        randomCard(true)
     ];
     private deck: CardData[] = [];
+    private pile: Pile;
 
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level) {
         super(360, 500, 0, 0);
+        this.pile = new Pile(this.position.x - 2 * TILE_WIDTH - 30, this.position.y);
         this.maxLife = this.life;
         this.shuffle();
         this.fill();
@@ -72,7 +76,10 @@ export class Game extends Entity {
     public fill(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
         for(var i = 0; i < this.handSize - handCards.length; i++) {
-            this.pull();
+            setTimeout(() => {
+                this.pull();
+                this.reposition();
+            }, 50 * i)
         }
         this.reposition();
     }
@@ -90,17 +97,20 @@ export class Game extends Entity {
     public pull(): void {
         if(this.deck.length <= 0) return;
         const card = this.deck.pop();
-        this.cards.push(new Card(this.position.x, this.position.y + 200, this.level, this, card));
+        const p = this.pile.getPosition();
+        this.cards.push(new Card(p.x, p.y - 20, this.level, this, card));
         this.reposition();
     }
 
     public update(tick: number, mouse: Mouse): void {
         this.dude.update(tick, mouse);
         this.cards.forEach(c => c.update(tick, mouse));
+        this.pile.update(tick, mouse);
+        this.level.board.forEach(tile => tile.update(tick, mouse));
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        [...this.cards, this.dude].sort(sortByDepth).forEach(c => c.draw(ctx));
+        [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
     }
 
     public discard(): void {
@@ -113,6 +123,7 @@ export class Game extends Entity {
 
     private reposition(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
+        this.pile.count = this.deck.length;
         handCards.forEach((c, i) => {
             const p: Vector = {
                 x: this.position.x + (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH,
@@ -120,5 +131,9 @@ export class Game extends Entity {
             };
             c.move(p, 0.15);
         });
+        this.pile.move({
+            x: this.position.x - (handCards.length * 0.5 + 1) * TILE_WIDTH,
+            y: this.position.y
+        }, 0.15);
     }
 }

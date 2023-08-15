@@ -3,8 +3,9 @@ import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { Tween } from "./engine/tween";
-import { Vector, distance } from "./engine/vector";
+import { Vector, distance, lerp, normalize } from "./engine/vector";
 import { Game } from "./game";
+import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
@@ -12,8 +13,8 @@ import { Tile } from "./tile";
 export const TILE_WIDTH = 80;
 export const TILE_HEIGHT = 60;
 
-const BORDER = 7;
-const GAP = 2;
+export const CARD_BORDER = 7;
+export const CARD_GAP = 2;
 
 const gemColors = [
     "#fff",
@@ -74,13 +75,17 @@ export class Card extends Draggable {
         const sorted = [...this.level.board]
             .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.position, tile.getPosition()) < 100)
             .sort((a, b) => distance(this.position, a.getPosition()) - distance(this.position, b.getPosition()));
+
+        const prev = this.tile;
         this.tile = sorted.length > 0 ? sorted[0]: null;
+        if(this.tile && this.dragging) this.tile.hilite = true;
+        if(prev && prev != this.tile) prev.hilite = false;
     }
 
     public move(to: Vector, duration: number): void {
         this.tween.move(to, duration);
     }
-
+    
     public getPossibleSpots(): Tile[] {
         return this.level.board.filter(tile => !tile.content && tile.accepts(this, this.level.board))
     }
@@ -113,34 +118,33 @@ export class Card extends Draggable {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        if(this.dragging && this.tile) {
-            ctx.strokeStyle = "#ddd";
-            ctx.lineWidth = 7;
-            const tilePos = this.tile.getPosition();
-            ctx.strokeRect(
-                tilePos.x + BORDER + GAP, 
-                tilePos.y + BORDER + GAP,
-                this.size.x - BORDER * 2 - GAP * 2,
-                this.size.y - BORDER * 2 - GAP * 2
-            );
+        if(this.dragging) {
+            ctx.fillStyle = "#00000022";
+            const center =  { x: WIDTH * 0.5, y: HEIGHT * 0.5 };
+            const p = {
+                x: this.position.x + CARD_GAP,
+                y: this.position.y + CARD_GAP
+            };
+            const dir = normalize({ x: p.x - center.x, y: p.y - center.y });
+            ctx.fillRect(p.x + dir.x * 12, p.y + dir.y * 24, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
         }
-
+        
         ctx.fillStyle = "#000";
-        ctx.fillRect(this.position.x + GAP, this.position.y + GAP, this.size.x - GAP * 2, this.size.y - GAP * 2);
-        ctx.fillStyle = this.hovered ? "#ff9999" : "#fff";
-        ctx.fillRect(this.position.x + BORDER + GAP, this.position.y + BORDER + GAP, this.size.x - BORDER * 2 - GAP * 2, this.size.y - BORDER * 2 - GAP * 2);
+        ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
+        ctx.fillStyle = this.hovered ? "#ff9999" : "#ddd";
+        ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
         if(this.data.directions.includes(Direction.Up)) {
-            this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + BORDER + GAP);
+            this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + CARD_BORDER + CARD_GAP);
         }
         if(this.data.directions.includes(Direction.Right)) {
-            this.lineTo(ctx, this.position.x + this.size.x - BORDER - GAP, this.position.y + this.size.y * 0.5);
+            this.lineTo(ctx, this.position.x + this.size.x - CARD_BORDER - CARD_GAP, this.position.y + this.size.y * 0.5);
         }
         if(this.data.directions.includes(Direction.Down)) {
-            this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + this.size.y - BORDER - GAP);
+            this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + this.size.y - CARD_BORDER - CARD_GAP);
         }
         if(this.data.directions.includes(Direction.Left)) {
-            this.lineTo(ctx, this.position.x + BORDER + GAP, this.position.y + this.size.y * 0.5);
+            this.lineTo(ctx, this.position.x + CARD_BORDER + CARD_GAP, this.position.y + this.size.y * 0.5);
         }
 
         const p = {

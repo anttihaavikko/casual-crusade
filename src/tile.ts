@@ -6,8 +6,11 @@ import { Vector } from "./engine/vector";
 export class Tile extends Entity {
     public content: Card;
     public marked: boolean;
-
+    public hilite: boolean;
     public index: Vector;
+
+    private life = 0;
+    private offset = Math.random() * 100;
     
     public constructor(x: number, y: number, offset: Vector) {
         super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, 80, 60);
@@ -16,17 +19,23 @@ export class Tile extends Entity {
     }
 
     public update(tick: number, mouse: Mouse): void {
+        this.life = tick * 0.01 * (this.hilite ? 3 : -1);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = "#999";
         ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
         
-        if(this.marked) {
-            ctx.strokeStyle = "#aaa";
-            ctx.lineWidth = 5;
+        if(this.marked || this.hilite) {
+            ctx.strokeStyle = this.hilite ? "#ddd" : "#bbb";
+            ctx.lineWidth = this.hilite ? 7 : 5;
+            ctx.setLineDash([5, 10]);
+            ctx.lineCap = "round";
+            ctx.lineDashOffset = this.life + this.offset;
             ctx.strokeRect(this.position.x + 10, this.position.y + 10, this.size.x - 20, this.size.y - 20);
         }
+
+        ctx.setLineDash([]);
     }
 
     public isIn(snapped: Vector): boolean {
