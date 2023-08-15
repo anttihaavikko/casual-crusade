@@ -50,9 +50,7 @@ export class Game extends Entity {
     }
 
     public nextLevel(): void {
-        const handCards = this.cards.filter(c => !c.isLocked());
-        if(handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0))  {
-            const hits = this.level.board.filter(tile => !tile.content);
+        const hits = this.level.board.filter(tile => !tile.content);
             const delay = 200;
 
             hits.forEach((hit, i) => {
@@ -72,7 +70,24 @@ export class Game extends Entity {
                 this.dude.reset(this.level.board[2]);
                 this.shuffle();
                 this.fill();
+
+                const sorted = [...this.level.board].map(t => t.index.y).sort((a, b) => a - b);
+                const first = sorted[0] - 1;
+                const last = sorted[sorted.length - 1] - 1;
+                const amt = -(first + last) * 0.5 * TILE_HEIGHT;
+                this.level.board.forEach(t => {
+                    this.moveUp(t, amt);
+                    this.moveUp(t.content, amt);
+                });
+                const p = this.level.board[2].getPosition();
+                this.dude.setPosition(p.x, p.y);
             }, hits.length * delay + 600);
+    }
+
+    public checkLevelEnd(): void {
+        const handCards = this.cards.filter(c => !c.isLocked());
+        if(handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0))  {
+            this.nextLevel();
         }
     }
 
@@ -148,5 +163,11 @@ export class Game extends Entity {
             x: this.position.x - (handCards.length * 0.5 + 1) * TILE_WIDTH,
             y: this.position.y
         }, 0.15);
+    }
+
+    private moveUp(e: Entity, amount: number): void {
+        if(!e) return;
+        const p = e.getPosition();
+        e.setPosition(p.x, p.y + amount);
     }
 }

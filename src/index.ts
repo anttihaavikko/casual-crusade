@@ -14,7 +14,7 @@ export const HEIGHT = 600;
 
 const boardPos: Vector = {
   x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
-  y: HEIGHT * 0.5 - TILE_HEIGHT * 1.5
+  y: HEIGHT * 0.5 - TILE_HEIGHT * 1.75
 };
 
 const canvas: HTMLCanvasElement = document.createElement("canvas");
@@ -58,6 +58,10 @@ canvas.onmousemove = (e: MouseEvent) => {
 
 document.onmousedown = (e: MouseEvent) => mouse.pressing = true;
 document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
+
+// document.onkeydown = (e: KeyboardEvent) => {
+//   if(e.key == 'n') game.nextLevel();
+// };
 
 function tick(t: number) {
   scoreText.content = game.score.toString();

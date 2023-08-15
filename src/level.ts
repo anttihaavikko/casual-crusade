@@ -1,4 +1,4 @@
-import { Card } from "./card";
+import { Card, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Vector, ZERO, distance } from "./engine/vector";
 import { Tile } from "./tile";
 
@@ -43,6 +43,7 @@ export class Level {
 
         if(this.starter) {
             this.board[2].content = this.starter;
+            this.board[2].content.setPosition(this.offset.x + TILE_WIDTH, this.offset.y + TILE_HEIGHT);
         }
 
         const center = this.board[2].getPosition();

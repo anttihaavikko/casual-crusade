@@ -77,7 +77,7 @@ export class Dude extends Entity {
             }, index * 300);
         });
         setTimeout(() => this.path.forEach(p => p.content.visited = false), this.path.length * 300 + 300);
-        setTimeout(() => game.nextLevel(), this.path.length * 300 + 600);
+        setTimeout(() => game.checkLevelEnd(), this.path.length * 300 + 600);
     }
 
     private findNext(from: Tile, to: Tile, visited: Tile[]): void {
