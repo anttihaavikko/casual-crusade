@@ -1,5 +1,5 @@
 import { Card } from "./card";
-import { Vector, distance } from "./engine/vector";
+import { Vector, ZERO, distance } from "./engine/vector";
 import { Tile } from "./tile";
 
 export class Level {
@@ -18,25 +18,28 @@ export class Level {
     public next(): void {
         this.level++;
 
-        const extras = [
-            new Tile(0, 0, this.offset),
-            new Tile(2, 2, this.offset),
-            new Tile(0, 2, this.offset),
-            new Tile(2, 0, this.offset),
-            new Tile(1, -1, this.offset),
-            new Tile(1, 3, this.offset),
-            new Tile(-1, 1, this.offset),
-            new Tile(3, 1, this.offset)
-        ];
-
         this.board = [
             new Tile(0, 1, this.offset),
             new Tile(1, 0, this.offset),
             new Tile(1, 1, this.offset),
             new Tile(1, 2, this.offset),
-            new Tile(2, 1, this.offset),
-            ...extras.sort(() => Math.random() < 0.5 ? 1 : -1).slice(0, (this.level - 1) * 2)
+            new Tile(2, 1, this.offset)
         ];
+
+        for(var i = 0; i < (this.level - 1) * 2; i++) {
+            const tiles = this.board.filter(tile => tile.getNeighbours(this.board).length < 4);
+            const spots: Vector[] = [];
+            tiles.forEach(tile => {
+                spots.push(...[
+                    this.edgeOrZero(tile, { x: 1, y: 0 }),
+                    this.edgeOrZero(tile, { x: -1, y: 0 }),
+                    this.edgeOrZero(tile, { x: 0, y: 1 }),
+                    this.edgeOrZero(tile, { x: 0, y: -1 })
+                ].filter(v => v != ZERO));
+            });
+            const spot = spots[Math.floor(Math.random() * spots.length)];
+            this.board.push(new Tile(spot.x, spot.y, this.offset));
+        }
 
         if(this.starter) {
             this.board[2].content = this.starter;
@@ -51,5 +54,12 @@ export class Level {
 
     private getPossibleRewardSpots(): Tile[] {
         return [...this.board.filter(tile => tile != this.board[2] && tile.getNeighbours(this.board).length < 4)];
+    }
+
+    private edgeOrZero(tile: Tile, dir: Vector): Vector {
+        return !this.board.some(t => t.index.x == tile.index.x + dir.x && t.index.y == tile.index.y + dir.y) ? {
+            x: tile.index.x + dir.x,
+            y: tile.index.y + dir.y
+        } : ZERO;
     }
 }
