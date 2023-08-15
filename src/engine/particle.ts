@@ -8,7 +8,7 @@ export abstract class Particle extends Entity {
 
     private start = -1;
 
-    constructor(x: number, y: number, width: number, height: number, private life: number, private velocity: Vector) {
+    constructor(x: number, y: number, width: number, height: number, protected life: number, protected velocity: Vector) {
         super(x, y, width, height);
     }
 

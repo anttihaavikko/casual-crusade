@@ -174,14 +174,17 @@ export class Game extends Entity {
     }
 
     public loot(tile: Tile): void {
-        const chests = tile.getChests(this.level.board).filter(n => n.reward);
+        const chests = tile.getChests(this.level.board).filter(n => n.reward && !n.looted);
         if(chests.length > 0) {
+            setTimeout(() => {
+                this.audio.frog();
+                chests.forEach(c => c.loot(this.effects));
+            }, 150);
             setTimeout(() => {
                 this.audio.chest();
                 this.picker.rewards += chests.length;
                 this.picker.create();
-            }, 300);
-            chests.forEach(c => c.looted = true);
+            }, 600);
         }
     }
 
