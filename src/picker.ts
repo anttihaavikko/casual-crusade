@@ -29,10 +29,12 @@ export class Picker extends Entity {
         if(this.rewards <= 0 || this.picks.length <= 0) return;
         ctx.fillStyle = "#000000bb";
         ctx.fillRect(0, HEIGHT * 0.2, WIDTH, HEIGHT * 0.6);
-        // ctx.translate(WIDTH * 0.5, 0);
-        // ctx.scale(1.5, 1.5);
-        // ctx.translate(-WIDTH * 0.5, 0);
+        ctx.save();
+        ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
+        ctx.scale(1.2, 1.2);
+        ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5);
         this.picks.forEach(card => card.draw(ctx));
+        ctx.restore();
         ctx.resetTransform();
         this.title.draw(ctx);
     }
@@ -56,7 +58,8 @@ export class Picker extends Entity {
         this.picks = [];
 
         for(var i = 0; i < amount; i++) {
-            this.picks.push(new Card(this.position.x - TILE_WIDTH * 0.5 * amount + TILE_WIDTH * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard()));
+            const card = new Card(this.position.x - TILE_WIDTH * 0.5 * amount + TILE_WIDTH * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
+            this.picks.push(card);
         }
 
         this.picks.forEach(card => card.makeSelectable());
