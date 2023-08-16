@@ -62,6 +62,7 @@ export class RelicIcon extends Draggable {
             const dy = this.icon ? 110 : -50 * this.scale;
             this.game.tooltip.show(this.data.name, this.data.description, offset(this.getCenter(), dx, dy), this.data.color);
         }, 5);
+        this.game.audio.thud();
     }
 
     public exit(): void {
