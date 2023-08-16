@@ -53,7 +53,7 @@ export class Picker extends Entity {
         }, 200);
     }
 
-    public create(forceRelic = false): void {
+    public create(relicChance = 0.25): void {
         const amount = this.game.rewardOptions;
         this.picks = [];
 
@@ -63,7 +63,7 @@ export class Picker extends Entity {
             this.title.content = "PICK YOUR REWARDS!";
         } 
 
-        const relic = forceRelic || Math.random() < 0.3;
+        const relic = Math.random() < relicChance;
 
         const relicOptions = [...relics].filter(r => r.repeatable || !this.game.relics.includes(r.name)).sort(() => Math.random() < 0.5 ? 1 : -1);
 

@@ -84,8 +84,12 @@ document.onkeydown = (e: KeyboardEvent) => {
   //   canvas.requestFullscreen();
   // }
   if(e.key == 'p') {
-    game.picker.rewards++;
-    game.picker.create(true);
+    game.picker.rewards = 1;
+    game.picker.create(1);
+  }
+  if(e.key == 'c') {
+    game.picker.rewards = 1;
+    game.picker.create(0);
   }
 }
 
