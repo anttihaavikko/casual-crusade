@@ -15,6 +15,7 @@ export abstract class Draggable extends Entity {
     public update(tick: number, mouse: Mouse): void {
         const wasHovered = this.hovered;
         this.hovered = !mouse.dragging && this.isInside(mouse);
+        if(wasHovered && !this.hovered) this.exit();
         if(!wasHovered && this.hovered && (!this.locked || this.selectable)) this.hover();
         if(!mouse.pressing) {
             if(this.pressed && !mouse.dragging && this.hovered) {
@@ -60,6 +61,8 @@ export abstract class Draggable extends Entity {
     }
 
     protected abstract hover(): void;
+
+    protected abstract exit(): void;
 
     protected abstract pick(): void;
 

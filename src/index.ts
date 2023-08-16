@@ -10,6 +10,7 @@ import { Vector, ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { Level } from "./level";
 import { TextEntity } from "./text";
+import { Tooltip } from "./tooltip";
 
 export const WIDTH = 800;
 export const HEIGHT = 600;

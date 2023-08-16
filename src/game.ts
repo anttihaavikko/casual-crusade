@@ -9,11 +9,12 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { RectParticle } from "./engine/rect";
 import { Vector, offset } from "./engine/vector";
-import { WIDTH } from "./index";
+import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
 import { Tile } from "./tile";
+import { Tooltip } from "./tooltip";
 
 export class Game extends Entity {
     public score = 0;
@@ -24,6 +25,8 @@ export class Game extends Entity {
     public picker: Picker;
     public pile: Pile;
     public started: boolean;
+
+    public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
     private cards: Card[] = [];
     private all: CardData[] = [
@@ -178,6 +181,7 @@ export class Game extends Entity {
         }
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
+        this.tooltip.draw(ctx);
     }
 
     public discard(): void {

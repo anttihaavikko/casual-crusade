@@ -3,7 +3,7 @@ import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { Tween } from "./engine/tween";
-import { Vector, distance, lerp, normalize } from "./engine/vector";
+import { Vector, distance, lerp, normalize, offset } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
@@ -24,6 +24,26 @@ export const gemColors = [
     "#F3DC00",
     "#F89F00",
     "#B4D000"
+];
+
+const gemNames = [
+    null,
+    "Blue",
+    "Purple",
+    "Red",
+    "Yellow",
+    "Orange",
+    "Green"
+];
+
+const gemDescriptions = [
+    null,
+    "Draw extra card when placed.",
+    "Recycle random card when stepping on.",
+    "Heal one when placed.",
+    "Score earned for stepping on is tenfold.",
+    "Double your score multiplier.",
+    "Fill neighbours with blank cards."
 ];
 
 export enum Direction {
@@ -144,7 +164,18 @@ export class Card extends Draggable {
         this.move(this.getStartPosition(), 0.1);
     }
 
+    public exit(): void {
+        if(this.data.gem) {
+            this.game.tooltip.visible = false;
+        }
+    }
+
     public hover(): void {
+        if(this.data.gem) {
+            setTimeout(() => {
+                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50), gemColors[this.data.gem]);
+            }, 5);
+        }
         this.game.audio.thud();
     }
 
