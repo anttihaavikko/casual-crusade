@@ -29,6 +29,13 @@ export abstract class Entity {
     public setPosition(x: number, y: number): void {
         this.position = { x, y };
     }
+
+    public isInside(point: Vector): boolean {
+        return point.x > this.position.x && 
+            point.x < this.position.x + this.size.x &&
+            point.y > this.position.y &&
+            point.y < this.position.y + this.size.y;
+    }
 }
 
 export const sortByDepth = (a: Entity, b: Entity) => a.depth - b.depth;

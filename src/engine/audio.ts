@@ -25,7 +25,7 @@ export class AudioManager {
                 audio.loop = true;
                 audio.play();
             }
-        });
+        }, 5);
     }
 
     public move(): void {

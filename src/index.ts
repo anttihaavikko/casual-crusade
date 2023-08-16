@@ -1,6 +1,7 @@
 import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Dude } from "./dude";
 import { AudioManager } from "./engine/audio";
+import { ButtonEntity } from "./engine/button";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
@@ -39,7 +40,8 @@ const p = level.board[2].getPosition();
 const entities: Entity[] = [
   game,
   lifeText,
-  scoreText
+  scoreText,
+  new ButtonEntity("PRESS", 20, 100, 200, 50, () => console.log('hello'))
 ];
 
 level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
@@ -68,7 +70,7 @@ document.onkeydown = (e: KeyboardEvent) => {
 
 document.onmousedown = (e: MouseEvent) => {
   mouse.pressing = true;
-  audio.playMusic();
+  setTimeout(() => audio.playMusic(), 10);
 };
 document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 

@@ -66,11 +66,4 @@ export abstract class Draggable extends Entity {
     protected abstract click(): void;
 
     protected abstract drop(): void;
-
-    private isInside(point: Vector): boolean {
-        return point.x > this.position.x && 
-            point.x < this.position.x + this.size.x &&
-            point.y > this.position.y &&
-            point.y < this.position.y + this.size.y;
-    }
 }
