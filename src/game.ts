@@ -31,6 +31,7 @@ export class Game extends Entity {
     public rewardOptions = 3;
     public rewardPicks = 1;
     public relics: string[] = [];
+    public canRemoteOpen: boolean;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -177,6 +178,9 @@ export class Game extends Entity {
         card.lock();
         tile.content = card;
         this.cards.push(card);
+        if(this.canRemoteOpen) {
+            this.loot(tile);
+        }
     }
 
     public add(card: CardData, shuffles = true, permanent = false): void {
@@ -295,6 +299,7 @@ export class Game extends Entity {
         this.dude.reset(this.level.board[2]);
         this.icons = [];
         this.relics = [];
+        this.canRemoteOpen = false;
     }
 
     private init(): void {
