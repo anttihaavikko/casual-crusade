@@ -10,12 +10,12 @@ import { Vector, ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { Level } from "./level";
 import { TextEntity } from "./text";
-import { Tooltip } from "./tooltip";
 
 export const WIDTH = 800;
 export const HEIGHT = 600;
 
 const audio = new AudioManager();
+audio.prepare();
 
 const boardPos: Vector = {
   x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
@@ -39,11 +39,16 @@ const mouse: Mouse = { x: 0, y: 0 };
 const game = new Game(dude, effects, camera, level, audio);
 
 const p = level.board[2].getPosition();
-const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 170, 250, 75, () => {}, audio);
+const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 220, 250, 75, () => {}, audio);
+
+const startUi: Entity[] = [
+  startButton,
+  title,
+  me
+];
 
 const entities: Entity[] = [
-  game,
-  startButton
+  game
 ];
 
 const ui: Entity[] = [
@@ -71,7 +76,7 @@ canvas.onmousemove = (e: MouseEvent) => {
 };
 
 document.onkeydown = (e: KeyboardEvent) => {
-  audio.playMusic();
+  audio.prepare();
   if(e.key == 'n') {
     game.nextLevel();
   }
@@ -81,20 +86,26 @@ document.onkeydown = (e: KeyboardEvent) => {
 }
 
 document.onmousedown = (e: MouseEvent) => {
+  audio.play();
   mouse.pressing = true;
   if(startButton.isInside(mouse)) {
     startButton.visible = false;
-    game.started = true;
+    setTimeout(() => game.started = true, 100);
   }
-  setTimeout(() => audio.playMusic(), 75);
 };
+
 document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
+
+let zoom = 1.2;
 
 function tick(t: number) {
   scoreText.content = game.score.toString();
   lifeText.content = `LIFE: ${game.life}/${game.maxLife}`;
   requestAnimationFrame(tick);
   ctx.resetTransform();
+  ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
+  ctx.scale(zoom, zoom);
+  ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5 + (game.started ? 0 : 30));
   camera.update();
   ctx.translate(camera.offset.x, camera.offset.y);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -104,10 +115,14 @@ function tick(t: number) {
   all.sort(sortByDepth);
   all.forEach(e => e.draw(ctx));
   if(!game.started) {
-    title.draw(ctx);
-    me.draw(ctx);
+    ctx.resetTransform();
+    startUi.forEach(e => {
+      e.update(t, mouse);
+      e.draw(ctx);
+    });
     return;
   }
+  zoom = Math.max(1, zoom - 0.02);
   ui.forEach(e => e.draw(ctx));
 }
 

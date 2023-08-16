@@ -4,8 +4,10 @@ import { zzfx } from "./zzfx";
 
 export class AudioManager {
     private started = false;
+    private audio: any;
+    private loaded;
 
-    public playMusic(): void {
+    public prepare(): void {
         if(this.started) return;
 
         this.started = true;
@@ -13,19 +15,26 @@ export class AudioManager {
         const player = new CPlayer();
         player.init(song);
         player.generate();
-        let loaded = false;
+        this.loaded = false;
 
         setInterval(function () {
-            if (loaded) return;
-            loaded = player.generate() >= 1;
-            if (loaded) {
+            if (this.loaded) return;
+            this.loaded = player.generate() >= 1;
+            if (this.loaded) {
                 var wave = player.createWave();
-                var audio = document.createElement("audio");
-                audio.src = URL.createObjectURL(new Blob([wave], { type: "audio/wav" }));
-                audio.loop = true;
-                audio.play();
+                this.audio = document.createElement("audio");
+                this.audio.src = URL.createObjectURL(new Blob([wave], { type: "audio/wav" }));
+                this.audio.loop = true;
             }
         }, 5);
+    }
+
+    public play(): void {
+        setInterval(function () {
+            if (!this.loaded) return;
+            this.audio.play();
+        }, 5);
+        
     }
 
     public move(): void {
