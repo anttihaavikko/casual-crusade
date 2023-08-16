@@ -26,6 +26,8 @@ const ctx: CanvasRenderingContext2D = canvas.getContext("2d")
 
 const lifeText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
 const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
+const title = new TextEntity("GAMENAME", 100, WIDTH * 0.5, 120, -1, ZERO, { shadow: 10, align: "center" });
+const me = new TextEntity("by Antti Haavikko", 40, WIDTH * 0.5, 170, -1, ZERO, { shadow: 7, align: "center" });
 const effects = new Container();
 const camera = new Camera();
 const level = new Level(boardPos);
@@ -36,13 +38,16 @@ const mouse: Mouse = { x: 0, y: 0 };
 const game = new Game(dude, effects, camera, level, audio);
 
 const p = level.board[2].getPosition();
-const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 150, 250, 75, true, () => {}, audio);
+const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 170, 250, 75, true, () => {}, audio);
 
 const entities: Entity[] = [
   game,
+  startButton
+];
+
+const ui: Entity[] = [
   lifeText,
   scoreText,
-  startButton
 ];
 
 level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
@@ -92,6 +97,12 @@ function tick(t: number) {
   const all = [...entities, ...effects.getChildren(), ...level.board];
   all.sort(sortByDepth);
   all.forEach(e => e.draw(ctx));
+  if(!game.started) {
+    title.draw(ctx);
+    me.draw(ctx);
+    return;
+  }
+  ui.forEach(e => e.draw(ctx));
 }
 
 requestAnimationFrame(tick);
