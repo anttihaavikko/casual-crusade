@@ -39,7 +39,7 @@ const mouse: Mouse = { x: 0, y: 0 };
 const game = new Game(dude, effects, camera, level, audio);
 
 const p = level.board[2].getPosition();
-const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 170, 250, 75, true, () => {}, audio);
+const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 170, 250, 75, () => {}, audio);
 
 const entities: Entity[] = [
   game,

@@ -1,6 +1,7 @@
 import { Card, CardData, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, randomCard } from "./card";
 import { Dude } from "./dude";
 import { AudioManager } from "./engine/audio";
+import { ButtonEntity } from "./engine/button";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
@@ -8,11 +9,12 @@ import { LineParticle } from "./engine/line";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { RectParticle } from "./engine/rect";
-import { Vector, offset } from "./engine/vector";
+import { Vector, ZERO, offset } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
+import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
 
@@ -28,23 +30,20 @@ export class Game extends Entity {
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
+    private again: ButtonEntity;
+    private gameOver = new TextEntity("GAME OVER", 100, WIDTH * 0.5, 280, -1, ZERO, { shadow: 10, align: "center" });
+
     private cards: Card[] = [];
-    private all: CardData[] = [
-        { directions: [Direction.Up, Direction.Down], gem: Gem.None },
-        { directions: [Direction.Up, Direction.Down], gem: Gem.None },
-        { directions: [Direction.Left, Direction.Right], gem: Gem.None },
-        { directions: [Direction.Left, Direction.Right], gem: Gem.None },
-        randomCard(true)
-    ];
+    private all: CardData[];
     private deck: CardData[] = [];
 
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
         super(360, 500, 0, 0);
         this.pile = new Pile(this.position.x - 2 * TILE_WIDTH - 30, this.position.y);
-        this.maxLife = this.life;
-        this.shuffle();
-        this.fill();
         this.picker = new Picker(this.level, this);
+        this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 60, 300, 75, () => this.private(), audio);
+        this.again.visible = false;
+        this.init();
     }
 
     public pick(card: Card): void {
@@ -68,7 +67,7 @@ export class Game extends Entity {
 
     public nextLevel(): void {
         this.tooltip.visible = false;
-        
+
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
             const delay = 200;
 
@@ -88,7 +87,11 @@ export class Game extends Entity {
             })
 
             if(this.life - hits.length <= 0) {
-                this.audio.lose();
+                setTimeout(() => {
+                    this.again.visible = true;
+                    this.camera.shake(5, 0.3);
+                    this.audio.lose();
+                }, hits.length * delay + 800);
                 return;
             }
             
@@ -174,6 +177,7 @@ export class Game extends Entity {
         this.pile.update(tick, mouse);
         this.level.board.forEach(tile => tile.update(tick, mouse));
         this.picker.update(tick, mouse);
+        this.again.update(tick, mouse);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -184,6 +188,8 @@ export class Game extends Entity {
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
         this.tooltip.draw(ctx);
+        this.again.draw(ctx);
+        if(this.again.visible) this.gameOver.draw(ctx);
     }
 
     public discard(): void {
@@ -251,5 +257,27 @@ export class Game extends Entity {
         if(!e) return;
         const p = e.getPosition();
         e.setPosition(p.x, p.y + amount);
+    }
+
+    public private(): void {
+        this.cards = [];
+        this.score = 0;
+        this.again.visible = false;
+        this.level.restart();
+        this.init();
+        this.dude.reset(this.level.board[2]);
+    }
+
+    private init(): void {
+        this.life = this.maxLife = 5;
+        this.all = [
+            { directions: [Direction.Up, Direction.Down], gem: Gem.None },
+            { directions: [Direction.Up, Direction.Down], gem: Gem.None },
+            { directions: [Direction.Left, Direction.Right], gem: Gem.None },
+            { directions: [Direction.Left, Direction.Right], gem: Gem.None },
+            randomCard(true)
+        ];
+        this.shuffle();
+        this.fill();
     }
 }

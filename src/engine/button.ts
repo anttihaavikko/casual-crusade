@@ -10,7 +10,7 @@ export class ButtonEntity extends Entity {
     private pressed: boolean;
     private hovered: boolean;
 
-    constructor(private content: string, x: number, y: number, width: number, height: number, private hideOnClick: boolean, private onClick: () => void, private audio: AudioManager) {
+    constructor(private content: string, x: number, y: number, width: number, height: number, private onClick: () => void, private audio: AudioManager) {
         super(x - width * 0.5, y - height * 0.5, width, height);
     }
 
@@ -22,7 +22,6 @@ export class ButtonEntity extends Entity {
         if(!wasHovered && this.hovered) this.hover();
         if(!mouse.pressing) {
             if(this.pressed && !mouse.dragging && this.hovered) {
-                if(this.hideOnClick) this.visible = false;
                 this.audio.pop();
                 this.onClick();
             }

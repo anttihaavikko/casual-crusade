@@ -15,6 +15,11 @@ export class Level {
         return !this.board.some(tile => !tile.content);
     }
 
+    public restart(): void {
+        this.level = 0;
+        this.next();
+    }
+
     public next(): void {
         this.level++;
 
