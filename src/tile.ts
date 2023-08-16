@@ -13,6 +13,7 @@ export class Tile extends Entity {
     public index: Vector;
     public reward: boolean;
     public looted: boolean;
+    public hidden: boolean;
 
     private life = 0;
     private offset = Math.random() * 100;
@@ -32,6 +33,8 @@ export class Tile extends Entity {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
+        if(this.hidden) return;
+        
         const center = this.getCenter();
 
         if(!this.reward) {

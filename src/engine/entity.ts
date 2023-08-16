@@ -2,7 +2,8 @@ import { Mouse } from "./mouse";
 import { Vector } from "./vector";
 
 export abstract class Entity {
-    public depth: number = 0;
+    public scale = 1;
+    public depth = 0;
 
     protected position: Vector;
     protected size: Vector;
@@ -31,10 +32,11 @@ export abstract class Entity {
     }
 
     public isInside(point: Vector): boolean {
-        return point.x > this.position.x && 
-            point.x < this.position.x + this.size.x &&
-            point.y > this.position.y &&
-            point.y < this.position.y + this.size.y;
+        const c = this.getCenter();
+        return point.x > c.x - this.size.x * 0.5 * this.scale && 
+            point.x < c.x + this.size.x * 0.5 * this.scale &&
+            point.y > c.y - this.size.y * 0.5 * this.scale &&
+            point.y < c.y + this.size.y * 0.5 * this.scale;
     }
 }
 

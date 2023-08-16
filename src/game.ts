@@ -67,7 +67,7 @@ export class Game extends Entity {
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
             const delay = 200;
 
-            hits.forEach((hit, i) => {
+            [...hits].sort(() => Math.random() < 0.5 ? 1 : -1).forEach((hit, i) => {
                 const p = hit.getCenter();
                 setTimeout(() => {
                     this.audio.explode();
@@ -75,8 +75,10 @@ export class Game extends Entity {
                     this.effects.add(new Pulse(p.x, p.y, 40 + Math.random() * 40, 0.5, 80));
                     this.addBits(p);
                     const sky:Vector = { x: WIDTH * 0.5, y: -100 };
-                    this.effects.add(new LineParticle(sky, p, 0.5, 10, "#ffffff99", 10 + Math.random() * 20));
+                    this.effects.add(new LineParticle(sky, p, 0.4, 10, "#ffffcc99", 10 + Math.random() * 20));
                     this.life--;
+                    hit.hidden = true;
+                    this.audio.boom();
                 }, 100 + i * delay);
             })
 

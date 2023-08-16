@@ -7,7 +7,7 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { TextEntity } from "./text";
 
-const PICK_OFFSET = 30;
+const PICK_OFFSET = 40;
 
 export class Picker extends Entity {
     public rewards = 0;
@@ -29,13 +29,7 @@ export class Picker extends Entity {
         if(this.rewards <= 0 || this.picks.length <= 0) return;
         ctx.fillStyle = "#000000bb";
         ctx.fillRect(0, HEIGHT * 0.2, WIDTH, HEIGHT * 0.6);
-        ctx.save();
-        ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
-        ctx.scale(1.2, 1.2);
-        ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5);
         this.picks.forEach(card => card.draw(ctx));
-        ctx.restore();
-        ctx.resetTransform();
         this.title.draw(ctx);
     }
 
@@ -58,7 +52,8 @@ export class Picker extends Entity {
         this.picks = [];
 
         for(var i = 0; i < amount; i++) {
-            const card = new Card(this.position.x - TILE_WIDTH * 0.5 * amount + TILE_WIDTH * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
+            const card = new Card(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
+            card.scale = 1.3;
             this.picks.push(card);
         }
 
@@ -68,7 +63,7 @@ export class Picker extends Entity {
     private reposition(): void {
         this.picks.forEach((card, i) => {
             const p: Vector = {
-                x: this.position.x - TILE_WIDTH * 0.5 + (i - this.picks.length * 0.5 + 0.5) * TILE_WIDTH,
+                x: this.position.x - TILE_WIDTH * 1.3 * 0.5 + (i - this.picks.length * 0.5 + 0.5) * TILE_WIDTH * 1.3,
                 y: this.position.y + PICK_OFFSET
             };
             card.move(p, 0.15);

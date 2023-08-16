@@ -150,6 +150,10 @@ export class Card extends Draggable {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
+        const c = this.getCenter();
+        ctx.translate(c.x, c.y);
+        ctx.scale(this.scale, this.scale);
+        ctx.translate(-c.x, -c.y);
         if(this.hovered && this.selectable) {
             ctx.translate(0, -10);
         }
