@@ -59,7 +59,12 @@ canvas.onmousemove = (e: MouseEvent) => {
   mouse.y = e.offsetY;
 };
 
-document.onkeydown = () => audio.playMusic();
+document.onkeydown = (e: KeyboardEvent) => {
+  audio.playMusic();
+  if(e.key == 'n') {
+    game.nextLevel();
+  }
+}
 
 document.onmousedown = (e: MouseEvent) => {
   mouse.pressing = true;

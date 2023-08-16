@@ -10,22 +10,22 @@ export class AudioManager {
 
         this.started = true;
 
-        // const player = new CPlayer();
-        // player.init(song);
-        // player.generate();
-        // let loaded = false;
+        const player = new CPlayer();
+        player.init(song);
+        player.generate();
+        let loaded = false;
 
-        // setInterval(function () {
-        //     if (loaded) return;
-        //     loaded = player.generate() >= 1;
-        //     if (loaded) {
-        //         var wave = player.createWave();
-        //         var audio = document.createElement("audio");
-        //         audio.src = URL.createObjectURL(new Blob([wave], { type: "audio/wav" }));
-        //         audio.loop = true;
-        //         audio.play();
-        //     }
-        // });
+        setInterval(function () {
+            if (loaded) return;
+            loaded = player.generate() >= 1;
+            if (loaded) {
+                var wave = player.createWave();
+                var audio = document.createElement("audio");
+                audio.src = URL.createObjectURL(new Blob([wave], { type: "audio/wav" }));
+                audio.loop = true;
+                audio.play();
+            }
+        });
     }
 
     public move(): void {

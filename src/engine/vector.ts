@@ -44,3 +44,10 @@ export function bounce(p: number): number
         return (54/5.0 * p * p) - (513/25.0 * p) + 268/25.0;
     }
 }
+
+export function offset(v: Vector, x: number, y: number): Vector {
+    return {
+        x: v.x + x,
+        y: v.y + y
+    }
+}

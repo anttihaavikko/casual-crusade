@@ -4,10 +4,12 @@ import { AudioManager } from "./engine/audio";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
+import { LineParticle } from "./engine/line";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
-import { RectParticle } from "./engine/rect-particle";
-import { Vector } from "./engine/vector";
+import { RectParticle } from "./engine/rect";
+import { Vector, offset } from "./engine/vector";
+import { WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
@@ -45,6 +47,7 @@ export class Game extends Entity {
         if(this.picker.rewards <= 0) return;
         this.add(card.data, true, true);
         this.picker.remove(card);
+        this.fill();
     }
 
     public heal(amount: number): void {
@@ -64,11 +67,14 @@ export class Game extends Entity {
             const delay = 200;
 
             hits.forEach((hit, i) => {
-                const p = hit.getPosition();
+                const p = hit.getCenter();
                 setTimeout(() => {
                     this.audio.explode();
                     this.camera.shake(15, 0.15);
-                    this.effects.add(new Pulse(p.x + TILE_WIDTH * 0.5, p.y + TILE_HEIGHT * 0.5, 40 + Math.random() * 40));
+                    this.effects.add(new Pulse(p.x, p.y, 40 + Math.random() * 40, 0.5, 80));
+                    this.addBits(p);
+                    const sky:Vector = { x: WIDTH * 0.5, y: -100 };
+                    this.effects.add(new LineParticle(sky, p, 0.5, 10, "#ffffff99", 10 + Math.random() * 20));
                     this.life--;
                 }, 100 + i * delay);
             })
@@ -177,13 +183,31 @@ export class Game extends Entity {
         }, 300);
     }
 
+    public addBits(p: Vector): void {
+        for(let i = 0; i < 20; i++) {
+            const size = 1 + Math.random() * 3;
+            const opts = { force: { x: 0, y: 0.1 }, depth: 20 };
+            this.effects.add(new RectParticle(p.x, p.y, size, size, 0.2 + Math.random() * 0.5, { x: -3 + Math.random() * 6, y: -7 * Math.random() }, opts));
+        }
+    }
+
     public loot(tile: Tile): void {
         const chests = tile.getChests(this.level.board).filter(n => n.reward && !n.looted);
         if(chests.length > 0) {
             setTimeout(() => {
                 this.audio.frog();
                 this.audio.open();
-                chests.forEach(c => c.loot(this.effects));
+                chests.forEach(c => {
+                    c.loot();
+                    this.addBits(offset(c.getCenter(), 0, -5));
+                    this.camera.shake(10, 0.3);
+                    const p = offset(c.getCenter(), 0, -15);
+                    const duration = 0.5;
+                    const sky:Vector = { x: p.x, y: p.y - 20 };
+                    this.effects.add(new LineParticle(p, offset(sky, 0, -10), duration, 10, "#ffffff55"));
+                    this.effects.add(new LineParticle(offset(p, -5, 0), offset(sky, -10, 0), duration, 7, "#ffffff55"));
+                    this.effects.add(new LineParticle(offset(p, 5, 0), offset(sky, 10, 0), duration, 7, "#ffffff55"));
+                });
             }, 150);
             setTimeout(() => {
                 this.audio.chest();

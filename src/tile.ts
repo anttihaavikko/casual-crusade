@@ -3,7 +3,7 @@ import { Container } from "./engine/container";
 import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
-import { RectParticle } from "./engine/rect-particle";
+import { RectParticle } from "./engine/rect";
 import { Vector } from "./engine/vector";
 
 export class Tile extends Entity {
@@ -27,14 +27,8 @@ export class Tile extends Entity {
         this.life = tick * 0.01 * (this.hilite ? 3 : -1);
     }
 
-    public loot(effects: Container): void {
+    public loot(): void {
         this.looted = true;
-        const center = this.getCenter();
-        for(let i = 0; i < 20; i++) {
-            const size = 1 + Math.random() * 3;
-            const opts = { force: { x: 0, y: 0.1 }, depth: 20 };
-            effects.add(new RectParticle(center.x, center.y - 5, size, size, 0.2 + Math.random() * 0.5, { x: -3 + Math.random() * 6, y: -7 * Math.random() }, opts));
-        }
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {

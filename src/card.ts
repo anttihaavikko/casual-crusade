@@ -49,7 +49,7 @@ export interface CardData {
 }
 
 export function randomCard(canHaveGem = true, dirs?: Direction[]): CardData {
-    const count = Math.random() < 0.15 ? 4 : (1 + Math.floor(Math.random() * 3));
+    const count = Math.random() < 0.1 ? 4 : (1 + Math.floor(Math.random() * 3));
     const directions = dirs ?? [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count);
     const gemChance = directions.length == 1 ? 0.6 : 0.2;
     return {
@@ -254,7 +254,8 @@ export class Card extends Draggable {
             x: this.position.x + this.size.x * 0.5,
             y: this.position.y + this.size.y * 0.5 - 20
         };
-        this.game.effects.add(new Pulse(p.x, p.y - 10, 40 + Math.random() * 40));
+        const c = this.getCenter();
+        this.game.effects.add(new Pulse(c.x, c.y, 40 + Math.random() * 40));
         this.popText(addition.toString(), p, isYellow ? gemColors[Gem.Yellow] : "#fff");
     }
 
