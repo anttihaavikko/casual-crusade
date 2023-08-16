@@ -121,6 +121,7 @@ function tick(t: number) {
   effects.update(t, mouse);
   const all = [...entities, ...effects.getChildren(), ...level.board];
   all.sort(sortByDepth);
+  level.board.forEach(t => t.preDraw(ctx));
   all.forEach(e => e.draw(ctx));
   if(!game.started) {
     ctx.resetTransform();

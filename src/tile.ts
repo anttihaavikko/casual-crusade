@@ -17,11 +17,13 @@ export class Tile extends Entity {
 
     private life = 0;
     private offset = Math.random() * 100;
+    private ballSize: number;
     
     public constructor(x: number, y: number, offset: Vector) {
         super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, 80, 60);
         this.index = { x, y };
         this.depth = -100;
+        this.ballSize = 15 + Math.random() * 7;
     }
 
     public update(tick: number, mouse: Mouse): void {
@@ -30,6 +32,17 @@ export class Tile extends Entity {
 
     public loot(): void {
         this.looted = true;
+    }
+
+    public preDraw(ctx: CanvasRenderingContext2D): void {
+        if(!this.reward && !this.hidden) {
+            ctx.lineWidth = this.ballSize;
+            ctx.strokeStyle = "#999";
+            ctx.setLineDash([0, this.ballSize]);
+            ctx.lineDashOffset = this.offset * 2;
+            ctx.lineCap = "round";
+            ctx.strokeRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);   
+        }
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -41,13 +54,6 @@ export class Tile extends Entity {
             ctx.beginPath();
             ctx.fillStyle = "#999";
             ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
-            
-            // ctx.lineWidth = 20;
-            // ctx.strokeStyle = "#999";
-            // ctx.setLineDash([0, 20]);
-            // ctx.lineDashOffset = this.offset * 2;
-            // ctx.lineCap = "round";
-            // ctx.strokeRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
         }
 
         if(this.reward) {
