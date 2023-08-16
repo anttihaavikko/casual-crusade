@@ -67,6 +67,8 @@ export class Game extends Entity {
     }
 
     public nextLevel(): void {
+        this.tooltip.visible = false;
+        
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
             const delay = 200;
 

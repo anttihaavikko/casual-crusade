@@ -123,6 +123,7 @@ export class Card extends Draggable {
         this.game.audio.pop();
         this.game.audio.swoosh();
         this.game.pick(this);
+        this.game.tooltip.visible = false;
     }
 
     protected pick(): void {
