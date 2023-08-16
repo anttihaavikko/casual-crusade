@@ -35,6 +35,7 @@ export class Game extends Entity {
     public healOnStep: boolean;
     public stepScore = 1;
     public remoteMulti: boolean;
+    public gemChance = 1;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -306,6 +307,7 @@ export class Game extends Entity {
         this.healOnStep = false;
         this.stepScore = 1;
         this.remoteMulti = false;
+        this.gemChance = 1;
     }
 
     private init(): void {
@@ -318,7 +320,7 @@ export class Game extends Entity {
             { directions: [Direction.Up, Direction.Down], gem: Gem.None },
             { directions: [Direction.Left, Direction.Right], gem: Gem.None },
             { directions: [Direction.Left, Direction.Right], gem: Gem.None },
-            randomCard(true)
+            randomCard(1, true)
         ];
         this.shuffle();
         this.fill();

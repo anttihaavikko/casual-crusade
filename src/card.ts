@@ -68,10 +68,10 @@ export interface CardData {
     gem: Gem;
 }
 
-export function randomCard(canHaveGem = true, dirs?: Direction[]): CardData {
+export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): CardData {
     const count = Math.random() < 0.1 ? 4 : (1 + Math.floor(Math.random() * 3));
     const directions = dirs ?? [Direction.Up, Direction.Right, Direction.Down, Direction.Left].sort(() =>  Math.random() - 0.5).slice(0, count);
-    const gemChance = directions.length == 1 ? 0.6 : 0.2;
+    const gemChance = directions.length == 1 ? 0.6 * chance : 0.2 * chance;
     return {
         directions,
         gem: canHaveGem && Math.random() < gemChance ? 1 + Math.floor(Math.random() * 6): Gem.None
