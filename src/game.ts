@@ -32,6 +32,7 @@ export class Game extends Entity {
     public rewardPicks = 1;
     public relics: string[] = [];
     public canRemoteOpen: boolean;
+    public healOnStep: boolean;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -300,6 +301,7 @@ export class Game extends Entity {
         this.icons = [];
         this.relics = [];
         this.canRemoteOpen = false;
+        this.healOnStep = false;
     }
 
     private init(): void {

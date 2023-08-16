@@ -260,6 +260,9 @@ export class Card extends Draggable {
     }
 
     public activate(): void {
+        if(this.data.gem == Gem.Red && this.game.healOnStep) {
+            this.game.heal(1);
+        }
         if(this.data.gem == Gem.Purple) {
             this.game.audio.discard();
             this.game.discard();

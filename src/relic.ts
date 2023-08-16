@@ -22,7 +22,8 @@ export const relics: Relic[] = [
     { name: "CLAW", description: "Increase your MAX HAND SIZE by 1.", color: "#00BDE5", bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
     { name: "OPTIONS", description: "Increases the presented reward options.", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
     { name: "GREED", description: "Allows you to pick an extra reward.", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
-    { name: "LEAF", description: "Your empty cards can open chests.", color: "#B4D000", bg: "✿", fill: "", pickup: (g) => g.canRemoteOpen = true }
+    { name: "LEAF", description: "Your empty cards can open chests.", color: "#B4D000", bg: "✿", fill: "", pickup: (g) => g.canRemoteOpen = true },
+    { name: "CLERIC", description: "Stepping on RED also HEALS.", color: "#E93988", bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true }
 ]
 
 export class RelicIcon extends Draggable {
