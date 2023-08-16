@@ -70,8 +70,8 @@ export class Picker extends Entity {
         for(var i = 0; i < amount; i++) {
             if(!relicOptions[i]) break;
             const reward = relic ?
-                new RelicIcon(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game, relicOptions[i]) :
-                new Card(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
+                new RelicIcon(this.position.x + 12 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game, relicOptions[i]) :
+                new Card(this.position.x + 12 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
             reward.scale = 1.3;
             this.picks.push(reward);
         }
@@ -82,7 +82,7 @@ export class Picker extends Entity {
     private reposition(): void {
         this.picks.forEach((card, i) => {
             const p: Vector = {
-                x: this.position.x - TILE_WIDTH * 1.3 * 0.5 + (i - this.picks.length * 0.5 + 0.5) * TILE_WIDTH * 1.3,
+                x: this.position.x + 6 - TILE_WIDTH * 1.3 * 0.5 + (i - this.picks.length * 0.5 + 0.5) * TILE_WIDTH * 1.3,
                 y: this.position.y + PICK_OFFSET
             };
             card.move(p, 0.15);
