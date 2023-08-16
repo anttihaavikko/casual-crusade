@@ -1,9 +1,10 @@
-import { Card, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { Card, Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
 import { Game } from "./game";
+import { Level } from "./level";
 import { Tile } from "./tile";
 
 export class Dude extends Entity {
@@ -55,7 +56,7 @@ export class Dude extends Entity {
         ctx.fill();
     }
 
-    public findPath(to: Tile, game: Game): void {
+    public findPath(to: Tile, game: Game, level: Level): void {
         this.path = [];
         this.findNext(this.tile, to, [this.tile]);
         this.tile = this.path[this.path.length - 1];
@@ -66,8 +67,14 @@ export class Dude extends Entity {
 
                 if(index > 0) {
                     setTimeout(() => game.audio.move(), 0.3, 100);
-                    tile.content.pop(index);
+                    tile.content.activate();
+                    tile.content.pop(index * game.stepScore);
                     game.loot(tile);
+
+                    if(game.remoteMulti) {
+                        const neighbours = tile.getNeighbours(level.board).filter(t => t.content && t.content.data.gem == Gem.Orange);
+                        neighbours.forEach(n => n.content.activate());
+                    }
                 }
             }, index * 300);
         });

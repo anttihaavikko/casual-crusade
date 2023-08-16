@@ -53,7 +53,7 @@ export class Picker extends Entity {
         }, 200);
     }
 
-    public create(): void {
+    public create(forceRelic = false): void {
         const amount = this.game.rewardOptions;
         this.picks = [];
 
@@ -63,18 +63,20 @@ export class Picker extends Entity {
             this.title.content = "PICK YOUR REWARDS!";
         } 
 
-        const relic = Math.random() < 0.3;
+        const relic = forceRelic || Math.random() < 0.3;
 
         const relicOptions = [...relics].filter(r => r.repeatable || !this.game.relics.includes(r.name)).sort(() => Math.random() < 0.5 ? 1 : -1);
 
         for(var i = 0; i < amount; i++) {
             if(!relicOptions[i]) break;
             const reward = relic ?
-                new RelicIcon(this.position.x + 12 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game, relicOptions[i]) :
-                new Card(this.position.x + 12 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
+                new RelicIcon(this.position.x + 6 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game, relicOptions[i]) :
+                new Card(this.position.x + 6 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
             reward.scale = 1.3;
             this.picks.push(reward);
         }
+
+        this.reposition();
 
         this.picks.forEach(card => card.makeSelectable());
     }

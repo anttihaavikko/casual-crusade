@@ -83,6 +83,10 @@ document.onkeydown = (e: KeyboardEvent) => {
   // if(e.key == 'f') {
   //   canvas.requestFullscreen();
   // }
+  if(e.key == 'p') {
+    game.picker.rewards++;
+    game.picker.create(true);
+  }
 }
 
 document.onmousedown = (e: MouseEvent) => {

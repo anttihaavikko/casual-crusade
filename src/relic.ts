@@ -23,8 +23,10 @@ export const relics: Relic[] = [
     { name: "OPTIONS", description: "Increases the presented reward options.", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
     { name: "GREED", description: "Allows you to pick an extra reward.", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
     { name: "LEAF", description: "Your empty cards can open chests.", color: "#B4D000", bg: "✿", fill: "", pickup: (g) => g.canRemoteOpen = true },
-    { name: "CLERIC", description: "Stepping on RED also HEALS.", color: "#E93988", bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true }
-]
+    { name: "CLERIC", description: "Stepping on RED also HEALS.", color: "#E93988", bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true },
+    { name: "DOUBLER", description: "Double your step SCORE.", color: "#F3DC00", bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
+    { name: "REMOTE", description: "Passing by ORANGE activates it.", color: "#F89F00", bg: "⇲", fill: "", pickup: (g) => g.remoteMulti = true }
+];
 
 export class RelicIcon extends Draggable {
     public icon: boolean;

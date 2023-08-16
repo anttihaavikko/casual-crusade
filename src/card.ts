@@ -268,21 +268,24 @@ export class Card extends Draggable {
             this.game.discard();
         }
         if(this.data.gem == Gem.Orange) {
-            this.game.audio.multi();
-            this.game.multi *= 2;
-            this.popText(`x${this.game.multi}`, {
-                x: this.position.x + this.size.x * 0.5,
-                y: this.position.y + this.size.y * 0.5 - 50
-            }, gemColors[Gem.Orange]);
+            this.triggerMulti();
         }
         if(this.data.gem == Gem.Yellow) {
             this.game.audio.score();
         }
     }
 
+    public triggerMulti(): void {
+        this.game.audio.multi();
+        this.game.multi *= 2;
+        this.popText(`x${this.game.multi}`, {
+            x: this.position.x + this.size.x * 0.5,
+            y: this.position.y + this.size.y * 0.5 - 50
+        }, gemColors[Gem.Orange]);
+    }
+
     public pop(amt: number): void {
         setTimeout(() => {
-            this.activate();
             this.game.camera.shake(3, 0.08);
             this.addScore(amt);
         }, 0.2);

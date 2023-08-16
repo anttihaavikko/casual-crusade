@@ -33,6 +33,8 @@ export class Game extends Entity {
     public relics: string[] = [];
     public canRemoteOpen: boolean;
     public healOnStep: boolean;
+    public stepScore = 1;
+    public remoteMulti: boolean;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -170,7 +172,7 @@ export class Game extends Entity {
     }
 
     public findPath(to: Tile, game: Game): void {
-        this.dude.findPath(to, game);
+        this.dude.findPath(to, game, this.level);
     }
 
     public createBlank(tile: Tile): void {
@@ -302,6 +304,8 @@ export class Game extends Entity {
         this.relics = [];
         this.canRemoteOpen = false;
         this.healOnStep = false;
+        this.stepScore = 1;
+        this.remoteMulti = false;
     }
 
     private init(): void {
