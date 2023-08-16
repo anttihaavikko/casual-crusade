@@ -27,17 +27,15 @@ export class Tooltip extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         if(!this.visible) return;
-        ctx.fillStyle = "#000000bb";
+        ctx.fillStyle = "#000000";
         ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
         ctx.font = "30px arial black";
         ctx.textAlign = "left";
         const c = this.getPosition();
-
         ctx.fillStyle = "#000";
         ctx.fillText(this.title, c.x + 5 + 15, c.y + 5 + 40);
         ctx.fillStyle = this.titleColor;
         ctx.fillText(this.title, c.x + 15, c.y + 40);
-
         ctx.font = "20px arial black";
         ctx.fillStyle = "#000";
         ctx.fillText(this.content, c.x + 4 + 15, c.y + 4 + 40 + 30);

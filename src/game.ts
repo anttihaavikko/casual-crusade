@@ -14,6 +14,7 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
+import { RelicIcon } from "./relic";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
@@ -27,6 +28,8 @@ export class Game extends Entity {
     public picker: Picker;
     public pile: Pile;
     public started: boolean;
+    public rewardOptions = 3;
+    public rewardPicks = 1;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -41,7 +44,7 @@ export class Game extends Entity {
         super(360, 500, 0, 0);
         this.pile = new Pile(this.position.x - 2 * TILE_WIDTH - 30, this.position.y);
         this.picker = new Picker(this.level, this);
-        this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 60, 300, 75, () => this.private(), audio);
+        this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 60, 300, 75, () => this.restart(), audio);
         this.again.visible = false;
         this.init();
     }
@@ -51,6 +54,16 @@ export class Game extends Entity {
         this.add(card.data, true, true);
         this.picker.remove(card);
         this.fill();
+    }
+
+    public boost(amount: number): void {
+        this.maxLife += amount;
+        this.life += amount;
+    }
+
+    public addRelic(relic: RelicIcon): void {
+        if(this.picker.rewards <= 0) return;
+        this.picker.remove(relic);
     }
 
     public heal(amount: number): void {
@@ -231,7 +244,7 @@ export class Game extends Entity {
             }, 150);
             setTimeout(() => {
                 this.audio.chest();
-                this.picker.rewards += chests.length;
+                this.picker.rewards += chests.length * this.rewardPicks;
                 this.picker.create();
             }, 600);
         }
@@ -259,7 +272,7 @@ export class Game extends Entity {
         e.setPosition(p.x, p.y + amount);
     }
 
-    public private(): void {
+    private restart(): void {
         this.cards = [];
         this.score = 0;
         this.again.visible = false;
@@ -270,6 +283,9 @@ export class Game extends Entity {
 
     private init(): void {
         this.life = this.maxLife = 5;
+        this.handSize = 3;
+        this.rewardOptions = 3;
+        this.rewardPicks = 1;
         this.all = [
             { directions: [Direction.Up, Direction.Down], gem: Gem.None },
             { directions: [Direction.Up, Direction.Down], gem: Gem.None },

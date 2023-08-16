@@ -5,6 +5,7 @@ import { Vector, ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
+import { RelicIcon } from "./relic";
 import { TextEntity } from "./text";
 
 const PICK_OFFSET = 40;
@@ -12,8 +13,8 @@ const PICK_OFFSET = 40;
 export class Picker extends Entity {
     public rewards = 0;
 
-    private picks: Card[] = [];
-    private title = new TextEntity("PICK YOUR REWARD!", 55, WIDTH * 0.5, HEIGHT * 0.5 - 20, -1, ZERO, { shadow: 10 });
+    private picks: (Card | RelicIcon)[] = [];
+    private title = new TextEntity("", 55, WIDTH * 0.5, HEIGHT * 0.5 - 20, -1, ZERO, { shadow: 10 });
     private locked: boolean;
     
     constructor(private level: Level, private game: Game) {
@@ -33,28 +34,43 @@ export class Picker extends Entity {
         this.title.draw(ctx);
     }
 
-    public remove(card: Card): void {
-        if(this.locked) return;
+    public remove(reward: Card | RelicIcon): void {
+        if(this.locked || !reward) return;
 
-        card.move(this.game.pile.getPosition(), 0.2);
+        reward.move(reward.getMoveTarget(), 0.2);
         this.locked = true;
         
         setTimeout(() => {
-            this.picks = this.picks.filter(c => c != card);
+            this.picks = this.picks.filter(c => c != reward);
             this.reposition();
             this.rewards = Math.min(this.rewards - 1, this.picks.length);
             this.locked = false;
+
+            if(this.rewards > 0) {
+                this.title.content = `PICK ${this.rewards} MORE!`;
+            }
+
         }, 200);
     }
 
     public create(): void {
-        const amount = 3;
+        const amount = this.game.rewardOptions;
         this.picks = [];
 
+        this.title.content = "PICK YOUR REWARD!";
+
+        if(this.rewards > 1) {
+            this.title.content = "PICK YOUR REWARDS!";
+        } 
+
+        const relic = Math.random() < 0.4;
+
         for(var i = 0; i < amount; i++) {
-            const card = new Card(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
-            card.scale = 1.3;
-            this.picks.push(card);
+            const reward = relic ?
+                new RelicIcon(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game) :
+                new Card(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
+            reward.scale = 1.3;
+            this.picks.push(reward);
         }
 
         this.picks.forEach(card => card.makeSelectable());

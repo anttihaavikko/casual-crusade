@@ -114,6 +114,10 @@ export class Card extends Draggable {
     public move(to: Vector, duration: number): void {
         this.tween.move(to, duration);
     }
+
+    public getMoveTarget(): Vector {
+        return this.game.pile.getPosition();
+    }
     
     public getPossibleSpots(): Tile[] {
         return this.level.board.filter(tile => !tile.content && tile.accepts(this, this.level.board))
@@ -174,7 +178,7 @@ export class Card extends Draggable {
     public hover(): void {
         if(this.data.gem) {
             setTimeout(() => {
-                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50), gemColors[this.data.gem]);
+                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scale), gemColors[this.data.gem]);
             }, 5);
         }
         this.game.audio.thud();
