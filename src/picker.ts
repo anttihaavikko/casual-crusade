@@ -5,7 +5,7 @@ import { Vector, ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
-import { RelicIcon } from "./relic";
+import { RelicIcon, relics } from "./relic";
 import { TextEntity } from "./text";
 
 const PICK_OFFSET = 40;
@@ -45,11 +45,11 @@ export class Picker extends Entity {
             this.reposition();
             this.rewards = Math.min(this.rewards - 1, this.picks.length);
             this.locked = false;
+            this.game.tooltip.visible = false;
 
             if(this.rewards > 0) {
                 this.title.content = `PICK ${this.rewards} MORE!`;
             }
-
         }, 200);
     }
 
@@ -63,11 +63,14 @@ export class Picker extends Entity {
             this.title.content = "PICK YOUR REWARDS!";
         } 
 
-        const relic = Math.random() < 0.4;
+        const relic = Math.random() < 0.3;
+
+        const relicOptions = [...relics].filter(r => r.repeatable || !this.game.relics.includes(r.name)).sort(() => Math.random() < 0.5 ? 1 : -1);
 
         for(var i = 0; i < amount; i++) {
+            if(!relicOptions[i]) break;
             const reward = relic ?
-                new RelicIcon(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game) :
+                new RelicIcon(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.game, relicOptions[i]) :
                 new Card(this.position.x - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.position.y + PICK_OFFSET, this.level, this.game, randomCard());
             reward.scale = 1.3;
             this.picks.push(reward);

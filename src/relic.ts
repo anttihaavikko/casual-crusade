@@ -11,28 +11,26 @@ interface Relic {
     color: string;
     bg: string;
     fill: string;
+    repeatable?: boolean;
     pickup: (game: Game) => void;
 }
 
-const relics: Relic[] = [
-    { name: "BOOST", description: "Increase your LIFE by 1.", color: "#E93988", bg: "❤", fill: "1", pickup: (g) => g.boost(1) },
-    { name: "BOOSTER", description: "Increase your LIFE by 2.", color: "#E93988", bg: "❤", fill: "2", pickup: (g) => g.boost(2) },
+export const relics: Relic[] = [
+    { name: "BOOST", description: "Increase your LIFE by 1.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
+    { name: "BOOSTER", description: "Increase your LIFE by 2.", color: "#E93988", bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
     { name: "BOOSTED", description: "Increase your LIFE by 3.", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
-    { name: "CLAW", description: "Increase your MAX HAND SIZE by 1.", color: "#00BDE5", bg: "❚", fill: "+", pickup: (g) => g.handSize++ },
-    { name: "OPTIONS", description: "Increases the presented reward options.", color: "#F89F00", bg: "❖", fill: "", pickup: (g) => g.rewardOptions++ },
+    { name: "CLAW", description: "Increase your MAX HAND SIZE by 1.", color: "#00BDE5", bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
+    { name: "OPTIONS", description: "Increases the presented reward options.", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
     { name: "GREED", description: "Allows you to pick an extra reward.", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ }
 ]
 
 export class RelicIcon extends Draggable {
-    public data: Relic;
-
     private tween: Tween;
 
-    constructor(x: number, y: number, private game: Game) {
+    constructor(x: number, y: number, private game: Game, public data: Relic) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
         this.selectable = true;
         this.locked = true;
-        this.data = relics[Math.floor(Math.random() * relics.length)];
         this.tween = new Tween(this);
     }
 

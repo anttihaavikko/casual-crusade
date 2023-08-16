@@ -30,6 +30,7 @@ export class Game extends Entity {
     public started: boolean;
     public rewardOptions = 3;
     public rewardPicks = 1;
+    public relics: string[] = [];
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -64,6 +65,7 @@ export class Game extends Entity {
     public addRelic(relic: RelicIcon): void {
         if(this.picker.rewards <= 0) return;
         this.picker.remove(relic);
+        this.relics.push(relic.data.name);
     }
 
     public heal(amount: number): void {
