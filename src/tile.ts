@@ -34,12 +34,20 @@ export class Tile extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         if(this.hidden) return;
-        
+
         const center = this.getCenter();
 
         if(!this.reward) {
+            ctx.beginPath();
             ctx.fillStyle = "#999";
             ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
+            
+            // ctx.lineWidth = 20;
+            // ctx.strokeStyle = "#999";
+            // ctx.setLineDash([0, 20]);
+            // ctx.lineDashOffset = this.offset * 2;
+            // ctx.lineCap = "round";
+            // ctx.strokeRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
         }
 
         if(this.reward) {
