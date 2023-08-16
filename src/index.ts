@@ -27,8 +27,8 @@ const ctx: CanvasRenderingContext2D = canvas.getContext("2d")
 
 const lifeText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" });
 const scoreText = new TextEntity("0", 30, WIDTH - 10, 35, -1, ZERO, { shadow: 4, align: "right" });
-const title = new TextEntity("GAMENAME", 100, WIDTH * 0.5, 120, -1, ZERO, { shadow: 10, align: "center" });
-const me = new TextEntity("by Antti Haavikko", 40, WIDTH * 0.5, 170, -1, ZERO, { shadow: 7, align: "center" });
+const title = new TextEntity("GAMENAME", 100, WIDTH * 0.5, 110, -1, ZERO, { shadow: 10, align: "center" });
+const me = new TextEntity("by Antti Haavikko", 40, WIDTH * 0.5, 160, -1, ZERO, { shadow: 7, align: "center" });
 const effects = new Container();
 const camera = new Camera();
 const level = new Level(boardPos);
@@ -61,6 +61,8 @@ canvas.width = WIDTH;
 canvas.height = HEIGHT;
 const div = document.createElement("div");
 div.appendChild(canvas);
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
 
 canvas.onmousemove = (e: MouseEvent) => {
@@ -73,6 +75,9 @@ document.onkeydown = (e: KeyboardEvent) => {
   if(e.key == 'n') {
     game.nextLevel();
   }
+  // if(e.key == 'f') {
+  //   canvas.requestFullscreen();
+  // }
 }
 
 document.onmousedown = (e: MouseEvent) => {
