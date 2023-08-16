@@ -23,6 +23,7 @@ export class Game extends Entity {
     public maxLife: number;
     public picker: Picker;
     public pile: Pile;
+    public started: boolean;
 
     private cards: Card[] = [];
     private all: CardData[] = [
@@ -161,6 +162,7 @@ export class Game extends Entity {
 
     public update(tick: number, mouse: Mouse): void {
         this.dude.update(tick, mouse);
+        if(!this.started) return;
         this.cards.forEach(c => c.update(tick, mouse));
         this.pile.update(tick, mouse);
         this.level.board.forEach(tile => tile.update(tick, mouse));
@@ -168,6 +170,10 @@ export class Game extends Entity {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
+        if(!this.started) {
+            this.dude.draw(ctx);
+            return;
+        }
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
     }

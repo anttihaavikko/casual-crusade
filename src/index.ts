@@ -36,12 +36,13 @@ const mouse: Mouse = { x: 0, y: 0 };
 const game = new Game(dude, effects, camera, level, audio);
 
 const p = level.board[2].getPosition();
+const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 150, 250, 75, true, () => {}, audio);
 
 const entities: Entity[] = [
   game,
   lifeText,
   scoreText,
-  new ButtonEntity("PRESS", 20, 100, 200, 50, () => console.log('hello'))
+  startButton
 ];
 
 level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
@@ -70,7 +71,11 @@ document.onkeydown = (e: KeyboardEvent) => {
 
 document.onmousedown = (e: MouseEvent) => {
   mouse.pressing = true;
-  setTimeout(() => audio.playMusic(), 10);
+  if(startButton.isInside(mouse)) {
+    startButton.visible = false;
+    game.started = true;
+  }
+  setTimeout(() => audio.playMusic(), 75);
 };
 document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
