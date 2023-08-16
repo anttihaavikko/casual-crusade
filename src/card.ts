@@ -166,8 +166,8 @@ export class Card extends Draggable {
         
         ctx.fillStyle = "#000";
         ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
-        ctx.fillStyle = this.hovered && (!this.locked || this.selectable) ? "#ff9999" : "#ddd";
-        if(this.visited) ctx.fillStyle = "#ffffaa";
+        ctx.fillStyle = this.hovered && (!this.locked || this.selectable) ? "#ffff66" : "#ddd";
+        if(this.visited) ctx.fillStyle = "#ffffcc";
         ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
         if(this.data.directions.includes(Direction.Up)) {

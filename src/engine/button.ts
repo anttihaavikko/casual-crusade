@@ -41,7 +41,7 @@ export class ButtonEntity extends Entity {
         ctx.translate(0, this.hovered ? -5 : 0);
         ctx.fillStyle = "#000";
         ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
-        ctx.fillStyle = this.hovered ? "red" : "#fff";
+        ctx.fillStyle = this.hovered ? "#ffff77" : "#fff";
         ctx.fillRect(this.position.x + BORDER_THICKNESS, this.position.y + BORDER_THICKNESS, this.size.x - BORDER_THICKNESS * 2, this.size.y - BORDER_THICKNESS * 2);
 
         ctx.font =`30px arial black`;
