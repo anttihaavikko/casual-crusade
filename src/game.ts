@@ -41,6 +41,8 @@ export class Game extends Entity {
     private all: CardData[];
     private deck: CardData[] = [];
 
+    private icons: RelicIcon[] = [];
+
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
         super(360, 500, 0, 0);
         this.pile = new Pile(this.position.x - 2 * TILE_WIDTH - 30, this.position.y);
@@ -64,8 +66,16 @@ export class Game extends Entity {
 
     public addRelic(relic: RelicIcon): void {
         if(this.picker.rewards <= 0) return;
+        const pos = this.icons.length;
         this.picker.remove(relic);
         this.relics.push(relic.data.name);
+        this.icons.push(relic);
+        
+        setTimeout(() => {
+            relic.icon = true;
+            relic.scale = 0.8;
+            relic.setPosition(pos * 30 - 15, 30);
+        }, 200);
     }
 
     public heal(amount: number): void {
@@ -193,6 +203,7 @@ export class Game extends Entity {
         this.level.board.forEach(tile => tile.update(tick, mouse));
         this.picker.update(tick, mouse);
         this.again.update(tick, mouse);
+        this.icons.forEach(i => i.update(tick, mouse));
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -204,6 +215,7 @@ export class Game extends Entity {
         this.picker.draw(ctx);
         this.tooltip.draw(ctx);
         this.again.draw(ctx);
+        this.icons.forEach(i => i.draw(ctx));
         if(this.again.visible) this.gameOver.draw(ctx);
     }
 
@@ -281,6 +293,8 @@ export class Game extends Entity {
         this.level.restart();
         this.init();
         this.dude.reset(this.level.board[2]);
+        this.icons = [];
+        this.relics = [];
     }
 
     private init(): void {

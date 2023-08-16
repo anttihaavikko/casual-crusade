@@ -25,6 +25,7 @@ export const relics: Relic[] = [
 ]
 
 export class RelicIcon extends Draggable {
+    public icon: boolean;
     private tween: Tween;
 
     constructor(x: number, y: number, private game: Game, public data: Relic) {
@@ -32,6 +33,16 @@ export class RelicIcon extends Draggable {
         this.selectable = true;
         this.locked = true;
         this.tween = new Tween(this);
+    }
+
+    public isInside(point: Vector): boolean {
+        if(!this.icon) return super.isInside(point);
+
+        const c = this.getCenter();
+        return point.x > c.x - this.size.x * 0.25 * this.scale && 
+            point.x < c.x + this.size.x * 0.25 * this.scale &&
+            point.y > c.y - this.size.y * 0.25 * this.scale &&
+            point.y < c.y + this.size.y * 0.25 * this.scale;
     }
 
     public move(to: Vector, duration: number): void {
@@ -42,12 +53,14 @@ export class RelicIcon extends Draggable {
     }
 
     public getMoveTarget(): Vector {
-        return { x: 10, y: 30 };
+        return { x: 30, y: 50 };
     }
 
     protected hover(): void {
         setTimeout(() => {
-            this.game.tooltip.show(this.data.name, this.data.description, offset(this.getCenter(), 0, -50 * this.scale), this.data.color);
+            const dx = this.icon ? 230 : 0;
+            const dy = this.icon ? 110 : -50 * this.scale;
+            this.game.tooltip.show(this.data.name, this.data.description, offset(this.getCenter(), dx, dy), this.data.color);
         }, 5);
     }
 
@@ -71,6 +84,7 @@ export class RelicIcon extends Draggable {
 
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
+        if(this.icon) return;
         this.tween.update(tick);
     }
 
@@ -80,14 +94,16 @@ export class RelicIcon extends Draggable {
         ctx.translate(c.x, c.y);
         ctx.scale(this.scale, this.scale);
         ctx.translate(-c.x, -c.y);
-        if(this.hovered && this.selectable) {
+        if(this.hovered && this.selectable && !this.icon) {
             ctx.translate(0, -10);
         }
 
-        ctx.fillStyle = "#000";
-        ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
-        ctx.fillStyle = this.hovered ? "#ffff66" : "#ddd";
-        ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
+        if(!this.icon) {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
+            ctx.fillStyle = this.hovered ? "#ffff66" : "#ddd";
+            ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
+        }
 
         ctx.font = "35px arial black";
         ctx.textAlign = "center";
