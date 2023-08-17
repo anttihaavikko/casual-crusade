@@ -28,22 +28,22 @@ export const gemColors = [
 
 const gemNames = [
     null,
-    "Blue",
-    "Purple",
-    "Red",
-    "Yellow",
-    "Orange",
-    "Green"
+    "BLUE",
+    "PURPLE",
+    "RED",
+    "YELLOW",
+    "ORANGE",
+    "GREEN"
 ];
 
 const gemDescriptions = [
     null,
-    "Draw extra card when placed.",
-    "Recycle random card when stepping on.",
-    "Heal one when placed.",
-    "Score earned for stepping on is tenfold.",
-    "Double your score multiplier.",
-    "Fill neighbours with blank cards."
+    "Draw |extra card| when |placed|.",
+    "Recycle |random card| when |stepping| on.",
+    "|Heal| for one when |placed|.",
+    "Score |earned| for stepping on is |tenfold|.",
+    "Double your |score multiplier|.",
+    "Fill neighbours with |blank cards|."
 ];
 
 export enum Direction {

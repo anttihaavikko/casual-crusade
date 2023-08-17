@@ -16,18 +16,18 @@ interface Relic {
 }
 
 export const relics: Relic[] = [
-    { name: "BOOST", description: "Increase your LIFE by 1.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
-    { name: "BOOSTER", description: "Increase your LIFE by 2.", color: "#E93988", bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
-    { name: "BOOSTED", description: "Increase your LIFE by 3.", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
-    { name: "CLAW", description: "Increase your MAX HAND SIZE by 1.", color: "#00BDE5", bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
-    { name: "OPTIONS", description: "Increases the presented reward options.", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
-    { name: "GREED", description: "Allows you to pick an extra reward.", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
-    { name: "LEAF", description: "Your empty cards can open chests.", color: "#B4D000", bg: "✿", fill: "", pickup: (g) => g.canRemoteOpen = true },
-    { name: "CLERIC", description: "Stepping on RED also HEALS.", color: "#E93988", bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true },
-    { name: "DOUBLER", description: "Double your step SCORE.", color: "#F3DC00", bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
-    { name: "REMOTE", description: "Passing by ORANGE activates it.", color: "#F89F00", bg: "⇲", fill: "", pickup: (g) => g.remoteMulti = true },
-    { name: "HOARDER", description: "Get increased GEM chance.", color: "#F3DC00", bg: "◓", fill: "", repeatable: true, pickup: (g) => g.gemChance *= 1.3 },
-    { name: "SECOND WIND", description: "Once per level, redraw your hand if stuck.", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true }
+    { name: "BOOST", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
+    { name: "BOOSTER", description: "Increase your |LIFE| by |2|.", color: "#E93988", bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
+    { name: "BOOSTED", description: "Increase your |LIFE| by |3|.", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
+    { name: "CLAW", description: "Increase your |MAX HAND SIZE| by |1|.", color: "#00BDE5", bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
+    { name: "OPTIONS", description: "Increases the presented |reward options|.", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
+    { name: "GREED", description: "Allows you to pick an |extra| reward.", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
+    { name: "LEAF", description: "Your |empty cards| can open chests.", color: "#B4D000", bg: "✿", fill: "", pickup: (g) => g.canRemoteOpen = true },
+    { name: "CLERIC", description: "Stepping on |RED| also |HEALS|.", color: "#E93988", bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true },
+    { name: "DOUBLER", description: "Double your step |SCORE|.", color: "#F3DC00", bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
+    { name: "REMOTE", description: "Passing by |ORANGE| activates it.", color: "#F89F00", bg: "⇲", fill: "", pickup: (g) => g.remoteMulti = true },
+    { name: "HOARDER", description: "Get increased |GEM| chance.", color: "#F3DC00", bg: "◓", fill: "", repeatable: true, pickup: (g) => g.gemChance *= 1.3 },
+    { name: "SECOND WIND", description: "Once per level, |redraw| your hand if |stuck|.", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true }
 ];
 
 export class RelicIcon extends Draggable {

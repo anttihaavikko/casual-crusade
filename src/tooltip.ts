@@ -39,7 +39,15 @@ export class Tooltip extends Entity {
         ctx.font = "20px arial black";
         ctx.fillStyle = "#000";
         ctx.fillText(this.content, c.x + 4 + 15, c.y + 4 + 40 + 30);
-        ctx.fillStyle = "#fff";
-        ctx.fillText(this.content, c.x + 15, c.y + 40 + 30);
+
+        const parts = this.content.split('|');
+        let color = false;
+        let pos = 0;
+        parts.forEach(p => {
+            ctx.fillStyle = color ? this.titleColor : "#fff";
+            ctx.fillText(p, c.x + 15 + pos, c.y + 40 + 30);
+            color = !color;
+            pos += ctx.measureText(p).width;
+        });
     }
 }
