@@ -38,10 +38,10 @@ const gemNames = [
 
 const gemDescriptions = [
     null,
-    "Draw |extra card| when |placed|.",
-    "Recycle |random card| when |stepping| on.",
+    "|Draw extra| card when |placed|.",
+    "|Recycle |random card when |stepping| on.",
     "|Heal| for one when |placed|.",
-    "Score |earned| for stepping on is |tenfold|.",
+    "|Score earned| for stepping on is |tenfold|.",
     "Double your |score multiplier|.",
     "Fill neighbours with |blank cards|."
 ];
