@@ -50,7 +50,7 @@ export class Game extends Entity {
 
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
         super(360, 500, 0, 0);
-        this.pile = new Pile(this.position.x - 2 * TILE_WIDTH - 30, this.position.y);
+        this.pile = new Pile(this.p.x - 2 * TILE_WIDTH - 30, this.p.y);
         this.picker = new Picker(this.level, this);
         this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 60, 300, 75, () => this.restart(), audio);
         this.again.visible = false;
@@ -78,7 +78,7 @@ export class Game extends Entity {
         
         setTimeout(() => {
             relic.icon = true;
-            relic.scale = 0.8;
+            relic.scl = 0.8;
             relic.setPosition(pos * 30 - 15, 30);
         }, 200);
     }
@@ -277,14 +277,14 @@ export class Game extends Entity {
         this.pile.count = this.deck.length;
         handCards.forEach((c, i) => {
             const p: Vector = {
-                x: this.position.x + (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH,
-                y: this.position.y
+                x: this.p.x + (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH,
+                y: this.p.y
             };
             c.move(p, 0.15);
         });
         this.pile.move({
-            x: this.position.x - (handCards.length * 0.5 + 1) * TILE_WIDTH,
-            y: this.position.y
+            x: this.p.x - (handCards.length * 0.5 + 1) * TILE_WIDTH,
+            y: this.p.y
         }, 0.15);
     }
 

@@ -6,7 +6,7 @@ export class RectParticle extends Particle {
     constructor(x: number, y: number, width: number, height: number, life: number, velocity: Vector, private options?) {
         super(x, y, width, height, life, velocity);
         if(this.options?.depth) {
-            this.depth = this.options.depth;
+            this.d = this.options.depth;
         }
     }
 
@@ -22,7 +22,7 @@ export class RectParticle extends Particle {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = this.options?.color ?? "#fff";
-        ctx.fillRect(this.position.x - this.size.x * 0.5, this.position.y - this.size.y * 0.5, this.size.x, this.size.y);
+        ctx.fillRect(this.p.x - this.s.x * 0.5, this.p.y - this.s.y * 0.5, this.s.x, this.s.y);
     }
 }
 

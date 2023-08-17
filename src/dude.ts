@@ -16,13 +16,13 @@ export class Dude extends Entity {
         const p = tile.getPosition();
         super(p.x, p.y, TILE_WIDTH, TILE_HEIGHT);
         this.tweener = new Tween(this);
-        this.depth = 50;
+        this.d = 50;
     }
 
     public reset(tile: Tile): void {
         const p = tile.getPosition();
         this.tile = tile;
-        this.position = { x: p.x, y: p.y };
+        this.p = { x: p.x, y: p.y };
     }
 
     public update(tick: number, mouse: Mouse): void {
@@ -32,27 +32,27 @@ export class Dude extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         const center = {
-            x: this.position.x + this.size.x * 0.5, 
-            y: this.position.y + this.size.y * 0.5
+            x: this.p.x + this.s.x * 0.5, 
+            y: this.p.y + this.s.y * 0.5
         };
         const head = {
-            x: this.position.x + this.size.x * 0.5, 
-            y: this.position.y + this.size.y * 0.5 - 30 - 5 * this.phase
+            x: this.p.x + this.s.x * 0.5, 
+            y: this.p.y + this.s.y * 0.5 - 30 - 5 * this.phase
         };
         drawEllipse(ctx, center, 24, 12, "#00000033");
         drawCircle(ctx, head, 14, "#000");
         ctx.beginPath();
-        ctx.moveTo(center.x, this.position.y - 10 - 5 * this.phase);
-        ctx.lineTo(center.x + 14, this.position.y + 32);
-        ctx.lineTo(center.x, this.position.y + 34);
-        ctx.lineTo(center.x - 14, this.position.y + 32);
+        ctx.moveTo(center.x, this.p.y - 10 - 5 * this.phase);
+        ctx.lineTo(center.x + 14, this.p.y + 32);
+        ctx.lineTo(center.x, this.p.y + 34);
+        ctx.lineTo(center.x - 14, this.p.y + 32);
         ctx.fill();
         drawCircle(ctx, head, 8, "#fff");
         ctx.beginPath();
-        ctx.moveTo(center.x, this.position.y - 2 - 5 * this.phase);
-        ctx.lineTo(center.x + 6, this.position.y + 26);
-        ctx.lineTo(center.x, this.position.y + 28);
-        ctx.lineTo(center.x - 6, this.position.y + 26);
+        ctx.moveTo(center.x, this.p.y - 2 - 5 * this.phase);
+        ctx.lineTo(center.x + 6, this.p.y + 26);
+        ctx.lineTo(center.x, this.p.y + 28);
+        ctx.lineTo(center.x - 6, this.p.y + 26);
         ctx.fill();
     }
 

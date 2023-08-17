@@ -44,10 +44,10 @@ export class RelicIcon extends Draggable {
         if(!this.icon) return super.isInside(point);
 
         const c = this.getCenter();
-        return point.x > c.x - this.size.x * 0.25 * this.scale && 
-            point.x < c.x + this.size.x * 0.25 * this.scale &&
-            point.y > c.y - this.size.y * 0.25 * this.scale &&
-            point.y < c.y + this.size.y * 0.25 * this.scale;
+        return point.x > c.x - this.s.x * 0.25 * this.scl && 
+            point.x < c.x + this.s.x * 0.25 * this.scl &&
+            point.y > c.y - this.s.y * 0.25 * this.scl &&
+            point.y < c.y + this.s.y * 0.25 * this.scl;
     }
 
     public move(to: Vector, duration: number): void {
@@ -64,7 +64,7 @@ export class RelicIcon extends Draggable {
     protected hover(): void {
         setTimeout(() => {
             const dx = this.icon ? 230 : 0;
-            const dy = this.icon ? 110 : -50 * this.scale;
+            const dy = this.icon ? 110 : -50 * this.scl;
             this.game.tooltip.show(this.data.name, this.data.description, offset(this.getCenter(), dx, dy), this.data.color);
         }, 5);
         this.game.audio.thud();
@@ -98,7 +98,7 @@ export class RelicIcon extends Draggable {
         ctx.save();
         const c = this.getCenter();
         ctx.translate(c.x, c.y);
-        ctx.scale(this.scale, this.scale);
+        ctx.scale(this.scl, this.scl);
         ctx.translate(-c.x, -c.y);
         if(this.hovered && this.selectable && !this.icon) {
             ctx.translate(0, -10);
@@ -106,9 +106,9 @@ export class RelicIcon extends Draggable {
 
         if(!this.icon) {
             ctx.fillStyle = "#000";
-            ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
+            ctx.fillRect(this.p.x + CARD_GAP, this.p.y + CARD_GAP, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
             ctx.fillStyle = this.hovered ? "#ffff66" : "#ddd";
-            ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
+            ctx.fillRect(this.p.x + CARD_BORDER + CARD_GAP, this.p.y + CARD_BORDER + CARD_GAP, this.s.x - CARD_BORDER * 2 - CARD_GAP * 2, this.s.y - CARD_BORDER * 2 - CARD_GAP * 2);
         }
 
         ctx.font = "35px arial black";

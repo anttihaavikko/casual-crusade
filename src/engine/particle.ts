@@ -14,9 +14,9 @@ export abstract class Particle extends Entity {
 
     public update(tick: number, mouse: Mouse): void {
         if(this.dead || this.life < 0) return;
-        this.position = {
-            x: this.position.x + this.velocity.x,
-            y: this.position.y + this.velocity.y
+        this.p = {
+            x: this.p.x + this.velocity.x,
+            y: this.p.y + this.velocity.y
         };
         this.ratio = 1 - (tick - this.start) / (this.life * 1000);
         if(this.start < 0) this.start = tick;

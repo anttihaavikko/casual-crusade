@@ -102,8 +102,8 @@ export class Card extends Draggable {
         super.update(tick, mouse);
         this.tween.update(tick);
         const sorted = [...this.level.board]
-            .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.position, tile.getPosition()) < 100)
-            .sort((a, b) => distance(this.position, a.getPosition()) - distance(this.position, b.getPosition()));
+            .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.p, tile.getPosition()) < 100)
+            .sort((a, b) => distance(this.p, a.getPosition()) - distance(this.p, b.getPosition()));
 
         const prev = this.tile;
         this.tile = sorted.length > 0 ? sorted[0]: null;
@@ -148,7 +148,7 @@ export class Card extends Draggable {
         if(this.tile) {
             this.game.multi = 1;
             this.locked = true;
-            this.position = this.tile.getPosition();
+            this.p = this.tile.getPosition();
             this.tile.content = this;
             this.game.fill();
             this.game.findPath(this.tile, this.game);
@@ -178,7 +178,7 @@ export class Card extends Draggable {
     public hover(): void {
         if(this.data.gem) {
             setTimeout(() => {
-                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scale), gemColors[this.data.gem]);
+                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scl), gemColors[this.data.gem]);
             }, 5);
         }
         this.game.audio.thud();
@@ -188,7 +188,7 @@ export class Card extends Draggable {
         ctx.save();
         const c = this.getCenter();
         ctx.translate(c.x, c.y);
-        ctx.scale(this.scale, this.scale);
+        ctx.scale(this.scl, this.scl);
         ctx.translate(-c.x, -c.y);
         if(this.hovered && this.selectable) {
             ctx.translate(0, -10);
@@ -197,35 +197,35 @@ export class Card extends Draggable {
             ctx.fillStyle = "#00000022";
             const center =  { x: WIDTH * 0.5, y: HEIGHT * 0.5 };
             const p = {
-                x: this.position.x + CARD_GAP,
-                y: this.position.y + CARD_GAP
+                x: this.p.x + CARD_GAP,
+                y: this.p.y + CARD_GAP
             };
             const dir = normalize({ x: p.x - center.x, y: p.y - center.y });
-            ctx.fillRect(p.x + dir.x * 12, p.y + dir.y * 24, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
+            ctx.fillRect(p.x + dir.x * 12, p.y + dir.y * 24, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
         }
         
         ctx.fillStyle = "#000";
-        ctx.fillRect(this.position.x + CARD_GAP, this.position.y + CARD_GAP, this.size.x - CARD_GAP * 2, this.size.y - CARD_GAP * 2);
+        ctx.fillRect(this.p.x + CARD_GAP, this.p.y + CARD_GAP, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
         ctx.fillStyle = this.hovered && (!this.locked || this.selectable) ? "#ffff66" : "#ddd";
         if(this.visited) ctx.fillStyle = "#ffffcc";
-        ctx.fillRect(this.position.x + CARD_BORDER + CARD_GAP, this.position.y + CARD_BORDER + CARD_GAP, this.size.x - CARD_BORDER * 2 - CARD_GAP * 2, this.size.y - CARD_BORDER * 2 - CARD_GAP * 2);
+        ctx.fillRect(this.p.x + CARD_BORDER + CARD_GAP, this.p.y + CARD_BORDER + CARD_GAP, this.s.x - CARD_BORDER * 2 - CARD_GAP * 2, this.s.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
         if(this.data.directions.includes(Direction.Up)) {
-            this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + CARD_BORDER + CARD_GAP);
+            this.lineTo(ctx, this.p.x + this.s.x * 0.5, this.p.y + CARD_BORDER + CARD_GAP);
         }
         if(this.data.directions.includes(Direction.Right)) {
-            this.lineTo(ctx, this.position.x + this.size.x - CARD_BORDER - CARD_GAP, this.position.y + this.size.y * 0.5);
+            this.lineTo(ctx, this.p.x + this.s.x - CARD_BORDER - CARD_GAP, this.p.y + this.s.y * 0.5);
         }
         if(this.data.directions.includes(Direction.Down)) {
-            this.lineTo(ctx, this.position.x + this.size.x * 0.5, this.position.y + this.size.y - CARD_BORDER - CARD_GAP);
+            this.lineTo(ctx, this.p.x + this.s.x * 0.5, this.p.y + this.s.y - CARD_BORDER - CARD_GAP);
         }
         if(this.data.directions.includes(Direction.Left)) {
-            this.lineTo(ctx, this.position.x + CARD_BORDER + CARD_GAP, this.position.y + this.size.y * 0.5);
+            this.lineTo(ctx, this.p.x + CARD_BORDER + CARD_GAP, this.p.y + this.s.y * 0.5);
         }
 
         const p = {
-            x: this.position.x + this.size.x * 0.5,
-            y: this.position.y + this.size.y * 0.5
+            x: this.p.x + this.s.x * 0.5,
+            y: this.p.y + this.s.y * 0.5
         };
 
         if(this.data.directions.length > 0) {
@@ -241,7 +241,7 @@ export class Card extends Draggable {
     }
 
     public lock(): void {
-        this.depth = -50;
+        this.d = -50;
         this.locked = true;
     }
 
@@ -279,8 +279,8 @@ export class Card extends Draggable {
         this.game.audio.multi();
         this.game.multi *= 2;
         this.popText(`x${this.game.multi}`, {
-            x: this.position.x + this.size.x * 0.5,
-            y: this.position.y + this.size.y * 0.5 - 50
+            x: this.p.x + this.s.x * 0.5,
+            y: this.p.y + this.s.y * 0.5 - 50
         }, gemColors[Gem.Orange]);
     }
 
@@ -297,8 +297,8 @@ export class Card extends Draggable {
         const addition = amt * mod * this.game.multi * this.level.level;
         this.game.score += addition;
         const p = {
-            x: this.position.x + this.size.x * 0.5,
-            y: this.position.y + this.size.y * 0.5 - 20
+            x: this.p.x + this.s.x * 0.5,
+            y: this.p.y + this.s.y * 0.5 - 20
         };
         const c = this.getCenter();
         this.game.effects.add(new Pulse(c.x, c.y, 40 + Math.random() * 40));
@@ -321,7 +321,7 @@ export class Card extends Draggable {
         ctx.beginPath();
         ctx.strokeStyle = "#000";
         ctx.lineWidth = 7;
-        ctx.moveTo(this.position.x + this.size.x * 0.5, this.position.y + this.size.y * 0.5);
+        ctx.moveTo(this.p.x + this.s.x * 0.5, this.p.y + this.s.y * 0.5);
         ctx.lineTo(x, y);
         ctx.stroke();
     }

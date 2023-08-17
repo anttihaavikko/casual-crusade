@@ -10,6 +10,6 @@ export class Pulse extends Particle {
     public draw(ctx: CanvasRenderingContext2D): void {
         const mod = Math.max(0, Math.min(1 - this.ratio, 1));
         const alpha = Math.round(mod * this.alpha).toString(16).padStart(2, '0');
-        drawCircle(ctx, this.position, mod * this.radius, "#ffffff" + alpha);
+        drawCircle(ctx, this.p, mod * this.radius, "#ffffff" + alpha);
     }
 }

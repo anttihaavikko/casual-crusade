@@ -22,7 +22,7 @@ export class Tile extends Entity {
     public constructor(x: number, y: number, offset: Vector) {
         super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, 80, 60);
         this.index = { x, y };
-        this.depth = -100;
+        this.d = -100;
         this.ballSize = 15 + Math.random() * 7;
     }
 
@@ -41,7 +41,7 @@ export class Tile extends Entity {
             ctx.setLineDash([0, this.ballSize]);
             ctx.lineDashOffset = this.offset * 2;
             ctx.lineCap = "round";
-            ctx.strokeRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);   
+            ctx.strokeRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);   
         }
     }
 
@@ -53,7 +53,7 @@ export class Tile extends Entity {
         if(!this.reward) {
             ctx.beginPath();
             ctx.fillStyle = "#999";
-            ctx.fillRect(this.position.x - 5, this.position.y - 5, this.size.x + 10, this.size.y + 10);
+            ctx.fillRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
         }
 
         if(this.reward) {
@@ -83,14 +83,14 @@ export class Tile extends Entity {
             ctx.setLineDash([5, 10]);
             ctx.lineCap = "round";
             ctx.lineDashOffset = this.life + this.offset;
-            ctx.strokeRect(this.position.x + 10, this.position.y + 10, this.size.x - 20, this.size.y - 20);
+            ctx.strokeRect(this.p.x + 10, this.p.y + 10, this.s.x - 20, this.s.y - 20);
         }
 
         ctx.setLineDash([]);
     }
 
     public isIn(snapped: Vector): boolean {
-        return !this.content && this.position.x == snapped.x && this.position.y == snapped.y;
+        return !this.content && this.p.x == snapped.x && this.p.y == snapped.y;
     }
 
     public accepts(card: Card, board: Tile[]): boolean {

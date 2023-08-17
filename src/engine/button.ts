@@ -39,14 +39,14 @@ export class ButtonEntity extends Entity {
         ctx.save();
         ctx.translate(0, this.hovered ? -5 : 0);
         ctx.fillStyle = "#000";
-        ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+        ctx.fillRect(this.p.x, this.p.y, this.s.x, this.s.y);
         ctx.fillStyle = this.hovered ? "#ffff77" : "#fff";
-        ctx.fillRect(this.position.x + BORDER_THICKNESS, this.position.y + BORDER_THICKNESS, this.size.x - BORDER_THICKNESS * 2, this.size.y - BORDER_THICKNESS * 2);
+        ctx.fillRect(this.p.x + BORDER_THICKNESS, this.p.y + BORDER_THICKNESS, this.s.x - BORDER_THICKNESS * 2, this.s.y - BORDER_THICKNESS * 2);
 
         ctx.font =`30px arial black`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#000";
-        ctx.fillText(this.content, this.position.x + this.size.x * 0.5, this.position.y + this.size.y * 0.5 + 10);
+        ctx.fillText(this.content, this.p.x + this.s.x * 0.5, this.p.y + this.s.y * 0.5 + 10);
 
         ctx.restore();
     }
