@@ -162,6 +162,11 @@ export class Card extends Draggable {
             if(this.data.gem == Gem.Green) {
                 const neighbours = this.tile.getFreeNeighbours(this.level.board, true).filter(n => !n.content);
                 neighbours.forEach(n => this.game.createBlank(n));
+                if(neighbours.length > 0) {
+                    this.game.audio.open();
+                    this.game.audio.aja();
+                    this.pulse();
+                }
             }
             return;
         }
@@ -300,9 +305,13 @@ export class Card extends Draggable {
             x: this.p.x + this.s.x * 0.5,
             y: this.p.y + this.s.y * 0.5 - 20
         };
+        this.pulse();
+        this.popText(addition.toString(), p, isYellow ? gemColors[Gem.Yellow] : "#fff");
+    }
+
+    private pulse(): void {
         const c = this.getCenter();
         this.game.effects.add(new Pulse(c.x, c.y, 40 + Math.random() * 40));
-        this.popText(addition.toString(), p, isYellow ? gemColors[Gem.Yellow] : "#fff");
     }
 
     private popText(content: string, p: Vector, color: string): void {
