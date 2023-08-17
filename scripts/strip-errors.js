@@ -11,6 +11,6 @@ fs.readFile(fileName, 'utf8', function (err, data) {
 
   fs.writeFile(fileName, result, 'utf8', function (err) {
      if (err) return console.log(err);
-     console.log(chalk.green(`Stripped ${10} error messages.`));
+     console.log(chalk.green(`Stripped away duplicate error messages.`));
   });
 });
