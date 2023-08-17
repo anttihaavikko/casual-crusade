@@ -1,8 +1,8 @@
-import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors } from "./card";
+import { CARD_BORDER, CARD_GAP, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Draggable } from "./engine/draggable";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
-import { Vector, ZERO, offset } from "./engine/vector";
+import { Vector, offset } from "./engine/vector";
 import { Game } from "./game";
 
 interface Relic {
