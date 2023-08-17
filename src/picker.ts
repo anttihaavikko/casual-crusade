@@ -63,7 +63,7 @@ export class Picker extends Entity {
             this.title.content = "PICK YOUR REWARDS!";
         } 
 
-        const relic = Math.random() < relicChance;
+        const relic = Math.random() < relicChance && (relicChance > 0.9 || this.level.level > 1);
 
         const relicOptions = [...relics].filter(r => r.repeatable || !this.game.relics.includes(r.name)).sort(() => Math.random() < 0.5 ? 1 : -1);
 
