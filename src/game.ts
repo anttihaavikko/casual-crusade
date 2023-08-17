@@ -133,13 +133,13 @@ export class Game extends Entity {
                 this.fill();
                 this.audio.win();
 
-                const sorted = [...this.level.board].map(t => t.index.y).sort((a, b) => a - b);
-                const first = sorted[0] - 1;
-                const last = sorted[sorted.length - 1] - 1;
-                const amt = -(first + last) * 0.5 * TILE_HEIGHT;
+                const sortedX = [...this.level.board].filter(t => !t.reward).map(t => t.index.x).sort((a, b) => a - b);
+                const sortedY = [...this.level.board].filter(t => !t.reward).map(t => t.index.y).sort((a, b) => a - b);
+                const x = -(sortedX[0] - 1 + sortedX[sortedX.length - 1] - 1) * 0.5 * TILE_WIDTH;
+                const y = -(sortedY[0] - 1 + sortedY[sortedY.length - 1] - 1) * 0.5 * TILE_HEIGHT;
                 this.level.board.forEach(t => {
-                    this.moveUp(t, amt);
-                    this.moveUp(t.content, amt);
+                    this.moveEntity(t, x, y);
+                    this.moveEntity(t.content, x, y);
                 });
                 const p = this.level.board[2].getPosition();
                 this.dude.setPosition(p.x, p.y);
@@ -288,10 +288,10 @@ export class Game extends Entity {
         }, 0.15);
     }
 
-    private moveUp(e: Entity, amount: number): void {
+    private moveEntity(e: Entity, x: number, y: number): void {
         if(!e) return;
         const p = e.getPosition();
-        e.setPosition(p.x, p.y + amount);
+        e.setPosition(p.x + x, p.y + y);
     }
 
     private restart(): void {

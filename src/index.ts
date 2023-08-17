@@ -79,6 +79,7 @@ document.onkeydown = (e: KeyboardEvent) => {
   audio.prepare();
   if(e.key == 'n') {
     game.nextLevel();
+    game.life += 100;
   }
   // if(e.key == 'f') {
   //   canvas.requestFullscreen();
