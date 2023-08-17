@@ -6,6 +6,7 @@ export class Level {
     public board: Tile[];
     public starter: Card;
     public level = 0;
+    public retried = false;
 
     constructor(private offset: Vector) {
         this.next();
@@ -21,6 +22,7 @@ export class Level {
     }
 
     public next(): void {
+        this.retried = false;
         this.level++;
 
         this.board = [

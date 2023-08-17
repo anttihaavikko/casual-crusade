@@ -36,6 +36,7 @@ export class Game extends Entity {
     public stepScore = 1;
     public remoteMulti: boolean;
     public gemChance = 1;
+    public canRedraw: boolean;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -101,6 +102,12 @@ export class Game extends Entity {
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
             const delay = 200;
 
+            if(hits.length > 0 && this.canRedraw && !this.level.retried) {
+                this.level.retried = true;
+                this.redraw();
+                return;
+            }
+
             [...hits].sort(() => Math.random() < 0.5 ? 1 : -1).forEach((hit, i) => {
                 const p = hit.getCenter();
                 setTimeout(() => {
@@ -114,7 +121,7 @@ export class Game extends Entity {
                     hit.hidden = true;
                     this.audio.boom();
                 }, 100 + i * delay);
-            })
+            });
 
             if(this.life - hits.length <= 0) {
                 setTimeout(() => {
@@ -227,6 +234,18 @@ export class Game extends Entity {
         if(this.again.visible) this.gameOver.draw(ctx);
     }
 
+    public redraw(): void {
+        const handCards = this.cards.filter(c => !c.isLocked());
+        handCards.forEach(card => card.move(this.pile.getPosition(), 0.3));
+        setTimeout(() => {
+            this.cards = this.cards.filter(c => !handCards.includes(c));
+            handCards.forEach(card => this.add(card.data, true, false));
+            this.fill();
+        }, 300);
+
+        setTimeout(() => this.checkLevelEnd(), 1000);
+    }
+
     public discard(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
         const card = handCards[Math.floor(Math.random() * handCards.length)];
@@ -308,6 +327,7 @@ export class Game extends Entity {
         this.stepScore = 1;
         this.remoteMulti = false;
         this.gemChance = 1;
+        this.canRedraw = false;
     }
 
     private init(): void {
