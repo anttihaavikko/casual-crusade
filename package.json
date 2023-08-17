@@ -7,6 +7,7 @@
     "build": "webpack --config webpack.prod.js",
     "precheck-file-size": "advzip -z ./zipped/game.zip",
     "check-file-size": "node ./scripts/check-file-size.js",
+    "strip-errors": "node ./scripts/strip-errors.js",
     "closure": "mv ./dist/main.js ./dist/main.raw.js && google-closure-compiler -O ADVANCED --js ./dist/main.raw.js --js_output_file ./dist/main.js",
     "build-zipped": "npm run build && node ./scripts/zip-file.js",
     "party": "npm run build-zipped && npm run check-file-size"
