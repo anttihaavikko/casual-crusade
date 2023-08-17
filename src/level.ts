@@ -25,6 +25,8 @@ export class Level {
         this.retried = false;
         this.level++;
 
+        console.log('Starting level', this.level);
+
         this.board = [
             new Tile(0, 1, this.offset),
             new Tile(1, 0, this.offset),
