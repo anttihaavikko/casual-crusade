@@ -51,6 +51,7 @@ export class Game extends Entity {
 
     constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
         super(360, 500, 0, 0);
+        audio.prepare();
         this.pile = new Pile(this.p.x - 2 * TILE_WIDTH - 30, this.p.y);
         this.picker = new Picker(this.level, this);
         this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 60, 300, 75, () => this.restart(), audio);

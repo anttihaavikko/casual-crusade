@@ -14,14 +14,6 @@ import { TextEntity } from "./text";
 export const WIDTH = 800;
 export const HEIGHT = 600;
 
-const audio = new AudioManager();
-audio.prepare();
-
-const boardPos: Vector = {
-  x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
-  y: HEIGHT * 0.5 - TILE_HEIGHT * 1.75
-};
-
 const canvas: HTMLCanvasElement = document.createElement("canvas");
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d")
 
@@ -29,17 +21,14 @@ const lifeText = new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, a
 const scoreText = new TextEntity("0", 50, WIDTH - 15, 55, -1, ZERO, { shadow: 4, align: "right" });
 const title = new TextEntity("CASUAL CRUSADE", 70, WIDTH * 0.5, 110, -1, ZERO, { shadow: 7, align: "center" });
 const me = new TextEntity("by Antti Haavikko", 35, WIDTH * 0.5, 155, -1, ZERO, { shadow: 5, align: "center" });
-const effects = new Container();
-const camera = new Camera();
-const level = new Level(boardPos);
+const level = new Level();
 
 const dude = new Dude(level.board[2]);
 
 const mouse: Mouse = { x: 0, y: 0 };
-const game = new Game(dude, effects, camera, level, audio);
+const game = new Game(dude, new Container(), new Camera(), level, new AudioManager());
 
-const p = level.board[2].getPosition();
-const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 220, 250, 75, () => {}, audio);
+const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 220, 250, 75, () => {}, game.audio);
 
 const startUi: Entity[] = [
   startButton,
@@ -56,6 +45,7 @@ const ui: Entity[] = [
   scoreText,
 ];
 
+const p = dude.getPosition();
 level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
 level.starter.lock();
 level.board[2].content = level.starter;
@@ -76,7 +66,7 @@ canvas.onmousemove = (e: MouseEvent) => {
 };
 
 document.onkeydown = (e: KeyboardEvent) => {
-  audio.prepare();
+  game.audio.prepare();
   if(e.key == 'n') {
     game.nextLevel();
     game.life += 100;
@@ -84,22 +74,22 @@ document.onkeydown = (e: KeyboardEvent) => {
   // if(e.key == 'f') {
   //   canvas.requestFullscreen();
   // }
-  if(e.key == 'p') {
-    game.picker.rewards = 1;
-    game.picker.create(1);
-  }
-  if(e.key == 'c') {
-    game.picker.rewards = 1;
-    game.picker.create(0);
-  }
+  // if(e.key == 'p') {
+  //   game.picker.rewards = 1;
+  //   game.picker.create(1);
+  // }
+  // if(e.key == 'c') {
+  //   game.picker.rewards = 1;
+  //   game.picker.create(0);
+  // }
 }
 
 document.onmousedown = (e: MouseEvent) => {
-  audio.play();
+  game.audio.play();
   mouse.pressing = true;
   if(startButton.isInside(mouse)) {
     startButton.visible = false;
-    audio.pop();
+    game.audio.pop();
     setTimeout(() => game.started = true, 100);
   }
 };
@@ -116,8 +106,8 @@ function tick(t: number) {
   ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
   ctx.scale(zoom, zoom);
   ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5 + (game.started ? 0 : 30));
-  camera.update();
-  ctx.translate(camera.offset.x, camera.offset.y);
+  game.camera.update();
+  ctx.translate(game.camera.offset.x, game.camera.offset.y);
   ctx.fillStyle = "#74be75";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -147,8 +137,8 @@ function tick(t: number) {
   ctx.restore();
 
   entities.forEach(e => e.update(t, mouse));
-  effects.update(t, mouse);
-  const all = [...entities, ...effects.getChildren(), ...level.board];
+  game.effects.update(t, mouse);
+  const all = [...entities, ...game.effects.getChildren(), ...level.board];
   all.sort(sortByDepth);
   level.board.forEach(t => t.prePreDraw(ctx));
   level.board.forEach(t => t.preDraw(ctx));

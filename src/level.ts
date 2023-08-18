@@ -1,5 +1,6 @@
 import { Card, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Vector, ZERO, distance } from "./engine/vector";
+import { HEIGHT, WIDTH } from "./index";
 import { Tile } from "./tile";
 
 export class Level {
@@ -8,7 +9,13 @@ export class Level {
     public level = 0;
     public retried = false;
 
-    constructor(private offset: Vector) {
+    private offset: Vector;
+
+    constructor() {
+        this.offset = {
+            x: WIDTH * 0.5 - TILE_WIDTH * 1.5,
+            y: HEIGHT * 0.5 - TILE_HEIGHT * 1.75
+          };
         this.next();
     }
 
