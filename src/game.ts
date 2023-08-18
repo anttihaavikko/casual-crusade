@@ -129,7 +129,7 @@ export class Game extends Entity {
                 setTimeout(() => {
                     this.audio.explode();
                     this.camera.shake(15, 0.15);
-                    this.effects.add(new Pulse(p.x, p.y, 40 + Math.random() * 40, 0.5, 80));
+                    this.effects.add(new Pulse(p.x, p.y, 30 + Math.random() * 50, 0.5, 0, 120));
                     this.addBits(p);
                     const sky:Vector = { x: WIDTH * 0.5, y: -100 };
                     this.effects.add(new LineParticle(sky, p, 0.4, 10, "#ffffcc99", 10 + Math.random() * 20));

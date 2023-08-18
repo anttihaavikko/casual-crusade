@@ -319,7 +319,7 @@ export class Card extends Draggable {
 
     private pulse(): void {
         const c = this.getCenter();
-        this.game.effects.add(new Pulse(c.x, c.y, 40 + Math.random() * 40));
+        this.game.effects.add(new Pulse(c.x, c.y, 40 + Math.random() * 30, 1, 10, 60));
     }
 
     private popText(content: string, p: Vector, color: string): void {
