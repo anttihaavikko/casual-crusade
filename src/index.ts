@@ -22,7 +22,7 @@ const level = new Level();
 const dude = new Dude(level.board[2]);
 
 const mouse: Mouse = ZERO;
-const game = new Game(dude, new Container(), new Camera(), level, new AudioManager());
+const game = new Game(dude, new Container(), new Camera(), level, new AudioManager(), mouse);
 
 const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 220, 250, 75, () => {}, game.audio);
 

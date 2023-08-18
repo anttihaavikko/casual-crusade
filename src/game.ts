@@ -52,7 +52,7 @@ export class Game extends Entity {
 
     private icons: RelicIcon[] = [];
 
-    constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
+    constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
         super(360, 500, 0, 0);
         audio.prepare();
         this.pile = new Pile(this.p.x - 2 * TILE_WIDTH - 30, this.p.y);
@@ -151,6 +151,7 @@ export class Game extends Entity {
             }
             
             setTimeout(() => {
+                this.mouse.dragging = false;
                 this.level.next();
                 this.cards = [];
                 this.dude.reset(this.level.board[2]);
