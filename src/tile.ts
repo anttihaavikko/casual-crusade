@@ -41,7 +41,8 @@ export class Tile extends Entity {
             ctx.lineCap = "round";
             ctx.lineWidth = this.ballSize + 10;
             ctx.strokeStyle = "#5b7c5b";
-            ctx.strokeRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);   
+            roundRect(ctx, this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 5);
+            ctx.stroke();
         }
     }
 
@@ -52,7 +53,8 @@ export class Tile extends Entity {
             ctx.lineCap = "round";
             ctx.lineWidth = this.ballSize;
             ctx.strokeStyle = "#afd594";
-            ctx.strokeRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
+            roundRect(ctx, this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 5);
+            ctx.stroke();
         }
     }
 
