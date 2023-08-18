@@ -3,7 +3,7 @@ import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { Tween } from "./engine/tween";
-import { Vector, distance, lerp, normalize, offset } from "./engine/vector";
+import { Vector, distance, normalize, offset } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
@@ -17,7 +17,7 @@ export const CARD_BORDER = 7;
 export const CARD_GAP = 2;
 
 export const gemColors = [
-    "#fff",
+    null,
     "#00BDE5",
     "#846AC1",
     "#E93988",
