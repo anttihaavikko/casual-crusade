@@ -1,5 +1,7 @@
 /* -*- mode: javascript; tab-width: 4; indent-tabs-mode: nil; -*-
 *
+* Edited by Antti Haavikko 2023, removing some unused parts to save on size.
+*
 * Copyright (c) 2011-2013 Marcus Geelnard
 *
 * This software is provided 'as-is', without any express or implied
@@ -92,12 +94,12 @@ export var CPlayer = function() {
         for (j = 0, j2 = 0; j < attack + sustain + release; j++, j2++) {
             if (j2 >= 0) {
                 // Switch arpeggio note.
-                arp = (arp >> 8) | ((arp & 255) << 4);
-                j2 -= arpInterval;
+                // arp = (arp >> 8) | ((arp & 255) << 4);
+                // j2 -= arpInterval;
 
                 // Calculate note frequencies for the oscillators
                 o1t = getnotefreq(n + (arp & 15) + instr.i[2] - 128);
-                o2t = getnotefreq(n + (arp & 15) + instr.i[6] - 128) * (1 + 0.0008 * instr.i[7]);
+                // o2t = getnotefreq(n + (arp & 15) + instr.i[6] - 128) * (1 + 0.0008 * instr.i[7]);
             }
 
             // Envelope
@@ -114,8 +116,8 @@ export var CPlayer = function() {
             rsample = osc1(c1) * o1vol;
 
             // Oscillator 2
-            c2 += o2t * e ** o2xenv;
-            rsample += osc2(c2) * o2vol;
+            // c2 += o2t * e ** o2xenv;
+            // rsample += osc2(c2) * o2vol;
 
             // Noise oscillator
             if (noiseVol) {
@@ -137,7 +139,7 @@ export var CPlayer = function() {
     // Array of oscillator functions
     var mOscillators = [
         osc_sin,
-        osc_square,
+        null,
         osc_saw,
         osc_tri
     ];
@@ -196,15 +198,15 @@ export var CPlayer = function() {
             // Pattern rows
             for (row = 0; row < patternLen; ++row) {
                 // Execute effect command.
-                var cmdNo = cp ? instr.c[cp - 1].f[row] : 0;
-                if (cmdNo) {
-                    instr.i[cmdNo - 1] = instr.c[cp - 1].f[row + patternLen] || 0;
+                // var cmdNo = cp ? instr.c[cp - 1].f[row] : 0;
+                // if (cmdNo) {
+                //     instr.i[cmdNo - 1] = instr.c[cp - 1].f[row + patternLen] || 0;
 
-                    // Clear the note cache since the instrument has changed.
-                    if (cmdNo < 17) {
-                        noteCache = [];
-                    }
-                }
+                //     // Clear the note cache since the instrument has changed.
+                //     if (cmdNo < 17) {
+                //         noteCache = [];
+                //     }
+                // }
 
                 // Put performance critical instrument properties in local variables
                 var oscLFO = mOscillators[instr.i[16]],
