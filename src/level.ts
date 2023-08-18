@@ -63,7 +63,7 @@ export class Level {
         const tiles = this.getPossibleRewardSpots().sort(() => Math.random() < 0.5 ? 1 : -1).sort((a, b) => {
             return distance(a.getPosition(), center) < distance(b.getPosition(), center) ? 1 : -1;
         });
-        tiles.slice(0, this.level).forEach(tile => {
+        tiles.slice(0, Math.max(0, this.level - Math.max(0, this.level - 10) * 3)).forEach(tile => {
             const edge = this.getEdgeTile(tile);
             if(!edge) return;
             const chest = new Tile(edge.x, edge.y, this.offset);
