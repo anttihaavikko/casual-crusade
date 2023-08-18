@@ -1,6 +1,5 @@
 /* -*- mode: javascript; tab-width: 4; indent-tabs-mode: nil; -*-
 *
-* Edited by Antti Haavikko 2023, removing some unused parts to save on size.
 *
 * Copyright (c) 2011-2013 Marcus Geelnard
 *
@@ -23,6 +22,11 @@
 * 3. This notice may not be removed or altered from any source
 *    distribution.
 *
+*/
+
+/*
+* Edited by Antti Haavikko 2023,
+* Removed some unused parts to save on final file size.
 */
 
 "use strict";
