@@ -191,7 +191,7 @@ export class Card extends Draggable {
     public hover(): void {
         if(this.data.gem) {
             setTimeout(() => {
-                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scl), gemColors[this.data.gem]);
+                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scl), [gemColors[this.data.gem]]);
             }, 5);
         }
         this.game.audio.thud();

@@ -7,19 +7,19 @@ export class Tooltip extends Entity {
 
     private title = "";
     private content = "";
-    private titleColor: string;
+    private colors: string[];
 
     constructor(x: number, y: number, width: number, height: number) {
         super(x - width * 0.5, y - height * 0.5, width, height);
         this.d = 150;
     }
 
-    public show(title: string, content: string, pos: Vector, color: string): void {
+    public show(title: string, content: string, pos: Vector, colors: string[]): void {
         this.title = title;
         this.content = content;
         this.p = { x: pos.x - this.s.x * 0.5, y: pos.y - this.s.y };
         this.visible = true;
-        this.titleColor = color;
+        this.colors = colors;
     }
 
     public update(tick: number, mouse: Mouse): void {
@@ -34,7 +34,7 @@ export class Tooltip extends Entity {
         const c = this.getPosition();
         ctx.fillStyle = "#000";
         ctx.fillText(this.title, c.x + 5 + 15, c.y + 5 + 40);
-        ctx.fillStyle = this.titleColor;
+        ctx.fillStyle = this.colors[0];
         ctx.fillText(this.title, c.x + 15, c.y + 40);
         ctx.font = "20px arial black";
         ctx.fillStyle = "#000";
@@ -43,8 +43,10 @@ export class Tooltip extends Entity {
         const parts = this.content.split('|');
         let color = false;
         let pos = 0;
+        let n = 0;
         parts.forEach(p => {
-            ctx.fillStyle = color ? this.titleColor : "#fff";
+            ctx.fillStyle = color ? this.colors[n] : "#fff";
+            if(color) n = (n + 1) % this.colors.length;
             ctx.fillText(p, c.x + 15 + pos, c.y + 40 + 30);
             color = !color;
             pos += ctx.measureText(p).width;

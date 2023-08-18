@@ -73,7 +73,7 @@ export class RelicIcon extends Draggable {
             const dx = this.icon ? 230 : 0;
             const dy = this.icon ? 110 : -50 * this.scl;
             const tt = this.data.description.replace("!1", gemNames[this.data.gems[0]]).replace("!2", gemNames[this.data.gems[1]]);
-            this.game.tooltip.show(this.data.name, tt, offset(this.getCenter(), dx, dy), this.data.color);
+            this.game.tooltip.show(this.data.name, tt, offset(this.getCenter(), dx, dy), this.data.name == WILD_NAME ? this.data.gems.map(g => gemColors[g]) : [this.data.color]);
         }, 5);
         this.game.audio.thud();
     }
