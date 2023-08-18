@@ -30,10 +30,10 @@
           0, // LFO_FREQ
           0, // LFO_FX_FREQ
           2, // FX_FILTER
-          14, // FX_FREQ
+          21, // FX_FREQ
           0, // FX_RESONANCE
           0, // FX_DIST
-          32, // FX_DRIVE
+          57, // FX_DRIVE
           0, // FX_PAN_AMT
           0, // FX_PAN_FREQ
           0, // FX_DELAY_AMT
@@ -279,15 +279,15 @@
           255, // OSC1_VOL
           152, // OSC1_SEMI
           0, // OSC1_XENV
-          0, // OSC2_WAVEFORM
+          3, // OSC2_WAVEFORM
           255, // OSC2_VOL
           152, // OSC2_SEMI
           12, // OSC2_DETUNE
           0, // OSC2_XENV
           0, // NOISE_VOL
-          2, // ENV_ATTACK
+          9, // ENV_ATTACK
           0, // ENV_SUSTAIN
-          60, // ENV_RELEASE
+          19, // ENV_RELEASE
           0, // ENV_EXP_DECAY
           0, // ARP_CHORD
           0, // ARP_SPEED
@@ -296,14 +296,14 @@
           0, // LFO_FREQ
           0, // LFO_FX_FREQ
           2, // FX_FILTER
-          255, // FX_FREQ
+          59, // FX_FREQ
           0, // FX_RESONANCE
           0, // FX_DIST
           32, // FX_DRIVE
           47, // FX_PAN_AMT
-          3, // FX_PAN_FREQ
-          157, // FX_DELAY_AMT
-          2 // FX_DELAY_TIME
+          1, // FX_PAN_FREQ
+          57, // FX_DELAY_AMT
+          1 // FX_DELAY_TIME
           ],
           // Patterns
           p: [,,,,,,,,1,2],
