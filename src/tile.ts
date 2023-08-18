@@ -39,7 +39,7 @@ export class Tile extends Entity {
             ctx.setLineDash([0, this.ballSize]);
             ctx.lineDashOffset = this.offset * 2;
             ctx.lineCap = "round";
-            ctx.lineWidth = this.ballSize + 7;
+            ctx.lineWidth = this.ballSize + 10;
             ctx.strokeStyle = "#5b7c5b";
             ctx.strokeRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);   
         }
@@ -62,15 +62,16 @@ export class Tile extends Entity {
         const center = this.getCenter();
 
         if(!this.reward) {
-            ctx.beginPath();
             ctx.fillStyle = "#afd594";
-            ctx.fillRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
+            ctx.beginPath();
+            (ctx as any).roundRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 15);
+            ctx.fill();
         }
 
         if(this.reward) {
             ctx.save();
             ctx.translate(0, 7);
-            drawEllipse(ctx, this.getCenter(), 27, 12, "#00000033");
+            drawEllipse(ctx, this.getCenter(), 27, 12, "#00000022");
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 20, center.y - 22, 40, 25);
             ctx.fillStyle = gemColors[Gem.Yellow];
@@ -90,11 +91,13 @@ export class Tile extends Entity {
         
         if(this.marked || this.hilite) {
             ctx.strokeStyle = this.hilite ? "#ffffffff" : "#ffffff99";
-            ctx.lineWidth = this.hilite ? 7 : 5;
-            ctx.setLineDash([5, 10]);
+            ctx.lineWidth = this.hilite ? 10 : 6;
+            ctx.setLineDash([5, 15]);
             ctx.lineCap = "round";
             ctx.lineDashOffset = this.life + this.offset;
-            ctx.strokeRect(this.p.x + 10, this.p.y + 10, this.s.x - 20, this.s.y - 20);
+            ctx.beginPath();
+            (ctx as any).roundRect(this.p.x + 10, this.p.y + 10, this.s.x - 20, this.s.y - 20, 10)
+            ctx.stroke();
         }
 
         ctx.setLineDash([]);
