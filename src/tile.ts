@@ -1,6 +1,6 @@
 import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors } from "./card";
 import { Container } from "./engine/container";
-import { drawCircle, drawEllipse } from "./engine/drawing";
+import { drawCircle, drawEllipse, roundRect } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { RectParticle } from "./engine/rect";
@@ -64,7 +64,8 @@ export class Tile extends Entity {
         if(!this.reward) {
             ctx.fillStyle = "#afd594";
             ctx.beginPath();
-            (ctx as any).roundRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 15);
+            ctx.rect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
+            roundRect(ctx, this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 15);
             ctx.fill();
         }
 
@@ -96,7 +97,7 @@ export class Tile extends Entity {
             ctx.lineCap = "round";
             ctx.lineDashOffset = this.life + this.offset;
             ctx.beginPath();
-            (ctx as any).roundRect(this.p.x + 10, this.p.y + 10, this.s.x - 20, this.s.y - 20, 10)
+            roundRect(ctx, this.p.x + 10, this.p.y + 10, this.s.x - 20, this.s.y - 20, 10);
             ctx.stroke();
         }
 
