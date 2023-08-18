@@ -54,7 +54,7 @@ export class Game extends Entity {
         audio.prepare();
         this.pile = new Pile(this.p.x - 2 * TILE_WIDTH - 30, this.p.y);
         this.picker = new Picker(this.level, this);
-        this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 60, 300, 75, () => this.restart(), audio);
+        this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 90, 300, 75, () => this.restart(), audio);
         this.again.visible = false;
         this.init();
     }
@@ -230,9 +230,14 @@ export class Game extends Entity {
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
         this.tooltip.draw(ctx);
-        this.again.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
-        if(this.again.visible) this.gameOver.draw(ctx);
+        
+        if(this.again.visible) {
+            ctx.fillStyle = "#000000bb";
+            ctx.fillRect(-100, HEIGHT * 0.2, WIDTH + 200, HEIGHT * 0.6);
+            this.gameOver.draw(ctx);
+            this.again.draw(ctx);
+        }
     }
 
     public redraw(): void {
