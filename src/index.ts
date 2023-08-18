@@ -118,12 +118,39 @@ function tick(t: number) {
   ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5 + (game.started ? 0 : 30));
   camera.update();
   ctx.translate(camera.offset.x, camera.offset.y);
-  ctx.fillStyle = "#666";
+  ctx.fillStyle = "#74be75";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
+  ctx.rotate(-Math.PI * 0.25);
+  ctx.scale(2, 2);
+  ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.75);
+  ctx.fillStyle = "#ffffff22";
+  for(let i = 0; i < 10; i++) {
+    ctx.fillRect(200 * i, 0, 100, 9999);
+    ctx.fillRect(200 * i - 70, 0, 5, 9999);
+    ctx.fillRect(200 * i - 35, 0, 5, 9999);
+    ctx.fillRect(200 * i + 50, 0, 5, 9999);
+  }
+  ctx.save();
+  ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
+  ctx.rotate(-Math.PI * 0.5);
+  ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.75);
+  for(let i = 0; i < 10; i++) {
+    ctx.fillRect(200 * i, 0, 100, 9999);
+    ctx.fillRect(200 * i - 70, 0, 5, 9999);
+    ctx.fillRect(200 * i - 35, 0, 5, 9999);
+    ctx.fillRect(200 * i + 50, 0, 5, 9999);
+  }
+  ctx.restore();
+  ctx.restore();
+
   entities.forEach(e => e.update(t, mouse));
   effects.update(t, mouse);
   const all = [...entities, ...effects.getChildren(), ...level.board];
   all.sort(sortByDepth);
+  level.board.forEach(t => t.prePreDraw(ctx));
   level.board.forEach(t => t.preDraw(ctx));
   all.forEach(e => e.draw(ctx));
   if(!game.started) {

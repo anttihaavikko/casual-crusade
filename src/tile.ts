@@ -34,14 +34,25 @@ export class Tile extends Entity {
         this.looted = true;
     }
 
-    public preDraw(ctx: CanvasRenderingContext2D): void {
+    public prePreDraw(ctx: CanvasRenderingContext2D): void {
         if(!this.reward && !this.hidden) {
-            ctx.lineWidth = this.ballSize;
-            ctx.strokeStyle = "#999";
             ctx.setLineDash([0, this.ballSize]);
             ctx.lineDashOffset = this.offset * 2;
             ctx.lineCap = "round";
+            ctx.lineWidth = this.ballSize + 7;
+            ctx.strokeStyle = "#5b7c5b";
             ctx.strokeRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);   
+        }
+    }
+
+    public preDraw(ctx: CanvasRenderingContext2D): void {
+        if(!this.reward && !this.hidden) {
+            ctx.setLineDash([0, this.ballSize]);
+            ctx.lineDashOffset = this.offset * 2;
+            ctx.lineCap = "round";
+            ctx.lineWidth = this.ballSize;
+            ctx.strokeStyle = "#afd594";
+            ctx.strokeRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
         }
     }
 
@@ -52,7 +63,7 @@ export class Tile extends Entity {
 
         if(!this.reward) {
             ctx.beginPath();
-            ctx.fillStyle = "#999";
+            ctx.fillStyle = "#afd594";
             ctx.fillRect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
         }
 
@@ -78,7 +89,7 @@ export class Tile extends Entity {
         }
         
         if(this.marked || this.hilite) {
-            ctx.strokeStyle = this.hilite ? "#ddd" : "#bbb";
+            ctx.strokeStyle = this.hilite ? "#ffffffff" : "#ffffff99";
             ctx.lineWidth = this.hilite ? 7 : 5;
             ctx.setLineDash([5, 10]);
             ctx.lineCap = "round";
