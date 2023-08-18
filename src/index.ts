@@ -99,6 +99,7 @@ document.onmousedown = (e: MouseEvent) => {
   mouse.pressing = true;
   if(startButton.isInside(mouse)) {
     startButton.visible = false;
+    audio.pop();
     setTimeout(() => game.started = true, 100);
   }
 };
@@ -117,7 +118,8 @@ function tick(t: number) {
   ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5 + (game.started ? 0 : 30));
   camera.update();
   ctx.translate(camera.offset.x, camera.offset.y);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#666";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   entities.forEach(e => e.update(t, mouse));
   effects.update(t, mouse);
   const all = [...entities, ...effects.getChildren(), ...level.board];

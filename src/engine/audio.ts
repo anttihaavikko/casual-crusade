@@ -4,8 +4,8 @@ import { zzfx } from "./zzfx";
 
 export class AudioManager {
     private started = false;
-    private audio: any;
-    private loaded;
+    private audio: HTMLAudioElement;
+    private loaded: boolean;
 
     public prepare(): void {
         if(this.started) return;
@@ -17,7 +17,7 @@ export class AudioManager {
         player.generate();
         this.loaded = false;
 
-        setInterval(function () {
+        setInterval(() => {
             if (this.loaded) return;
             this.loaded = player.generate() >= 1;
             if (this.loaded) {
@@ -30,11 +30,17 @@ export class AudioManager {
     }
 
     public play(): void {
-        setInterval(function () {
+        setInterval(() => {
             if (!this.loaded) return;
             this.audio.play();
         }, 5);
         
+        this.audio.addEventListener('timeupdate', () => {
+            if(this.audio.currentTime > this.audio.duration - 0.2) {
+                this.audio.currentTime = 0;
+                this.audio.play();
+            }
+        });
     }
 
     public move(): void {

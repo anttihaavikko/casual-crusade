@@ -84,7 +84,7 @@
           4 // FX_DELAY_TIME
           ],
           // Patterns
-          p: [3,4,2,2,1,5,1,5],
+          p: [3,4,2,2,1,5,1,5,3,4],
           // Columns
           c: [
             {n: [147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147,147],
@@ -142,7 +142,7 @@
         { // Instrument 3
           i: [
           2, // OSC1_WAVEFORM
-          100, // OSC1_VOL
+          127, // OSC1_VOL
           128, // OSC1_SEMI
           0, // OSC1_XENV
           3, // OSC2_WAVEFORM
@@ -172,7 +172,7 @@
           6 // FX_DELAY_TIME
           ],
           // Patterns
-          p: [1,2,1,1,1,2,1,1],
+          p: [1,2,1,2,1,2,1,2],
           // Columns
           c: [
             {n: [111,,111,,111,,,111,111,,,,111,,,,111,,111,,111,,,111,111,,,,111,,110,109],
@@ -214,7 +214,7 @@
           4 // FX_DELAY_TIME
           ],
           // Patterns
-          p: [1,2,3,4,3,4,1,2],
+          p: [1,2,3,4,3,4,1,2,3,4],
           // Columns
           c: [
             {n: [135,138,142,147,150,154,150,147,135,138,142,147,150,154,150,123,130,133,137,142,145,149,145,142,130,133,137,142,145,149,145,142],
@@ -273,9 +273,51 @@
              f: []}
           ]
         },
+        { // Instrument 6
+          i: [
+          0, // OSC1_WAVEFORM
+          255, // OSC1_VOL
+          152, // OSC1_SEMI
+          0, // OSC1_XENV
+          0, // OSC2_WAVEFORM
+          255, // OSC2_VOL
+          152, // OSC2_SEMI
+          12, // OSC2_DETUNE
+          0, // OSC2_XENV
+          0, // NOISE_VOL
+          2, // ENV_ATTACK
+          0, // ENV_SUSTAIN
+          60, // ENV_RELEASE
+          0, // ENV_EXP_DECAY
+          0, // ARP_CHORD
+          0, // ARP_SPEED
+          0, // LFO_WAVEFORM
+          0, // LFO_AMT
+          0, // LFO_FREQ
+          0, // LFO_FX_FREQ
+          2, // FX_FILTER
+          255, // FX_FREQ
+          0, // FX_RESONANCE
+          0, // FX_DIST
+          32, // FX_DRIVE
+          47, // FX_PAN_AMT
+          3, // FX_PAN_FREQ
+          157, // FX_DELAY_AMT
+          2 // FX_DELAY_TIME
+          ],
+          // Patterns
+          p: [,,,,,,,,1,2],
+          // Columns
+          c: [
+            {n: [126,,,,,,126,,130,,,,126,,,,125,,,,,,,,130,,,,125],
+             f: []},
+            {n: [125,,,,,,126,,123,,,,,,,,123,,,,,,,,122,,,,125],
+             f: []}
+          ]
+        },
       ],
       rowLen: 7350,   // In sample lengths
       patternLen: 32,  // Rows per pattern
-      endPattern: 7,  // End pattern
-      numChannels: 6  // Number of channels
+      endPattern: 9,  // End pattern
+      numChannels: 7  // Number of channels
     };
