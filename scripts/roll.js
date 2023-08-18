@@ -17,7 +17,6 @@ fs.readFile(html, 'utf8', function (err, htmlData) {
 
         fs.writeFile(html, result, 'utf8', function (err) {
             if (err) return console.log(err);
-            console.log(chalk.green(`Rolled!.`));
         });
     });
 });
