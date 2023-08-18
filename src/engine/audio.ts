@@ -37,7 +37,7 @@ export class AudioManager {
         
         // restart early for better looping
         this.audio.addEventListener('timeupdate', () => {
-            if(this.audio.currentTime > this.audio.duration - 0.225) {
+            if(this.audio.currentTime > this.audio.duration - 0.2) {
                 this.audio.currentTime = 0;
                 this.audio.play();
             }
