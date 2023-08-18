@@ -103,7 +103,7 @@ export var CPlayer = function() {
 
                 // Calculate note frequencies for the oscillators
                 o1t = getnotefreq(n + (arp & 15) + instr.i[2] - 128);
-                // o2t = getnotefreq(n + (arp & 15) + instr.i[6] - 128) * (1 + 0.0008 * instr.i[7]);
+                o2t = getnotefreq(n + (arp & 15) + instr.i[6] - 128) * (1 + 0.0008 * instr.i[7]);
             }
 
             // Envelope
@@ -120,8 +120,8 @@ export var CPlayer = function() {
             rsample = osc1(c1) * o1vol;
 
             // Oscillator 2
-            // c2 += o2t * e ** o2xenv;
-            // rsample += osc2(c2) * o2vol;
+            c2 += o2t * e ** o2xenv;
+            rsample += osc2(c2) * o2vol;
 
             // Noise oscillator
             if (noiseVol) {
@@ -143,7 +143,7 @@ export var CPlayer = function() {
     // Array of oscillator functions
     var mOscillators = [
         osc_sin,
-        null,
+        osc_square,
         osc_saw,
         osc_tri
     ];

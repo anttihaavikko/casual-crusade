@@ -33,7 +33,7 @@
           21, // FX_FREQ
           0, // FX_RESONANCE
           0, // FX_DIST
-          80, // FX_DRIVE
+          50, // FX_DRIVE
           0, // FX_PAN_AMT
           0, // FX_PAN_FREQ
           0, // FX_DELAY_AMT
