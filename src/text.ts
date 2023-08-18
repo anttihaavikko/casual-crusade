@@ -7,6 +7,10 @@ export class TextEntity extends Particle {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
+        ctx.save();
+        // ctx.translate(this.fontSize, this.fontSize);
+        ctx.rotate(this.options.angle ?? 0);
+        // ctx.translate(-this.fontSize, -this.fontSize);
         const mod = this.options?.scales ? this.ratio : 1;
         ctx.font =`${this.fontSize * mod}px arial black`;
         ctx.textAlign = this.options?.align ?? "center";
@@ -16,6 +20,7 @@ export class TextEntity extends Particle {
         }
         ctx.fillStyle = this.options?.color ?? "#fff";
         ctx.fillText(this.content, this.p.x, this.p.y);
+        ctx.restore();
     }
 }
 
@@ -24,4 +29,5 @@ export interface TextOptions {
     align?: CanvasTextAlign;
     shadow?: number;
     scales?: boolean;
+    angle?: number;
 }
