@@ -16,7 +16,7 @@ interface Relic {
     gems?: Gem[];
 }
 
-export const WILD_NAME = "WILD";
+export const WILD_NAME = "WILDCARD";
 
 export const relics: Relic[] = [
     { name: "BENEVOLENT", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
