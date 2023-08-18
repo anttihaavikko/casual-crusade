@@ -10,6 +10,7 @@ export class AudioManager {
     public prepare(): void {
         if(this.started) return;
 
+        this.audio = document.createElement("audio");
         this.started = true;
 
         const player = new CPlayer();
@@ -22,7 +23,6 @@ export class AudioManager {
             this.loaded = player.generate() >= 1;
             if (this.loaded) {
                 var wave = player.createWave();
-                this.audio = document.createElement("audio");
                 this.audio.src = URL.createObjectURL(new Blob([wave], { type: "audio/wav" }));
                 this.audio.loop = true;
             }
