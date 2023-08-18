@@ -124,7 +124,7 @@ function tick(t: number) {
   ctx.save();
   ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
   ctx.rotate(-Math.PI * 0.25);
-  ctx.scale(2, 2);
+  ctx.scale(1.5, 1.5);
   ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.75);
   ctx.fillStyle = "#ffffff22";
   for(let i = 0; i < 10; i++) {
