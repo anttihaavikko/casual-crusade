@@ -62,7 +62,7 @@
           140, // OSC2_SEMI
           0, // OSC2_DETUNE
           0, // OSC2_XENV
-          81, // NOISE_VOL
+          50, // NOISE_VOL
           4, // ENV_ATTACK
           10, // ENV_SUSTAIN
           47, // ENV_RELEASE
