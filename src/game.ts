@@ -98,7 +98,7 @@ export class Game extends Entity {
         setTimeout(() => {
             relic.icon = true;
             relic.scl = 0.8;
-            relic.setPosition(pos * 30 - 15, 30);
+            relic.setPosition(pos % 10 * 30 - 15, 30 + 30 * Math.floor(pos / 10));
         }, 200);
     }
 
