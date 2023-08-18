@@ -16,9 +16,9 @@ interface Relic {
 }
 
 export const relics: Relic[] = [
-    { name: "BOOST", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
+    // { name: "BOOST", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
     { name: "BOOSTER", description: "Increase your |LIFE| by |2|.", color: "#E93988", bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
-    { name: "BOOSTED", description: "Increase your |LIFE| by |3|.", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
+    // { name: "BOOSTED", description: "Increase your |LIFE| by |3|.", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
     { name: "CLAW", description: "Increase your |MAX HAND SIZE| by |1|.", color: "#00BDE5", bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
     { name: "OPTIONS", description: "Increases the presented |reward options|.", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
     { name: "GREED", description: "Allows you to pick an |extra| reward.", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
