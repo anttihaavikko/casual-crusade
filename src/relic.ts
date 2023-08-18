@@ -1,9 +1,9 @@
-import { CARD_BORDER, CARD_GAP, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors, gemNames, getRandomGem } from "./card";
 import { Draggable } from "./engine/draggable";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
 import { Vector, offset } from "./engine/vector";
-import { Game } from "./game";
+import { Game, WILD_NAME } from "./game";
 
 interface Relic {
     name: string;
@@ -13,6 +13,7 @@ interface Relic {
     fill: string;
     repeatable?: boolean;
     pickup: (game: Game) => void;
+    gems?: Gem[];
 }
 
 export const relics: Relic[] = [
@@ -27,7 +28,8 @@ export const relics: Relic[] = [
     { name: "DOUBLER", description: "Double your step |SCORE|.", color: "#F3DC00", bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
     { name: "REMOTE", description: "Passing by |ORANGE| activates it.", color: "#F89F00", bg: "⇲", fill: "", pickup: (g) => g.remoteMulti = true },
     { name: "HOARDER", description: "Get increased |GEM| chance.", color: "#F3DC00", bg: "◓", fill: "", repeatable: true, pickup: (g) => g.gemChance *= 1.3 },
-    { name: "SINNER", description: "Once per level, |redraw| your hand if |stuck|.", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true }
+    { name: "SINNER", description: "Once per level, |redraw| your hand if |stuck|.", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true },
+    { name: WILD_NAME, description: "|!1| ⇆ |!2|.", color: "red", bg: "!", fill: "", pickup: (g) => {} }
 ];
 
 export class RelicIcon extends Draggable {
@@ -39,6 +41,8 @@ export class RelicIcon extends Draggable {
         this.selectable = true;
         this.locked = true;
         this.tween = new Tween(this);
+        this.data.gems = [1, 2, 3, 4, 5, 6].sort(() => Math.random() < 0.5 ? 1 : -1);
+        this.data.color = this.data.name == WILD_NAME ? gemColors[this.data.gems[0]] : this.data.color;
     }
 
     public isInside(point: Vector): boolean {
@@ -66,7 +70,8 @@ export class RelicIcon extends Draggable {
         setTimeout(() => {
             const dx = this.icon ? 230 : 0;
             const dy = this.icon ? 110 : -50 * this.scl;
-            this.game.tooltip.show(this.data.name, this.data.description, offset(this.getCenter(), dx, dy), this.data.color);
+            const tt = this.data.description.replace("!1", gemNames[this.data.gems[0]]).replace("!2", gemNames[this.data.gems[1]]);
+            this.game.tooltip.show(this.data.name, tt, offset(this.getCenter(), dx, dy), this.data.color);
         }, 5);
         this.game.audio.thud();
     }

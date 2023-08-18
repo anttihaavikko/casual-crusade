@@ -26,7 +26,7 @@ export const gemColors = [
     "#B4D000"
 ];
 
-const gemNames = [
+export const gemNames = [
     null,
     "FIBONACCI'S BOON",
     "PENANCE",
@@ -63,6 +63,10 @@ export enum Gem {
     Green
 };
 
+export const getRandomGem = () => {
+    return 1 + Math.floor(Math.random() * 5);
+}
+
 export interface CardData {
     directions: Direction[];
     gem: Gem;
@@ -87,6 +91,10 @@ export class Card extends Draggable {
     public constructor(x: number, y: number, private level: Level, private game: Game, public data: CardData) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
         this.tween = new Tween(this);
+    }
+
+    public is(color: Gem): boolean {
+        return this.data.gem != Gem.None && [this.data.gem, this.game.getWild(this.data.gem)].includes(color);
     }
 
     public isLocked(): boolean {
@@ -152,14 +160,14 @@ export class Card extends Draggable {
             this.tile.content = this;
             this.game.fill();
             this.game.findPath(this.tile, this.game);
-            if(this.data.gem == Gem.Blue) {
+            if(this.is(Gem.Blue)) {
                 this.game.audio.discard();
                 this.game.pull();
             }
-            if(this.data.gem == Gem.Red) {
+            if(this.is(Gem.Red)) {
                 this.game.heal(1);
             }
-            if(this.data.gem == Gem.Green) {
+            if(this.is(Gem.Green)) {
                 const neighbours = this.tile.getFreeNeighbours(this.level.board, true).filter(n => !n.content);
                 neighbours.forEach(n => this.game.createBlank(n));
                 if(neighbours.length > 0) {
@@ -265,17 +273,17 @@ export class Card extends Draggable {
     }
 
     public activate(): void {
-        if(this.data.gem == Gem.Red && this.game.healOnStep) {
+        if(this.is(Gem.Red) && this.game.healOnStep) {
             this.game.heal(1);
         }
-        if(this.data.gem == Gem.Purple) {
+        if(this.is(Gem.Purple)) {
             this.game.audio.discard();
             this.game.discard();
         }
-        if(this.data.gem == Gem.Orange) {
+        if(this.is(Gem.Orange)) {
             this.triggerMulti();
         }
-        if(this.data.gem == Gem.Yellow) {
+        if(this.is(Gem.Yellow)) {
             this.game.audio.score();
         }
     }

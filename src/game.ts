@@ -19,6 +19,8 @@ import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
 
+export const WILD_NAME = "WILD";
+
 export class Game extends Entity {
     public score = 0;
     public multi = 1;
@@ -37,6 +39,7 @@ export class Game extends Entity {
     public remoteMulti: boolean;
     public gemChance = 1;
     public canRedraw: boolean;
+    public wild = { first: Gem.None, second: Gem.None };
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -59,6 +62,12 @@ export class Game extends Entity {
         this.init();
     }
 
+    public getWild(gem: Gem): Gem {
+        if(gem == this.wild.first) return this.wild.second;
+        if(gem == this.wild.second) return this.wild.first;
+        return gem;
+    }
+
     public pick(card: Card): void {
         if(this.picker.rewards <= 0) return;
         this.add(card.data, true, true);
@@ -73,6 +82,14 @@ export class Game extends Entity {
 
     public addRelic(relic: RelicIcon): void {
         if(this.picker.rewards <= 0) return;
+
+        if(relic.data.name == WILD_NAME) {
+            this.wild = {
+                first: relic.data.gems[0],
+                second: relic.data.gems[1]
+            };
+        }
+
         const pos = this.icons.length;
         this.picker.remove(relic);
         this.relics.push(relic.data.name);
@@ -335,6 +352,7 @@ export class Game extends Entity {
         this.remoteMulti = false;
         this.gemChance = 1;
         this.canRedraw = false;
+        this.wild = { first: Gem.None, second: Gem.None };
     }
 
     private init(): void {
