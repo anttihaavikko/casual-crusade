@@ -145,7 +145,7 @@ export class Card extends Draggable {
             return;
         }
 
-        if(this.tile) {
+        if(this.tile && !this.game.dude.isMoving) {
             this.game.multi = 1;
             this.locked = true;
             this.p = this.tile.getPosition();

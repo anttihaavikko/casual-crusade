@@ -8,6 +8,8 @@ import { Level } from "./level";
 import { Tile } from "./tile";
 
 export class Dude extends Entity {
+    public isMoving: boolean;
+
     private tweener: Tween;
     private path: Tile[] = [];
     private phase = 0;
@@ -70,6 +72,7 @@ export class Dude extends Entity {
         this.path = [];
         this.findNext(this.tile, to, [this.tile]);
         this.tile = this.path[this.path.length - 1];
+        this.isMoving = true;
         this.path.forEach((tile, index) => {
             setTimeout(() => {
                 tile.content.visited = true;
@@ -86,6 +89,8 @@ export class Dude extends Entity {
                         neighbours.forEach(n => n.content.activate());
                     }
                 }
+
+                this.isMoving = index != this.path.length - 1;
             }, index * 300);
         });
         setTimeout(() => this.path.forEach(p => p.content.visited = false), this.path.length * 300 + 300);

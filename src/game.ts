@@ -49,7 +49,7 @@ export class Game extends Entity {
 
     private icons: RelicIcon[] = [];
 
-    constructor(private dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
+    constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager) {
         super(360, 500, 0, 0);
         audio.prepare();
         this.pile = new Pile(this.p.x - 2 * TILE_WIDTH - 30, this.p.y);
