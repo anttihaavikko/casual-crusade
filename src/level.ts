@@ -43,13 +43,13 @@ export class Level {
         ];
 
         for(var i = 0; i < (this.level - 1) * 2; i++) {
-            const ys = this.board.map(t => t.index).map(p => p.y);
-            const minY = Math.min(...ys);
-            const maxY = Math.max(...ys);
-            const xs = this.board.map(t => t.index).map(p => p.x);
-            const minX = Math.min(...xs);
-            const maxX = Math.max(...xs);
-            const spot = this.getFromAllEdgeTile(minX, maxX, minY, maxY);
+            // const ys = this.board.map(t => t.index).map(p => p.y);
+            // const minY = Math.min(...ys);
+            // const maxY = Math.max(...ys);
+            // const xs = this.board.map(t => t.index).map(p => p.x);
+            // const minX = Math.min(...xs);
+            // const maxX = Math.max(...xs);
+            const spot = this.getFromAllEdgeTile(/*minX, maxX, minY, maxY*/);
             if(!spot) continue;
             this.board.push(new Tile(spot.x, spot.y, this.offset));
         }
@@ -72,12 +72,13 @@ export class Level {
         });
     }
 
-    private isInRange(t: Tile, minX: number, maxX: number, minY: number, maxY: number): boolean {
-        return (t.index.x > minX && t.index.x < maxX || (maxX - minX) < 8) && (t.index.y > minY && t.index.y < maxY || (maxY - minY) < 5);
+    private isInRange(t: Tile/*, minX: number, maxX: number, minY: number, maxY: number*/): boolean {
+        // return (t.index.x > minX && t.index.x < maxX || (maxX - minX) < 8) && (t.index.y > minY && t.index.y < maxY || (maxY - minY) < 5);
+        return t.index.x > -3 && t.index.x < 5 && t.index.y > -2 && t.index.y < 4;
     }
 
-    private getFromAllEdgeTile(minX: number, maxX: number, minY: number, maxY: number): Vector {
-        const tiles = this.board.filter(tile => tile.getNeighbours(this.board).length < 4).filter(t => this.isInRange(t, minX, maxX, minY, maxY));
+    private getFromAllEdgeTile(/*minX: number, maxX: number, minY: number, maxY: number*/): Vector {
+        const tiles = this.board.filter(tile => tile.getNeighbours(this.board).length < 4).filter(t => this.isInRange(t/*, minX, maxX, minY, maxY*/));
         const spots: Vector[] = [];
         tiles.forEach(tile => {
             spots.push(...[
