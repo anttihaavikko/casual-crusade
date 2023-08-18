@@ -89,11 +89,12 @@ export class Dude extends Entity {
                         neighbours.forEach(n => n.content.activate());
                     }
                 }
-
-                this.isMoving = index != this.path.length - 1;
             }, index * 300);
         });
-        setTimeout(() => this.path.forEach(p => p.content.visited = false), this.path.length * 300 + 300);
+        setTimeout(() => {
+            this.path.forEach(p => p.content.visited = false);
+            this.isMoving = false;
+        }, this.path.length * 300 + 300);
         setTimeout(() => game.checkLevelEnd(), this.path.length * 300 + 600);
     }
 
