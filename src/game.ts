@@ -14,12 +14,10 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
-import { RelicIcon } from "./relic";
+import { RelicIcon, WILD_NAME } from "./relic";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
-
-export const WILD_NAME = "WILD";
 
 export class Game extends Entity {
     public score = 0;

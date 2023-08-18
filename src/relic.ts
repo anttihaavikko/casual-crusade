@@ -3,7 +3,7 @@ import { Draggable } from "./engine/draggable";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
 import { Vector, offset } from "./engine/vector";
-import { Game, WILD_NAME } from "./game";
+import { Game } from "./game";
 
 interface Relic {
     name: string;
@@ -15,6 +15,8 @@ interface Relic {
     pickup: (game: Game) => void;
     gems?: Gem[];
 }
+
+export const WILD_NAME = "WILD";
 
 export const relics: Relic[] = [
     // { name: "BOOST", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
