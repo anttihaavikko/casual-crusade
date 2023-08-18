@@ -54,6 +54,16 @@ export class Dude extends Entity {
         ctx.lineTo(center.x, this.p.y + 28);
         ctx.lineTo(center.x - 6, this.p.y + 26);
         ctx.fill();
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(head.x, head.y + 5);
+        ctx.lineTo(head.x, head.y - 10);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(head.x - 4, head.y - 2 * this.phase);
+        ctx.lineTo(head.x + 4, head.y - 2 * this.phase);
+        ctx.stroke();
     }
 
     public findPath(to: Tile, game: Game, level: Level): void {
