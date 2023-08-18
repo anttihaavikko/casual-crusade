@@ -28,12 +28,12 @@ export const gemColors = [
 
 const gemNames = [
     null,
-    "BLUE",
-    "PURPLE",
-    "RED",
-    "YELLOW",
-    "ORANGE",
-    "GREEN"
+    "FIBONACCI'S BOON",
+    "PENANCE",
+    "POPE'S BLESSING",
+    "INDULGENCE",
+    "DYNASTY",
+    "KHAN'S LEGACY"
 ];
 
 const gemDescriptions = [
