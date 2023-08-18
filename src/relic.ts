@@ -8,7 +8,7 @@ import { Game, WILD_NAME } from "./game";
 interface Relic {
     name: string;
     description: string;
-    color: string;
+    color?: string;
     bg: string;
     fill: string;
     repeatable?: boolean;
@@ -29,7 +29,7 @@ export const relics: Relic[] = [
     { name: "REMOTE", description: "Passing by |ORANGE| activates it.", color: "#F89F00", bg: "⇲", fill: "", pickup: (g) => g.remoteMulti = true },
     { name: "HOARDER", description: "Get increased |GEM| chance.", color: "#F3DC00", bg: "◓", fill: "", repeatable: true, pickup: (g) => g.gemChance *= 1.3 },
     { name: "SINNER", description: "Once per level, |redraw| your hand if |stuck|.", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true },
-    { name: WILD_NAME, description: "|!1| ⇆ |!2|.", color: "red", bg: "!", fill: "", pickup: (g) => {} }
+    { name: WILD_NAME, description: "|!1| ⇆ |!2|.", bg: "!", fill: "", pickup: (g) => {} }
 ];
 
 export class RelicIcon extends Draggable {
