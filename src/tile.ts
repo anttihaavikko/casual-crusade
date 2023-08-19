@@ -48,6 +48,13 @@ export class Tile extends Entity {
 
     public preDraw(ctx: CanvasRenderingContext2D): void {
         if(!this.reward && !this.hidden) {
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "#5b7c5b";
+            ctx.beginPath();
+            ctx.setLineDash([])
+            roundRect(ctx, this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 15);
+            ctx.stroke();
+
             ctx.setLineDash([0, this.ballSize]);
             ctx.lineDashOffset = this.offset * 2;
             ctx.lineCap = "round";
@@ -66,7 +73,6 @@ export class Tile extends Entity {
         if(!this.reward) {
             ctx.fillStyle = "#afd594";
             ctx.beginPath();
-            ctx.rect(this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10);
             roundRect(ctx, this.p.x - 5, this.p.y - 5, this.s.x + 10, this.s.y + 10, 15);
             ctx.fill();
         }
