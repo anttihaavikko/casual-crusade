@@ -42,7 +42,7 @@ const gemDescriptions = [
     "|Recycle |random card when |stepping| on.",
     "|Heal| for one when |placed|.",
     "|Score earned| for stepping on is |tenfold|.",
-    "Double your |score multiplier|.",
+    "|Doubles| move scores when |stepping| on.",
     "Fill neighbours with |blank cards|."
 ];
 
