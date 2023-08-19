@@ -1,7 +1,7 @@
 import { Card, CardData, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, randomCard } from "./card";
 import { Dude } from "./dude";
+import { GameOver } from "./end";
 import { AudioManager } from "./engine/audio";
-import { ButtonEntity } from "./engine/button";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
@@ -10,13 +10,12 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { random, randomSorter } from "./engine/random";
 import { RectParticle } from "./engine/rect";
-import { Vector, ZERO, offset } from "./engine/vector";
+import { Vector, offset } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
 import { RelicIcon, WILD_NAME } from "./relic";
-import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
 
@@ -42,8 +41,7 @@ export class Game extends Entity {
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
-    private again: ButtonEntity;
-    private gameOver = new TextEntity("GAME OVER", 100, WIDTH * 0.5, 280, -1, ZERO, { shadow: 10, align: "center" });
+    private gameOver: GameOver;
 
     private cards: Card[] = [];
     private all: CardData[];
@@ -56,8 +54,7 @@ export class Game extends Entity {
         audio.prepare();
         this.pile = new Pile(this.p.x - 2 * TILE_WIDTH - 30, this.p.y);
         this.picker = new Picker(this.level, this);
-        this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 90, 300, 75, () => this.restart(), audio);
-        this.again.visible = false;
+        this.gameOver = new GameOver(this);
         this.init();
     }
 
@@ -142,7 +139,7 @@ export class Game extends Entity {
 
             if(this.life - hits.length <= 0) {
                 setTimeout(() => {
-                    this.again.visible = true;
+                    this.gameOver.toggle(true);
                     this.camera.shake(7, 0.3, 2);
                     this.audio.lose();
                 }, hits.length * delay + 800);
@@ -237,7 +234,7 @@ export class Game extends Entity {
         this.pile.update(tick, mouse);
         this.level.board.forEach(tile => tile.update(tick, mouse));
         this.picker.update(tick, mouse);
-        this.again.update(tick, mouse);
+        this.gameOver.update(tick, mouse);
         this.icons.forEach(i => i.update(tick, mouse));
     }
 
@@ -250,13 +247,7 @@ export class Game extends Entity {
         this.picker.draw(ctx);
         this.tooltip.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
-        
-        if(this.again.visible) {
-            ctx.fillStyle = "#000000bb";
-            ctx.fillRect(-100, HEIGHT * 0.2, WIDTH + 200, HEIGHT * 0.6);
-            this.gameOver.draw(ctx);
-            this.again.draw(ctx);
-        }
+        this.gameOver.draw(ctx);
     }
 
     public redraw(): void {
@@ -339,10 +330,10 @@ export class Game extends Entity {
         e.setPosition(p.x + x, p.y + y);
     }
 
-    private restart(): void {
+    public restart(): void {
         this.cards = [];
         this.score = 0;
-        this.again.visible = false;
+        this.gameOver.toggle(false);
         this.level.restart();
         this.init();
         this.dude.reset(this.level.board[2]);
