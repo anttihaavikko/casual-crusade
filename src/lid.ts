@@ -15,6 +15,7 @@ export class Lid extends Entity {
         super(pos.x, pos.y, 0, 0);
         this.tween = new Tween(this);
         this.direction = Math.sign(pos.x - WIDTH * 0.5);
+        this.d = 75;
     }
 
     public update(tick: number, mouse: Mouse): void {
