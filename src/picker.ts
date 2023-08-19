@@ -46,13 +46,14 @@ export class Picker extends Entity {
 
         reward.move(reward.getMoveTarget(), 0.2);
         this.locked = true;
+
+        this.picks = this.picks.filter(c => c != reward);
         
         setTimeout(() => {
             if(this.rewards == 1 || this.picks.length == 1) {
                 this.tween.scale({ x: 1, y: 0}, 0.1);
                 this.ready = false;
             }
-            this.picks = this.picks.filter(c => c != reward);
             this.reposition();
             this.rewards = Math.min(this.rewards - 1, this.picks.length);
             this.locked = false;
@@ -61,7 +62,7 @@ export class Picker extends Entity {
             if(this.rewards > 0) {
                 this.title.content = `PICK ${this.rewards} MORE!`;
             }
-        }, 200);
+        }, 150);
     }
 
     public create(relicChance = 0.25): void {

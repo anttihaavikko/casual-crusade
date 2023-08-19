@@ -68,9 +68,9 @@ export class RelicIcon extends Draggable {
     protected hover(): void {
         setTimeout(() => {
             const dx = this.icon ? 230 : 0;
-            const dy = this.icon ? 110 : -50 * this.scale.y;
+            const dy = this.icon ? 120 : -50 * this.scale.y;
             const tt = this.data.description.replace("!1", gemNames[this.data.gems[0]]).replace("!2", gemNames[this.data.gems[1]]);
-            this.game.tooltip.show(this.data.name, tt, offset(this.getCenter(), dx, dy), this.data.name == WILD_NAME ? this.data.gems.map(g => gemColors[g]) : [this.data.color]);
+            this.game.tooltip.show(this.data.name, tt, offset(this.getCenter(), dx, dy), this.data.name == WILD_NAME ? this.data.gems.map(g => gemColors[g]) : [this.data.color], this.icon );
         }, 5);
         this.game.audio.thud();
     }
@@ -91,12 +91,6 @@ export class RelicIcon extends Draggable {
     }
 
     protected drop(): void {
-    }
-
-    public update(tick: number, mouse: Mouse): void {
-        super.update(tick, mouse);
-        if(this.icon) return;
-        this.tween.update(tick);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {

@@ -8,25 +8,31 @@ export class Tooltip extends Entity {
     private title = "";
     private content = "";
     private colors: string[];
+    private flipped: boolean;
+    private phase = 0;
 
     constructor(x: number, y: number, width: number, height: number) {
         super(x - width * 0.5, y - height * 0.5, width, height);
         this.d = 150;
     }
 
-    public show(title: string, content: string, pos: Vector, colors: string[]): void {
+    public show(title: string, content: string, pos: Vector, colors: string[], flipped = false): void {
         this.title = title;
         this.content = content;
         this.p = { x: pos.x - this.s.x * 0.5, y: pos.y - this.s.y };
         this.visible = true;
         this.colors = colors;
+        this.flipped = flipped;
     }
 
     public update(tick: number, mouse: Mouse): void {
+        this.phase = Math.abs(Math.sin(tick * 0.0025));
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
         if(!this.visible) return;
+        ctx.save();
+        ctx.translate(0, this.phase * (this.flipped ? -7 : -7));
         ctx.fillStyle = "#000000";
         ctx.fillRect(this.p.x, this.p.y, this.s.x, this.s.y);
         ctx.font = "30px arial black";
@@ -40,6 +46,14 @@ export class Tooltip extends Entity {
         ctx.fillStyle = "#000";
         ctx.fillText(this.content, c.x + 4 + 15, c.y + 4 + 40 + 30);
 
+        ctx.beginPath();
+        const dx = this.flipped ? 25 : 250;
+        const dy = this.flipped ? 5 : 85;
+        ctx.moveTo(c.x - 15 + dx, c.y + dy);
+        ctx.lineTo(c.x + 15 + dx, c.y + dy);
+        ctx.lineTo(c.x + dx, c.y + dy + (this.flipped ? -15 : 15));
+        ctx.fill();
+
         const parts = this.content.split('|');
         let color = false;
         let pos = 0;
@@ -51,5 +65,6 @@ export class Tooltip extends Entity {
             color = !color;
             pos += ctx.measureText(p).width;
         });
+        ctx.restore();
     }
 }

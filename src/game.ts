@@ -97,7 +97,7 @@ export class Game extends Entity {
             relic.icon = true;
             relic.scale = { x: 0.8, y: 0.8 };
             relic.setPosition(pos % 10 * 30 - 15, 30 + 30 * Math.floor(pos / 10));
-        }, 200);
+        }, 220);
     }
 
     public heal(amount: number): void {
@@ -243,6 +243,7 @@ export class Game extends Entity {
         this.picker.update(tick, mouse);
         this.gameOver.update(tick, mouse);
         this.icons.forEach(i => i.update(tick, mouse));
+        this.tooltip.update(tick, mouse);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -252,9 +253,9 @@ export class Game extends Entity {
         }
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
-        this.tooltip.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
         this.gameOver.draw(ctx);
+        this.tooltip.draw(ctx);
     }
 
     public redraw(): void {
