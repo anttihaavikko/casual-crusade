@@ -208,6 +208,7 @@ export class Game extends Entity {
         card.lock();
         tile.content = card;
         this.cards.push(card);
+        card.pulse();
         if(this.canRemoteOpen) {
             this.loot(tile);
         }

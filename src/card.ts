@@ -317,7 +317,7 @@ export class Card extends Draggable {
         this.popText(addition.toString(), p, isYellow ? gemColors[Gem.Yellow] : "#fff");
     }
 
-    private pulse(): void {
+    public pulse(): void {
         const c = this.getCenter();
         this.game.effects.add(new Pulse(c.x, c.y, 40 + Math.random() * 30, 1, 10, 60));
     }
