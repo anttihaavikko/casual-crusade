@@ -2,6 +2,7 @@ import { Card, Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
+import { RectParticle } from "./engine/rect";
 import { Tween } from "./engine/tween";
 import { Game } from "./game";
 import { Level } from "./level";
@@ -84,7 +85,16 @@ export class Dude extends Entity {
                 if(index > 0) {
                     this.tweener.move(tile.getPosition(), moveDuration);
 
-                    setTimeout(() => game.audio.move(), moveDuration);
+                    setTimeout(() => {
+                        game.audio.move();
+                        const p = tile.getCenter();
+                        for(let i = 0; i < 10; i++) {
+                            const size = 1 + Math.random() * 3;
+                            const opts = { force: { x: 0, y: 0.1 }, depth: 20, color: "#5b7c5b44" };
+                            const v = { x: -2 + Math.random() * 4, y: -4 * Math.random() };
+                            game.effects.add(new RectParticle(p.x, p.y, size, size, 0.2 + Math.random() * 0.5, v, opts));
+                        }
+                    }, moveDuration * 0.25);
                     tile.content.activate();
                     tile.content.pop(index * game.stepScore);
                     game.loot(tile);

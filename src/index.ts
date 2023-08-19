@@ -59,7 +59,7 @@ document.onkeydown = (e: KeyboardEvent) => {
   game.audio.prepare();
   if(e.key == 'n') {
     game.nextLevel();
-    game.life += 100;
+    // game.life += 100;
   }
   if(e.key == 'f') {
     canvas.requestFullscreen();
@@ -95,17 +95,18 @@ function tick(t: number) {
   ctx.resetTransform();
   ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
   ctx.scale(zoom, zoom);
+  ctx.rotate(game.camera.rotation);
   ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5 + (game.started ? 0 : 30));
   game.camera.update();
   ctx.translate(game.camera.offset.x, game.camera.offset.y);
   ctx.fillStyle = "#74be75";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(-100, -100, canvas.width + 200, canvas.height + 200);
 
   ctx.save();
   ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
   ctx.rotate(-Math.PI * 0.25);
   ctx.scale(1.5, 1.5);
-  ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.75);
+  ctx.translate(-WIDTH * 0.75, -HEIGHT * 0.75);
   ctx.fillStyle = "#ffffff22";
   for(let i = 0; i < 5; i++) {
     ctx.fillRect(200 * i, 0, 100, 999);

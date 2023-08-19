@@ -8,6 +8,7 @@ import { Entity, sortByDepth } from "./engine/entity";
 import { LineParticle } from "./engine/line";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
+import { random, randomSorter } from "./engine/random";
 import { RectParticle } from "./engine/rect";
 import { Vector, ZERO, offset } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
@@ -106,9 +107,9 @@ export class Game extends Entity {
 
         for(var i = 0; i < 50; i++) {
             const p = this.dude.getCenter();
-            const x = p.x + Math.random() * 40 - 20;
-            const y = p.y + Math.random() * 40 - 30;
-            this.effects.add(new RectParticle(x, y, 2, 5, 0.1 + Math.random() * 0.6, { x: 0, y: -0.25 - Math.random() * 1.5 }, "#B4D000"));
+            const x = p.x + random() * 40 - 20;
+            const y = p.y + random() * 40 - 30;
+            this.effects.add(new RectParticle(x, y, 2, 5, random(0.1, 0.6), { x: 0, y: -0.25 - random() * 1.5 }, "#B4D000"));
         }
     }
 
@@ -124,15 +125,15 @@ export class Game extends Entity {
                 return;
             }
 
-            [...hits].sort(() => Math.random() < 0.5 ? 1 : -1).forEach((hit, i) => {
+            [...hits].sort(randomSorter).forEach((hit, i) => {
                 const p = hit.getCenter();
                 setTimeout(() => {
                     this.audio.explode();
-                    this.camera.shake(15, 0.15);
-                    this.effects.add(new Pulse(p.x, p.y, 30 + Math.random() * 50, 0.5, 0, 120));
+                    this.camera.shake(15, 0.15, 3);
+                    this.effects.add(new Pulse(p.x, p.y, random(30, 80), 0.5, 0, 120));
                     this.addBits(p);
                     const sky:Vector = { x: WIDTH * 0.5, y: -100 };
-                    this.effects.add(new LineParticle(sky, p, 0.4, 10, "#ffffcc99", 10 + Math.random() * 20));
+                    this.effects.add(new LineParticle(sky, p, 0.4, 10, "#ffffcc99", random(10, 20)));
                     this.life--;
                     hit.hidden = true;
                     this.audio.boom();
@@ -142,7 +143,7 @@ export class Game extends Entity {
             if(this.life - hits.length <= 0) {
                 setTimeout(() => {
                     this.again.visible = true;
-                    this.camera.shake(5, 0.3);
+                    this.camera.shake(7, 0.3, 2);
                     this.audio.lose();
                 }, hits.length * delay + 800);
                 return;
