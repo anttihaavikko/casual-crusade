@@ -1,7 +1,9 @@
 import { Entity } from "./entity";
+import { clamp01 } from "./math";
 import { Vector, lerp } from "./vector";
 
 export class Tween {
+    public time: number;
     private target: Vector;
     private start: Vector;
     private startTime: number;
@@ -26,9 +28,9 @@ export class Tween {
             return;
         }
         if(!this.active) return;
-        const t = Math.min((tick - this.startTime) / this.duration, 1);
-        const p = lerp(this.start, this.target, t);
+        this.time = clamp01((tick - this.startTime) / this.duration);
+        const p = lerp(this.start, this.target, this.time);
         this.entity.setPosition(p.x, p.y);
-        this.active = t < 1;
+        this.active = this.time < 1;
     }
 }

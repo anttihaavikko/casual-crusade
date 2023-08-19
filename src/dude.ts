@@ -41,6 +41,8 @@ export class Dude extends Entity {
             x: this.p.x + this.s.x * 0.5, 
             y: this.p.y + this.s.y * 0.5 - 30 - 5 * this.phase
         };
+        ctx.save();
+        ctx.translate(0, Math.sin(-this.tweener.time * Math.PI) * 25);
         drawEllipse(ctx, center, 24, 12, "#00000033");
         drawCircle(ctx, head, 14, "#000");
         ctx.beginPath();
@@ -66,6 +68,7 @@ export class Dude extends Entity {
         ctx.moveTo(head.x - 4, head.y - 2 * this.phase);
         ctx.lineTo(head.x + 4, head.y - 2 * this.phase);
         ctx.stroke();
+        ctx.restore();
     }
 
     public findPath(to: Tile, game: Game, level: Level): void {
@@ -73,13 +76,15 @@ export class Dude extends Entity {
         this.findNext(this.tile, to, [this.tile]);
         this.tile = this.path[this.path.length - 1];
         this.isMoving = true;
+        const moveDuration = 0.3;
         this.path.forEach((tile, index) => {
             setTimeout(() => {
                 tile.content.visited = true;
-                this.tweener.move(tile.getPosition(), 0.3);
 
                 if(index > 0) {
-                    setTimeout(() => game.audio.move(), 0.3, 100);
+                    this.tweener.move(tile.getPosition(), moveDuration);
+
+                    setTimeout(() => game.audio.move(), moveDuration);
                     tile.content.activate();
                     tile.content.pop(index * game.stepScore);
                     game.loot(tile);
@@ -89,13 +94,13 @@ export class Dude extends Entity {
                         neighbours.forEach(n => n.content.activate());
                     }
                 }
-            }, index * 300);
+            }, index * moveDuration * 1000);
         });
         setTimeout(() => {
             this.path.forEach(p => p.content.visited = false);
             this.isMoving = false;
-        }, this.path.length * 300 + 300);
-        setTimeout(() => game.checkLevelEnd(), this.path.length * 300 + 600);
+        }, (this.path.length + 1) * moveDuration * 1000);
+        setTimeout(() => game.checkLevelEnd(), this.path.length * moveDuration * 1000 + 600);
     }
 
     private findNext(from: Tile, to: Tile, visited: Tile[]): void {
