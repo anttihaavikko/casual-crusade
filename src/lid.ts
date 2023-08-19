@@ -1,5 +1,5 @@
 import { Gem, gemColors } from "./card";
-import { drawCircle, drawEllipse, roundRect } from "./engine/drawing";
+import { drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Tween } from "./engine/tween";
