@@ -5,6 +5,7 @@ import { Vector } from "./vector";
 export abstract class Entity {
     public scale: Vector = { x: 1, y: 1};
     public d = 0;
+    public dead: boolean;
 
     protected p: Vector;
     protected s: Vector;

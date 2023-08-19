@@ -3,7 +3,6 @@ import { Mouse } from "./mouse";
 import { Vector } from "./vector";
 
 export abstract class Particle extends Entity {
-    public dead: boolean;
     public ratio = 1;
 
     private start = -1;

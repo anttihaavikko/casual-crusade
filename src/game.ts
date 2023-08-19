@@ -51,12 +51,11 @@ export class Game extends Entity {
     private deck: CardData[] = [];
 
     private icons: RelicIcon[] = [];
-    private showHelp = true;
 
-    private helps = [
+    private helps = new Container(WIDTH * 0.5, HEIGHT * 0.5 + 155, [
         new TextEntity("USE YOUR CARDS TO SPREAD THE GOOD WORD", 25, WIDTH * 0.5, HEIGHT * 0.5 + 134, -1, ZERO, { shadow: 3 }),
         new TextEntity("THROUGHOUT THE LANDS...", 22, WIDTH * 0.5, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3 })
-    ];
+    ]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
         super(360, 500, 0, 0);
@@ -198,7 +197,7 @@ export class Game extends Entity {
     }
 
     public fill(): void {
-        this.showHelp = false;
+        this.helps.hide();
         const handCards = this.cards.filter(c => !c.isLocked());
         for(var i = 0; i < this.handSize - handCards.length; i++) {
             setTimeout(() => {
@@ -252,6 +251,7 @@ export class Game extends Entity {
         this.gameOver.update(tick, mouse);
         this.icons.forEach(i => i.update(tick, mouse));
         this.tooltip.update(tick, mouse);
+        this.helps.update(tick, mouse);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -259,11 +259,11 @@ export class Game extends Entity {
             this.dude.draw(ctx);
             return;
         }
+        this.helps.draw(ctx);
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
         this.gameOver.draw(ctx);
-        if(this.showHelp) this.helps.forEach(h => h.draw(ctx));
         this.tooltip.draw(ctx);
     }
 
@@ -382,6 +382,6 @@ export class Game extends Entity {
         ];
         this.shuffle();
         this.fill();
-        this.showHelp = true;
+        if(this.level.level == 1) this.helps.show();
     }
 }
