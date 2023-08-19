@@ -5,6 +5,7 @@ import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { RectParticle } from "./engine/rect";
 import { Vector } from "./engine/vector";
+import { Lid } from "./lid";
 
 export class Tile extends Entity {
     public content: Card;
@@ -18,20 +19,24 @@ export class Tile extends Entity {
     private life = 0;
     private offset = Math.random() * 100;
     private ballSize: number;
+    private lid: Lid;
     
     public constructor(x: number, y: number, offset: Vector) {
         super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, 80, 60);
         this.index = { x, y };
         this.d = -100;
         this.ballSize = 15 + Math.random() * 7;
+        this.lid = new Lid(this.getCenter());
     }
 
     public update(tick: number, mouse: Mouse): void {
         this.life = tick * 0.01 * (this.hilite ? 3 : -1);
+        this.lid.update(tick, mouse);
     }
 
     public loot(): void {
         this.looted = true;
+        this.lid.open();
     }
 
     public prePreDraw(ctx: CanvasRenderingContext2D): void {
@@ -87,14 +92,7 @@ export class Tile extends Entity {
             ctx.fillRect(center.x - 15, center.y - 17, 30, 15);
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 12, center.y - 16, 24, 7);
-
-            if(!this.looted) {
-                ctx.fillStyle = "#000";
-                ctx.fillRect(center.x - 22, center.y - 28, 44, 20);
-                ctx.fillStyle = gemColors[Gem.Yellow];
-                ctx.fillRect(center.x - 17, center.y - 23, 34, 10);
-            }
-            
+            this.lid.draw(ctx);
             ctx.restore();
         }
         

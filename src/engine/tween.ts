@@ -3,7 +3,7 @@ import { clamp01 } from "./math";
 import { Vector, lerp } from "./vector";
 
 export class Tween {
-    public time: number;
+    public time = 0;
     private target: Vector;
     private start: Vector;
     private startTime: number;
