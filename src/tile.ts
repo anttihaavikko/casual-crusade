@@ -87,7 +87,7 @@ export class Tile extends Entity {
         if(this.reward) {
             ctx.save();
             ctx.translate(0, 7);
-            drawEllipse(ctx, this.getCenter(), 27, 12, "#00000022");
+            drawEllipse(ctx, this.getCenter(), 27, 12, "#00000033");
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 20, center.y - 22, 40, 25);
             ctx.fillStyle = gemColors[Gem.Yellow];
