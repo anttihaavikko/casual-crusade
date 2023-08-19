@@ -1,8 +1,6 @@
 import { Gem, gemColors } from "./card";
 import { drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
-import { Mouse } from "./engine/mouse";
-import { Tween } from "./engine/tween";
 import { Vector, offset } from "./engine/vector";
 import { WIDTH } from "./index";
 

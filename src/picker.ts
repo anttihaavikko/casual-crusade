@@ -1,7 +1,6 @@
 import { Card, TILE_WIDTH, randomCard } from "./card";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
-import { Tween } from "./engine/tween";
 import { Vector, ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";

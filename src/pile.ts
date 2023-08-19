@@ -1,7 +1,5 @@
 import { CARD_BORDER, CARD_GAP, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { Entity } from "./engine/entity";
-import { Mouse } from "./engine/mouse";
-import { Tween } from "./engine/tween";
 import { Vector } from "./engine/vector";
 
 export class Pile extends Entity {

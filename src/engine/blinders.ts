@@ -1,6 +1,5 @@
 import { HEIGHT, WIDTH } from "../index";
 import { Entity } from "./entity";
-import { Mouse } from "./mouse";
 
 export class Blinders extends Entity {
     constructor() {

@@ -1,7 +1,6 @@
 import { ButtonEntity } from "./engine/button";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
-import { Tween } from "./engine/tween";
 import { ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";

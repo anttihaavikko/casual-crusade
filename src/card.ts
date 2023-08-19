@@ -2,7 +2,6 @@ import { Draggable } from "./engine/draggable";
 import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
-import { Tween } from "./engine/tween";
 import { Vector, distance, normalize, offset } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";

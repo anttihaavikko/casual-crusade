@@ -1,7 +1,6 @@
-import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors, gemNames, getRandomGem } from "./card";
+import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors, gemNames } from "./card";
 import { Draggable } from "./engine/draggable";
 import { Mouse } from "./engine/mouse";
-import { Tween } from "./engine/tween";
 import { Vector, offset } from "./engine/vector";
 import { Game } from "./game";
 

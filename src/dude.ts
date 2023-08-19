@@ -1,9 +1,8 @@
-import { Card, Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { RectParticle } from "./engine/rect";
-import { Tween } from "./engine/tween";
 import { Game } from "./game";
 import { Level } from "./level";
 import { Tile } from "./tile";
