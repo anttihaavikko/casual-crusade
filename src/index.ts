@@ -25,12 +25,14 @@ const dude = new Dude(level.board[2]);
 const mouse: Mouse = { x: 0, y: 0 };
 const game = new Game(dude, new Container(), new Camera(), level, new AudioManager(), mouse);
 
-const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 220, 250, 75, () => {}, game.audio);
+const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 210, 250, 75, () => {}, game.audio);
 
 const startUi: Entity[] = [
   startButton,
   new TextEntity("CASUAL CRUSADE", 70, WIDTH * 0.5, 110, -1, ZERO, { shadow: 7, align: "center" }),
-  new TextEntity("by Antti Haavikko", 35, WIDTH * 0.5, 155, -1, ZERO, { shadow: 5, align: "center" })
+  new TextEntity("by Antti Haavikko", 35, WIDTH * 0.5, 155, -1, ZERO, { shadow: 4, align: "center" }),
+  new TextEntity("made for js13k 2023", 20, WIDTH * 0.5, 185, -1, ZERO, { shadow: 2, align: "center" }),
+  new TextEntity("Press F for full screen", 18, WIDTH * 0.5, HEIGHT - 20, -1, ZERO, { shadow: 2, align: "center" })
 ];
 
 const ui: TextEntity[] = [
