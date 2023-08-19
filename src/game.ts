@@ -11,12 +11,13 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { random, randomSorter } from "./engine/random";
 import { RectParticle } from "./engine/rect";
-import { Vector, offset } from "./engine/vector";
+import { Vector, ZERO, offset } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
 import { RelicIcon, WILD_NAME } from "./relic";
+import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
 
@@ -50,6 +51,12 @@ export class Game extends Entity {
     private deck: CardData[] = [];
 
     private icons: RelicIcon[] = [];
+    private showHelp = true;
+
+    private helps = [
+        new TextEntity("USE YOUR CARDS TO SPREAD THE GOOD WORD", 25, WIDTH * 0.5, HEIGHT * 0.5 + 134, -1, ZERO, { shadow: 3 }),
+        new TextEntity("THROUGHOUT THE LANDS...", 22, WIDTH * 0.5, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3 })
+    ];
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
         super(360, 500, 0, 0);
@@ -191,6 +198,7 @@ export class Game extends Entity {
     }
 
     public fill(): void {
+        this.showHelp = false;
         const handCards = this.cards.filter(c => !c.isLocked());
         for(var i = 0; i < this.handSize - handCards.length; i++) {
             setTimeout(() => {
@@ -255,6 +263,7 @@ export class Game extends Entity {
         this.picker.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
         this.gameOver.draw(ctx);
+        if(this.showHelp) this.helps.forEach(h => h.draw(ctx));
         this.tooltip.draw(ctx);
     }
 
@@ -373,5 +382,6 @@ export class Game extends Entity {
         ];
         this.shuffle();
         this.fill();
+        this.showHelp = true;
     }
 }
