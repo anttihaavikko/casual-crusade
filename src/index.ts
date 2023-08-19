@@ -44,7 +44,6 @@ const p = dude.getPosition();
 level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
 level.starter.lock();
 level.board[2].content = level.starter;
-// entities.push(level.starter);
 
 canvas.id = "game";
 canvas.width = WIDTH;
@@ -120,11 +119,13 @@ function tick(t: number) {
     startUi.forEach(e => {
       e.update(t, mouse);
       e.draw(ctx);
+      game.blinders.draw(ctx);
     });
     return;
   }
   zoom = Math.max(1, zoom - 0.02);
   ui.forEach(e => e.draw(ctx));
+  game.blinders.draw(ctx);
 }
 
 requestAnimationFrame(tick);

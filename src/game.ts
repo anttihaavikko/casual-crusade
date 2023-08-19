@@ -2,6 +2,7 @@ import { Card, CardData, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, randomCard } f
 import { Dude } from "./dude";
 import { GameOver } from "./end";
 import { AudioManager } from "./engine/audio";
+import { Blinders } from "./engine/blinders";
 import { Camera } from "./engine/camera";
 import { Container } from "./engine/container";
 import { Entity, sortByDepth } from "./engine/entity";
@@ -38,6 +39,7 @@ export class Game extends Entity {
     public gemChance = 1;
     public canRedraw: boolean;
     public wild = { first: Gem.None, second: Gem.None };
+    public blinders = new Blinders();
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -145,27 +147,31 @@ export class Game extends Entity {
                 }, hits.length * delay + 800);
                 return;
             }
+
+            setTimeout(() => this.audio.win(), hits.length * delay + 100);
             
             setTimeout(() => {
-                this.mouse.dragging = false;
-                this.level.next();
-                this.cards = [];
-                this.dude.reset(this.level.board[2]);
-                this.shuffle();
-                this.fill();
-                this.audio.win();
+                this.blinders.close(() => {
+                    this.blinders.open();
+                    this.mouse.dragging = false;
+                    this.level.next();
+                    this.cards = [];
+                    this.dude.reset(this.level.board[2]);
+                    this.shuffle();
+                    this.fill();
 
-                const sortedX = [...this.level.board].filter(t => !t.reward).map(t => t.index.x).sort((a, b) => a - b);
-                const sortedY = [...this.level.board].filter(t => !t.reward).map(t => t.index.y).sort((a, b) => a - b);
-                const x = -(sortedX[0] - 1 + sortedX[sortedX.length - 1] - 1) * 0.5 * TILE_WIDTH;
-                const y = -(sortedY[0] - 1 + sortedY[sortedY.length - 1] - 1) * 0.5 * TILE_HEIGHT;
-                this.level.board.forEach(t => {
-                    this.moveEntity(t, x, y);
-                    this.moveEntity(t.content, x, y);
-                    this.moveEntity(t.getLid(), x, y);
+                    const sortedX = [...this.level.board].filter(t => !t.reward).map(t => t.index.x).sort((a, b) => a - b);
+                    const sortedY = [...this.level.board].filter(t => !t.reward).map(t => t.index.y).sort((a, b) => a - b);
+                    const x = -(sortedX[0] - 1 + sortedX[sortedX.length - 1] - 1) * 0.5 * TILE_WIDTH;
+                    const y = -(sortedY[0] - 1 + sortedY[sortedY.length - 1] - 1) * 0.5 * TILE_HEIGHT;
+                    this.level.board.forEach(t => {
+                        this.moveEntity(t, x, y);
+                        this.moveEntity(t.content, x, y);
+                        this.moveEntity(t.getLid(), x, y);
+                    });
+                    const p = this.level.board[2].getPosition();
+                    this.dude.setPosition(p.x, p.y);
                 });
-                const p = this.level.board[2].getPosition();
-                this.dude.setPosition(p.x, p.y);
             }, hits.length * delay + 600);
     }
 
@@ -229,6 +235,7 @@ export class Game extends Entity {
 
     public update(tick: number, mouse: Mouse): void {
         this.dude.update(tick, mouse);
+        this.blinders.update(tick, mouse);
         if(!this.started) return;
         this.cards.forEach(c => c.update(tick, mouse));
         this.pile.update(tick, mouse);
@@ -331,21 +338,24 @@ export class Game extends Entity {
     }
 
     public restart(): void {
-        this.cards = [];
-        this.score = 0;
-        this.gameOver.toggle(false);
-        this.level.restart();
-        this.init();
-        this.dude.reset(this.level.board[2]);
-        this.icons = [];
-        this.relics = [];
-        this.canRemoteOpen = false;
-        this.healOnStep = false;
-        this.stepScore = 1;
-        this.remoteMulti = false;
-        this.gemChance = 1;
-        this.canRedraw = false;
-        this.wild = { first: Gem.None, second: Gem.None };
+        this.blinders.close(() => {
+            this.blinders.open();
+            this.cards = [];
+            this.score = 0;
+            this.gameOver.toggle(false);
+            this.level.restart();
+            this.init();
+            this.dude.reset(this.level.board[2]);
+            this.icons = [];
+            this.relics = [];
+            this.canRemoteOpen = false;
+            this.healOnStep = false;
+            this.stepScore = 1;
+            this.remoteMulti = false;
+            this.gemChance = 1;
+            this.canRedraw = false;
+            this.wild = { first: Gem.None, second: Gem.None };
+        });
     }
 
     private init(): void {
