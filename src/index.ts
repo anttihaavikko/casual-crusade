@@ -29,9 +29,9 @@ const startButton = new ButtonEntity("PLAY", WIDTH * 0.5, HEIGHT * 0.5 + 210, 25
 
 const startUi: Entity[] = [
   startButton,
-  new TextEntity("CASUAL CRUSADE", 70, WIDTH * 0.5, 110, -1, ZERO, { shadow: 7, align: "center" }),
-  new TextEntity("by Antti Haavikko", 35, WIDTH * 0.5, 155, -1, ZERO, { shadow: 4, align: "center" }),
-  new TextEntity("Made for js13k 2023", 20, WIDTH * 0.5, 185, -1, ZERO, { shadow: 2, align: "center" }),
+  new TextEntity("CASUAL CRUSADE", 70, WIDTH * 0.5, 95, -1, ZERO, { shadow: 7, align: "center" }),
+  new TextEntity("by Antti Haavikko", 35, WIDTH * 0.5, 140, -1, ZERO, { shadow: 4, align: "center" }),
+  new TextEntity("Made for js13k 2023", 20, WIDTH * 0.5, 170, -1, ZERO, { shadow: 2, align: "center" }),
   new TextEntity("Press F for full screen", 18, WIDTH * 0.5, HEIGHT - 20, -1, ZERO, { shadow: 2, align: "center" })
 ];
 
