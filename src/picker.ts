@@ -17,13 +17,10 @@ export class Picker extends Entity {
     private picks: (Card | RelicIcon)[] = [];
     private title = new TextEntity("", 55, WIDTH * 0.5, HEIGHT * 0.5 - 20, -1, ZERO, { shadow: 10 });
     private locked: boolean;
-
-    private tween: Tween;
     private ready: boolean;
     
     constructor(private level: Level, private game: Game) {
         super(WIDTH * 0.5, HEIGHT * 0.5, 0, 0);
-        this.tween = new Tween(this);
         this.scale = { x: 1, y: 0 };
     }
 

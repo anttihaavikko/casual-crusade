@@ -1,4 +1,5 @@
 import { Mouse } from "./mouse";
+import { Tween } from "./tween";
 import { Vector } from "./vector";
 
 export abstract class Entity {
@@ -8,12 +9,16 @@ export abstract class Entity {
     protected p: Vector;
     protected s: Vector;
 
+    protected tween: Tween;
+
     public constructor(x: number, y: number, width: number, height: number) {
         this.p = { x, y };
         this.s = { x: width, y: height };
+        this.tween = new Tween(this);
     }
 
     public update(tick: number, mouse: Mouse): void {
+        this.tween.update(tick);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {

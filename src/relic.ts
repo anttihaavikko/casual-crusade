@@ -36,13 +36,11 @@ export const relics: Relic[] = [
 
 export class RelicIcon extends Draggable {
     public icon: boolean;
-    private tween: Tween;
 
     constructor(x: number, y: number, private game: Game, public data: Relic) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
         this.selectable = true;
         this.locked = true;
-        this.tween = new Tween(this);
         this.data.gems = [1, 2, 3, 4, 5, 6].sort(() => Math.random() < 0.5 ? 1 : -1);
         this.data.color = this.data.name == WILD_NAME ? gemColors[this.data.gems[0]] : this.data.color;
     }

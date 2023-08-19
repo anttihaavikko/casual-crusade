@@ -1,14 +1,10 @@
 import { HEIGHT, WIDTH } from "../index";
 import { Entity } from "./entity";
 import { Mouse } from "./mouse";
-import { Tween } from "./tween";
 
 export class Blinders extends Entity {
-    private tween: Tween;
-
     constructor() {
         super(0, 0, 0, 0);
-        this.tween = new Tween(this);
         this.d = 500;
         this.open();
     }

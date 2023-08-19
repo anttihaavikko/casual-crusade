@@ -11,14 +11,12 @@ import { Tile } from "./tile";
 export class Dude extends Entity {
     public isMoving: boolean;
 
-    private tweener: Tween;
     private path: Tile[] = [];
     private phase = 0;
 
     constructor(private tile: Tile) {
         const p = tile.getPosition();
         super(p.x, p.y, TILE_WIDTH, TILE_HEIGHT);
-        this.tweener = new Tween(this);
         this.d = 50;
     }
 
@@ -29,7 +27,7 @@ export class Dude extends Entity {
     }
 
     public update(tick: number, mouse: Mouse): void {
-        this.tweener.update(tick);
+        this.tween.update(tick);
         this.phase = Math.abs(Math.sin(tick * 0.005));
     }
 
@@ -43,7 +41,7 @@ export class Dude extends Entity {
             y: this.p.y + this.s.y * 0.5 - 30 - 5 * this.phase
         };
         ctx.save();
-        ctx.translate(0, Math.sin(-this.tweener.time * Math.PI) * 25);
+        ctx.translate(0, Math.sin(-this.tween.time * Math.PI) * 25);
         drawEllipse(ctx, center, 24, 12, "#00000033");
         drawCircle(ctx, head, 14, "#000");
         ctx.beginPath();
@@ -83,7 +81,7 @@ export class Dude extends Entity {
                 tile.content.visited = true;
 
                 if(index > 0) {
-                    this.tweener.move(tile.getPosition(), moveDuration);
+                    this.tween.move(tile.getPosition(), moveDuration);
 
                     setTimeout(() => {
                         game.audio.move();

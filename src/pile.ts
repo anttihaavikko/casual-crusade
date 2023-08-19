@@ -6,18 +6,11 @@ import { Vector } from "./engine/vector";
 
 export class Pile extends Entity {
     public count = 1;
-
-    private tween: Tween;
     
     constructor(x: number, y: number) {
         super(0, 0, 0, 0);
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
-        this.tween = new Tween(this);
         this.d = -5;
-    }
-
-    public update(tick: number, mouse: Mouse): void {
-        this.tween.update(tick);
     }
 
     public move(to: Vector, duration: number): void {

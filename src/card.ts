@@ -86,11 +86,9 @@ export class Card extends Draggable {
     public visited: boolean;
 
     private tile: Tile;
-    private tween: Tween;
 
     public constructor(x: number, y: number, private level: Level, private game: Game, public data: CardData) {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
-        this.tween = new Tween(this);
     }
 
     public is(color: Gem): boolean {
