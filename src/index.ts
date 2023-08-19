@@ -50,9 +50,12 @@ canvas.height = HEIGHT;
 // canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
 
-canvas.onmousemove = (e: MouseEvent) => {
-  mouse.x = e.offsetX;
-  mouse.y = e.offsetY;
+let isFull = false;
+document.onfullscreenchange = () => isFull = !isFull;
+
+document.onmousemove = (e: MouseEvent) => {
+  mouse.x = isFull ? (e.x / window.innerWidth * WIDTH) : e.offsetX;
+  mouse.y = isFull ? (e.y / window.innerHeight * HEIGHT) : e.offsetY;
 };
 
 document.onkeydown = (e: KeyboardEvent) => {
