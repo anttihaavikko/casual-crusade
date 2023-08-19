@@ -96,7 +96,7 @@ let zoom = 1.2;
 
 function tick(t: number) {
   ui[0].content = `LIFE: ${game.life}/${game.maxLife}`;
-  ui[1].content = game.score.toString();
+  ui[1].content = game.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   requestAnimationFrame(tick);
   ctx.resetTransform();
   ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
