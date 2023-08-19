@@ -19,9 +19,6 @@ export abstract class Entity {
     public draw(ctx: CanvasRenderingContext2D): void {
     }
 
-    public preDraw(ctx: CanvasRenderingContext2D): void {
-    }
-
     public getCenter(): Vector {
         return {
             x: this.p.x + this.s.x * 0.5,

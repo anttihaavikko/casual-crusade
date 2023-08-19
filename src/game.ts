@@ -165,6 +165,7 @@ export class Game extends Entity {
                 this.level.board.forEach(t => {
                     this.moveEntity(t, x, y);
                     this.moveEntity(t.content, x, y);
+                    this.moveEntity(t.getLid(), x, y);
                 });
                 const p = this.level.board[2].getPosition();
                 this.dude.setPosition(p.x, p.y);

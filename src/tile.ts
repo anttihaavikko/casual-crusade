@@ -1,9 +1,7 @@
 import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors } from "./card";
-import { Container } from "./engine/container";
-import { drawCircle, drawEllipse, roundRect } from "./engine/drawing";
+import { drawEllipse, roundRect } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
-import { RectParticle } from "./engine/rect";
 import { Vector } from "./engine/vector";
 import { Lid } from "./lid";
 
@@ -22,11 +20,15 @@ export class Tile extends Entity {
     private lid: Lid;
     
     public constructor(x: number, y: number, offset: Vector) {
-        super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, 80, 60);
+        super(x * TILE_WIDTH + offset.x, y * TILE_HEIGHT + offset.y, TILE_WIDTH, TILE_HEIGHT);
         this.index = { x, y };
         this.d = -100;
         this.ballSize = 15 + Math.random() * 7;
         this.lid = new Lid(this.getCenter());
+    }
+
+    public getLid(): Lid {
+        return this.lid;
     }
 
     public update(tick: number, mouse: Mouse): void {
