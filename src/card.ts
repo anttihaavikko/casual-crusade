@@ -191,7 +191,7 @@ export class Card extends Draggable {
     public hover(): void {
         if(this.data.gem) {
             setTimeout(() => {
-                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scl), [gemColors[this.data.gem]]);
+                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scale.y), [gemColors[this.data.gem]]);
             }, 5);
         }
         this.game.audio.thud();
@@ -201,7 +201,7 @@ export class Card extends Draggable {
         ctx.save();
         const c = this.getCenter();
         ctx.translate(c.x, c.y);
-        ctx.scale(this.scl, this.scl);
+        ctx.scale(this.scale.x, this.scale.y);
         ctx.translate(-c.x, -c.y);
         if(this.hovered && this.selectable) {
             ctx.translate(0, -10);

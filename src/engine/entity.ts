@@ -2,7 +2,7 @@ import { Mouse } from "./mouse";
 import { Vector } from "./vector";
 
 export abstract class Entity {
-    public scl = 1;
+    public scale: Vector = { x: 1, y: 1};
     public d = 0;
 
     protected p: Vector;
@@ -36,10 +36,10 @@ export abstract class Entity {
 
     public isInside(point: Vector): boolean {
         const c = this.getCenter();
-        return point.x > c.x - this.s.x * 0.5 * this.scl && 
-            point.x < c.x + this.s.x * 0.5 * this.scl &&
-            point.y > c.y - this.s.y * 0.5 * this.scl &&
-            point.y < c.y + this.s.y * 0.5 * this.scl;
+        return point.x > c.x - this.s.x * 0.5 * this.scale.x && 
+            point.x < c.x + this.s.x * 0.5 * this.scale.x &&
+            point.y > c.y - this.s.y * 0.5 * this.scale.y &&
+            point.y < c.y + this.s.y * 0.5 * this.scale.y;
     }
 }
 

@@ -51,10 +51,10 @@ export class RelicIcon extends Draggable {
         if(!this.icon) return super.isInside(point);
 
         const c = this.getCenter();
-        return point.x > c.x - this.s.x * 0.25 * this.scl && 
-            point.x < c.x + this.s.x * 0.25 * this.scl &&
-            point.y > c.y - this.s.y * 0.25 * this.scl &&
-            point.y < c.y + this.s.y * 0.25 * this.scl;
+        return point.x > c.x - this.s.x * 0.25 * this.scale.x && 
+            point.x < c.x + this.s.x * 0.25 * this.scale.x &&
+            point.y > c.y - this.s.y * 0.25 * this.scale.y &&
+            point.y < c.y + this.s.y * 0.25 * this.scale.y;
     }
 
     public move(to: Vector, duration: number): void {
@@ -71,7 +71,7 @@ export class RelicIcon extends Draggable {
     protected hover(): void {
         setTimeout(() => {
             const dx = this.icon ? 230 : 0;
-            const dy = this.icon ? 110 : -50 * this.scl;
+            const dy = this.icon ? 110 : -50 * this.scale.y;
             const tt = this.data.description.replace("!1", gemNames[this.data.gems[0]]).replace("!2", gemNames[this.data.gems[1]]);
             this.game.tooltip.show(this.data.name, tt, offset(this.getCenter(), dx, dy), this.data.name == WILD_NAME ? this.data.gems.map(g => gemColors[g]) : [this.data.color]);
         }, 5);
@@ -106,7 +106,7 @@ export class RelicIcon extends Draggable {
         ctx.save();
         const c = this.getCenter();
         ctx.translate(c.x, c.y);
-        ctx.scale(this.scl, this.scl);
+        ctx.scale(this.scale.x, this.scale.y);
         ctx.translate(-c.x, -c.y);
         if(this.hovered && this.selectable && !this.icon) {
             ctx.translate(0, -10);
