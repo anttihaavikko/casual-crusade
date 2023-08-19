@@ -19,10 +19,6 @@ export class Blinders extends Entity {
         setTimeout(after, 500);
     }
 
-    public update(tick: number, mouse: Mouse): void {
-        this.tween.update(tick);
-    }
-
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillStyle = "#000";
         ctx.fillRect(0, 0, WIDTH * this.scale.x, HEIGHT);

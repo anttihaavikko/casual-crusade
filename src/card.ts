@@ -106,7 +106,6 @@ export class Card extends Draggable {
 
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
-        this.tween.update(tick);
         const sorted = [...this.level.board]
             .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.p, tile.getPosition()) < 100)
             .sort((a, b) => distance(this.p, a.getPosition()) - distance(this.p, b.getPosition()));
