@@ -123,6 +123,12 @@ export class Dude extends Entity {
     }
 
     private evaluate(path: Tile[]): number {
-        return path.map((tile, i) => tile.content.getScore(i + 1)).reduce((a, b) => a + b, 0);
+        let multi = 1;
+        let total = 0;
+        path.forEach((tile, i) => {
+            if(tile.content.is(Gem.Orange)) multi *= 2;
+            total += tile.content.getScore((i + 1) * multi);
+        }) 
+        return total;
     }
 }
