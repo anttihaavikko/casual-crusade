@@ -90,7 +90,7 @@ export class Tile extends Entity {
             drawEllipse(ctx, this.getCenter(), 27, 12, "#00000033");
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 20, center.y - 22, 40, 25);
-            ctx.fillStyle = gemColors.yellow;
+            ctx.fillStyle = gemColors.y;
             ctx.fillRect(center.x - 15, center.y - 17, 30, 15);
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 12, center.y - 16, 24, 7);
@@ -119,10 +119,10 @@ export class Tile extends Entity {
     public accepts(card: Card, board: Tile[]): boolean {
         if(this.reward) return false;
         return board.some(tile => {
-            if(tile.index.x == this.index.x && tile.index.y == this.index.y - 1 && tile.content && tile.content.has("down") && card.has("up")) return true;
-            if(tile.index.x == this.index.x && tile.index.y == this.index.y + 1 && tile.content && tile.content.has("up") && card.has("down")) return true;
-            if(tile.index.x == this.index.x + 1 && tile.index.y == this.index.y && tile.content && tile.content.has("left") && card.has("right")) return true;
-            if(tile.index.x == this.index.x - 1 && tile.index.y == this.index.y && tile.content && tile.content.has("right") && card.has("left")) return true;
+            if(tile.index.x == this.index.x && tile.index.y == this.index.y - 1 && tile.content && tile.content.has("d") && card.has("u")) return true;
+            if(tile.index.x == this.index.x && tile.index.y == this.index.y + 1 && tile.content && tile.content.has("u") && card.has("d")) return true;
+            if(tile.index.x == this.index.x + 1 && tile.index.y == this.index.y && tile.content && tile.content.has("l") && card.has("r")) return true;
+            if(tile.index.x == this.index.x - 1 && tile.index.y == this.index.y && tile.content && tile.content.has("r") && card.has("l")) return true;
             return false;
         });
     }

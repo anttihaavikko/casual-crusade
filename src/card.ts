@@ -16,39 +16,39 @@ export const TILE_HEIGHT = 60;
 export const CARD_BORDER = 7;
 export const CARD_GAP = 2;
 
-export type Gem = "none" | "blue" | "purple" | "red" | "yellow" | "orange" | "green";
+export type Gem = "n" | "b" | "p" | "r" | "y" | "o" | "g";
 
-export const gemColors = {
-    none: null,
-    blue: "#00BDE5",
-    purple: "#846AC1",
-    red: "#E93988",
-    yellow: "#F3DC00",
-    orange: "#F89F00",
-    green: "#B4D000"
+export const gemColors: {[K in Gem]: string} = {
+    n: null,
+    b: "#00BDE5",
+    p: "#846AC1",
+    r: "#E93988",
+    y: "#F3DC00",
+    o: "#F89F00",
+    g: "#B4D000"
 };
 
-export const gemNames = {
-    none: null,
-    blue: "FIBONACCI'S BOON",
-    purple: "PENANCE",
-    red: "POPE'S BLESSING",
-    yellow: "INDULGENCE",
-    orange: "DYNASTY",
-    green: "KHAN'S LEGACY"
+export const gemNames: {[K in Gem]: string} = {
+    n: null,
+    b: "FIBONACCI'S BOON",
+    p: "PENANCE",
+    r: "POPE'S BLESSING",
+    y: "INDULGENCE",
+    o: "DYNASTY",
+    g: "KHAN'S LEGACY"
 };
 
-const gemDescriptions = {
-    none: null,
-    blue: "|Draw extra| card when |placed|.",
-    purple: "|Recycle |random card when |stepping| on.",
-    red: "|Heal| for one when |placed|.",
-    yellow: "|Score earned| for stepping on is |tenfold|.",
-    orange: "|Doubles| move scores when |stepping| on.",
-    green: "Fill neighbours with |blank cards|."
+const gemDescriptions: {[K in Gem]: string} = {
+    n: null,
+    b: "|Draw extra| card when |placed|.",
+    p: "|Recycle |random card when |stepping| on.",
+    r: "|Heal| for one when |placed|.",
+    y: "|Score earned| for stepping on is |tenfold|.",
+    o: "|Doubles| move scores when |stepping| on.",
+    g: "Fill neighbours with |blank cards|."
 };
 
-export type Direction = "up" | "right" | "down" | "left";
+export type Direction = "u" | "r" | "d" | "l";
 
 export const getRandomGem = () => {
     return 1 + Math.floor(Math.random() * 5);
@@ -60,16 +60,16 @@ export interface CardData {
 }
 
 export function randomGem(): Gem {
-    return randomCell(["blue", "purple", "red", "yellow", "orange", "green"]);
+    return randomCell(["b", "p", "r", "y", "o", "g"]);
 }
 
 export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): CardData {
     const count = Math.random() < 0.1 ? 4 : (1 + Math.floor(Math.random() * 3));
-    const directions = dirs ?? ["up" as Direction, "right" as Direction, "down" as Direction, "left" as Direction].sort(() =>  Math.random() - 0.5).slice(0, count);
+    const directions = dirs ?? ["u" as Direction, "r" as Direction, "d" as Direction, "l" as Direction].sort(() =>  Math.random() - 0.5).slice(0, count);
     const gemChance = directions.length == 1 ? 0.6 * chance : 0.2 * chance;
     return {
         directions,
-        gem: canHaveGem && Math.random() < gemChance ? randomGem() : "none"
+        gem: canHaveGem && Math.random() < gemChance ? randomGem() : "n"
     }
 }
 
@@ -84,7 +84,7 @@ export class Card extends Draggable {
     }
 
     public is(color: Gem): boolean {
-        return this.data.gem != "none" && [this.data.gem, ...this.game.getWilds(this.data.gem)].includes(color);
+        return this.data.gem != "n" && [this.data.gem, ...this.game.getWilds(this.data.gem)].includes(color);
     }
 
     public isLocked(): boolean {
@@ -167,14 +167,14 @@ export class Card extends Draggable {
             this.tile.content = this;
             this.game.fill();
             this.game.findPath(this.tile, this.game);
-            if(this.is("blue")) {
+            if(this.is("b")) {
                 this.game.audio.discard();
                 this.game.pull();
             }
-            if(this.is("red")) {
+            if(this.is("r")) {
                 this.game.heal(1);
             }
-            if(this.is("green")) {
+            if(this.is("g")) {
                 const neighbours = this.tile.getFreeNeighbours(this.level.board, true).filter(n => !n.content);
                 neighbours.forEach(n => this.game.createBlank(n));
                 if(neighbours.length > 0) {
@@ -232,16 +232,16 @@ export class Card extends Draggable {
         if(this.visited) ctx.fillStyle = "#ffffaa";
         ctx.fillRect(this.p.x + CARD_BORDER + CARD_GAP, this.p.y + CARD_BORDER + CARD_GAP, this.s.x - CARD_BORDER * 2 - CARD_GAP * 2, this.s.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
-        if(this.data.directions.includes("up")) {
+        if(this.data.directions.includes("u")) {
             this.lineTo(ctx, this.p.x + this.s.x * 0.5, this.p.y + CARD_BORDER + CARD_GAP);
         }
-        if(this.data.directions.includes("right")) {
+        if(this.data.directions.includes("r")) {
             this.lineTo(ctx, this.p.x + this.s.x - CARD_BORDER - CARD_GAP, this.p.y + this.s.y * 0.5);
         }
-        if(this.data.directions.includes("down")) {
+        if(this.data.directions.includes("d")) {
             this.lineTo(ctx, this.p.x + this.s.x * 0.5, this.p.y + this.s.y - CARD_BORDER - CARD_GAP);
         }
-        if(this.data.directions.includes("left")) {
+        if(this.data.directions.includes("l")) {
             this.lineTo(ctx, this.p.x + CARD_BORDER + CARD_GAP, this.p.y + this.s.y * 0.5);
         }
 
@@ -284,25 +284,25 @@ export class Card extends Draggable {
     public getConnections(): Tile[] {
         const index = this.level.board.find(tile => tile.content === this).index;
         return this.data.directions.map(d => {
-            if(d == "up") return this.level.board.find(tile => tile.index.x === index.x && tile.index.y === index.y - 1 && tile.content && tile.content.has("down"));
-            if(d == "down") return this.level.board.find(tile => tile.index.x === index.x && tile.index.y === index.y + 1 && tile.content && tile.content.has("up"));
-            if(d == "left") return this.level.board.find(tile => tile.index.x === index.x - 1 && tile.index.y === index.y && tile.content && tile.content.has("right"));
-            if(d == "right") return this.level.board.find(tile => tile.index.x === index.x + 1 && tile.index.y === index.y && tile.content && tile.content.has("left"));
+            if(d == "u") return this.level.board.find(tile => tile.index.x === index.x && tile.index.y === index.y - 1 && tile.content && tile.content.has("d"));
+            if(d == "d") return this.level.board.find(tile => tile.index.x === index.x && tile.index.y === index.y + 1 && tile.content && tile.content.has("u"));
+            if(d == "l") return this.level.board.find(tile => tile.index.x === index.x - 1 && tile.index.y === index.y && tile.content && tile.content.has("r"));
+            if(d == "r") return this.level.board.find(tile => tile.index.x === index.x + 1 && tile.index.y === index.y && tile.content && tile.content.has("l"));
         }).filter(tile => tile && tile.content);
     }
 
     public activate(): void {
-        if(this.is("red") && this.game.healOnStep) {
+        if(this.is("r") && this.game.healOnStep) {
             this.game.heal(1);
         }
-        if(this.is("purple")) {
+        if(this.is("p")) {
             this.game.audio.discard();
             this.game.discard();
         }
-        if(this.is("orange")) {
+        if(this.is("o")) {
             this.triggerMulti();
         }
-        if(this.is("yellow")) {
+        if(this.is("y")) {
             this.game.audio.score();
         }
     }
@@ -324,7 +324,7 @@ export class Card extends Draggable {
     }
 
     private addScore(amt: number, ): void {
-        const isYellow = this.is("yellow");
+        const isYellow = this.is("y");
         const addition = this.getScore(amt);
         this.game.score += addition;
         const p = {
@@ -362,7 +362,7 @@ export class Card extends Draggable {
     }
 
     public getScore(step: number): number {
-        const mod = this.is("yellow") ? 10 : 1;
+        const mod = this.is("y") ? 10 : 1;
         return step * mod * this.game.multi * this.level.level;
     }
 }
