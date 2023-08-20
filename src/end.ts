@@ -5,6 +5,7 @@ import { ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
 import { TextEntity } from "./text";
+import { transformToCenter } from "./engine/transformer";
 
 export class GameOver extends Entity {
     private visible: boolean;
@@ -30,9 +31,7 @@ export class GameOver extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
-        ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
-        ctx.scale(this.scale.x, this.scale.y);
-        ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5);
+        transformToCenter(ctx, 0, this.scale.x, this.scale.y)
         ctx.fillStyle = "#000000bb";
         ctx.fillRect(-100, HEIGHT * 0.2, WIDTH + 200, HEIGHT * 0.6);
         this.gameOver.draw(ctx);

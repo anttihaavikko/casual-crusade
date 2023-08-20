@@ -1,3 +1,4 @@
+import { transformTo } from "./transformer";
 import { Entity } from "./entity";
 import { Mouse } from "./mouse";
 
@@ -27,10 +28,8 @@ export class Container extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
-        const p = this.getPosition();
-        ctx.translate(p.x, p.y);
-        ctx.scale(this.scale.x, this.scale.y);
-        ctx.translate(-p.x, -p.y);
+        const p = this.p;
+        transformTo(ctx, p.x, p.y, 0, this.scale.x, this.scale.y);
         this.children.forEach(c => c.draw(ctx));
         ctx.restore();
     }

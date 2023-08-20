@@ -59,9 +59,9 @@ export class Level {
             this.board[2].content.setPosition(this.offset.x + TILE_WIDTH, this.offset.y + TILE_HEIGHT);
         }
 
-        const center = this.board[2].getPosition();
+        const center = this.board[2].p;
         const tiles = this.getPossibleRewardSpots().sort(() => Math.random() < 0.5 ? 1 : -1).sort((a, b) => {
-            return distance(a.getPosition(), center) < distance(b.getPosition(), center) ? 1 : -1;
+            return distance(a.p, center) < distance(b.p, center) ? 1 : -1;
         });
         tiles.slice(0, Math.max(0, this.level - Math.max(0, this.level - 8) * 3)).forEach(tile => {
             const edge = this.getEdgeTile(tile);

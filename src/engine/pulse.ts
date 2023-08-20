@@ -11,7 +11,7 @@ export class Pulse extends Particle {
         const mod = Math.max(0, Math.min(1 - this.ratio, 1));
         const alpha = Math.round(mod * this.alpha).toString(16).padStart(2, '0');
         const color = "#ffffff" + alpha;
-        drawCircle(ctx, this.getPosition(), mod * this.radius, this.ringWidth > 0 ? "#ffffff00" : color);
+        drawCircle(ctx, this.p, mod * this.radius, this.ringWidth > 0 ? "#ffffff00" : color);
         if(this.ringWidth > 0) {
             ctx.strokeStyle = color;
             ctx.lineWidth = this.ringWidth;

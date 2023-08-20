@@ -25,7 +25,7 @@ export class Tween {
 
     public move(target: Vector, duration: number): void {
         this.type = "move";
-        const p = this.entity.getPosition();
+        const p = this.entity.p;
         this.start = { x: p.x, y: p.y };
         this.startTween(target, duration);
     }

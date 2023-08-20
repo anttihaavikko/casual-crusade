@@ -3,6 +3,7 @@ import { font } from "./engine/constants";
 import { Draggable } from "./engine/draggable";
 import { Vector, offset } from "./engine/vector";
 import { Game } from "./game";
+import { transformTo } from "./engine/transformer";
 
 interface Relic {
     name: string;
@@ -100,9 +101,7 @@ export class RelicIcon extends Draggable {
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
         const c = this.getCenter();
-        ctx.translate(c.x, c.y);
-        ctx.scale(this.scale.x, this.scale.y);
-        ctx.translate(-c.x, -c.y);
+        transformTo(ctx, c.x, c.y, 0, this.scale.x, this.scale.y);
         if(this.hovered && this.selectable && !this.icon) {
             ctx.translate(0, -10);
         }

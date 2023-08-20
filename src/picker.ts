@@ -7,6 +7,7 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { RelicIcon, relics } from "./relic";
 import { TextEntity } from "./text";
+import { transformToCenter } from "./engine/transformer";
 
 const PICK_OFFSET = 40;
 
@@ -31,9 +32,7 @@ export class Picker extends Entity {
 
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
-        ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
-        ctx.scale(this.scale.x, this.scale.y);
-        ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5);
+        transformToCenter(ctx, 0, this.scale.x, this.scale.y);
         ctx.fillStyle = "#000000bb";
         ctx.fillRect(0, HEIGHT * 0.2, WIDTH, HEIGHT * 0.6);
         this.picks.forEach(card => card.draw(ctx));

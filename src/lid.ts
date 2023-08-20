@@ -3,6 +3,7 @@ import { drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Vector, offset } from "./engine/vector";
 import { WIDTH } from "./index";
+import { transformTo } from "./engine/transformer";
 
 export class Lid extends Entity {
     private angle = 0;
@@ -19,9 +20,7 @@ export class Lid extends Entity {
         ctx.fillStyle = "#000";
         ctx.save();
         ctx.translate(0, Math.sin(-this.tween.time * Math.PI) * 25);
-        ctx.translate(center.x, center.y);
-        ctx.rotate(this.angle * this.tween.time);
-        ctx.translate(-center.x, -center.y);
+        transformTo(ctx, center.x, center.y, this.angle * this.tween.time)
         ctx.fillRect(center.x - 22, center.y - 28, 44, 20);
         ctx.fillStyle = gemColors.get("y");
         ctx.fillRect(center.x - 17, center.y - 23, 34, 10);

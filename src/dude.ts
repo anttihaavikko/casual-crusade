@@ -14,13 +14,13 @@ export class Dude extends Entity {
     private phase = 0;
 
     constructor(private tile: Tile) {
-        const p = tile.getPosition();
+        const p = tile.p;
         super(p.x, p.y, TILE_WIDTH, TILE_HEIGHT);
         this.d = 50;
     }
 
     public reset(tile: Tile): void {
-        const p = tile.getPosition();
+        const p = tile.p;
         this.tile = tile;
         this.p = { x: p.x, y: p.y };
     }
@@ -71,7 +71,7 @@ export class Dude extends Entity {
     }
 
     public hop(game: Game): void {
-        this.tween.move(this.getPosition(), 0.3);
+        this.tween.move(this.p, 0.3);
         this.dust(game);
     }
 
@@ -96,7 +96,7 @@ export class Dude extends Entity {
                 tile.content.visited = true;
 
                 if(index > 0) {
-                    this.tween.move(tile.getPosition(), moveDuration);
+                    this.tween.move(tile.p, moveDuration);
 
                     setTimeout(() => {
                         game.audio.move();

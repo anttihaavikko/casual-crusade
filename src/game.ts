@@ -218,7 +218,7 @@ export class Game extends Entity {
                     this.moveEntity(t.content, x, y);
                     this.moveEntity(t.getLid(), x, y);
                 });
-                const p = this.level.board[2].getPosition();
+                const p = this.level.board[2].p;
                 this.dude.setPosition(p.x, p.y);
             });
         }, hits.length * delay + 1500 + extra);
@@ -307,7 +307,7 @@ export class Game extends Entity {
     }
 
     public createBlank(tile: Tile): void {
-        const p = tile.getPosition();
+        const p = tile.p;
         const card = new Card(p.x, p.y, this.level, this, { directions: [], gem: "n" });
         card.lock();
         tile.content = card;
@@ -329,7 +329,7 @@ export class Game extends Entity {
         if (this.deck.length <= 0) return;
         this.audio.swoosh();
         const card = this.deck.pop();
-        const p = this.pile.getPosition();
+        const p = this.pile.p;
         this.cards.push(new Card(p.x, p.y - 20, this.level, this, card));
         this.reposition();
     }
@@ -365,7 +365,7 @@ export class Game extends Entity {
 
     public redraw(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
-        handCards.forEach(card => card.move(this.pile.getPosition(), 0.3));
+        handCards.forEach(card => card.move(this.pile.p, 0.3));
         setTimeout(() => {
             this.cards = this.cards.filter(c => !handCards.includes(c));
             handCards.forEach(card => this.add(card.data, true, false));
@@ -379,7 +379,7 @@ export class Game extends Entity {
         const handCards = this.cards.filter(c => !c.isLocked());
         const card = handCards[Math.floor(Math.random() * handCards.length)];
         if (!card) return;
-        card.move(this.pile.getPosition(), 0.3);
+        card.move(this.pile.p, 0.3);
         setTimeout(() => {
             this.cards = this.cards.filter(c => c != card);
             this.add(card.data, true, false);
@@ -422,7 +422,7 @@ export class Game extends Entity {
     }
 
     private reposition(): void {
-        const handCards = [...this.cards.filter(c => !c.isLocked())].sort((a, b) => a.getPosition().x - b.getPosition().x);
+        const handCards = [...this.cards.filter(c => !c.isLocked())].sort((a, b) => a.p.x - b.p.x);
         this.pile.count = this.deck.length;
         handCards.forEach((c, i) => {
             const p: Vector = {
@@ -439,7 +439,7 @@ export class Game extends Entity {
 
     private moveEntity(e: Entity, x: number, y: number): void {
         if (!e) return;
-        const p = e.getPosition();
+        const p = e.p;
         e.setPosition(p.x + x, p.y + y);
     }
 

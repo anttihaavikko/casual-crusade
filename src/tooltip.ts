@@ -39,7 +39,7 @@ export class Tooltip extends Entity {
         ctx.fillRect(this.p.x, this.p.y, this.s.x, this.s.y);
         ctx.font = `30px ${font}`;
         ctx.textAlign = "left";
-        const c = this.getPosition();
+        const c = this.p;
         ctx.fillStyle = "#000";
         ctx.fillText(this.title, c.x + 5 + 15, c.y + 5 + 40);
         ctx.fillStyle = this.colors[0];

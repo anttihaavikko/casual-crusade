@@ -9,6 +9,7 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
+import { transformTo } from "./engine/transformer";
 
 export const TILE_WIDTH = 80;
 export const TILE_HEIGHT = 60;
@@ -103,8 +104,8 @@ export class Card extends Draggable {
 
     public updateTile(): void {
         const sorted = [...this.level.board]
-            .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.p, tile.getPosition()) < 100)
-            .sort((a, b) => distance(this.p, a.getPosition()) - distance(this.p, b.getPosition()));
+            .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.p, tile.p) < 100)
+            .sort((a, b) => distance(this.p, a.p) - distance(this.p, b.p));
 
         if(sorted.length <= 0) return;
 
@@ -119,7 +120,7 @@ export class Card extends Draggable {
     }
 
     public getMoveTarget(): Vector {
-        return this.game.pile.getPosition();
+        return this.game.pile.p;
     }
     
     public getPossibleSpots(): Tile[] {
@@ -163,7 +164,7 @@ export class Card extends Draggable {
         if(this.tile && !this.game.dude.isMoving) {
             this.game.multi = 1;
             this.locked = true;
-            this.p = this.tile.getPosition();
+            this.p = this.tile.p;
             this.tile.content = this;
             this.game.fill();
             this.game.findPath(this.tile, this.game);
@@ -209,9 +210,7 @@ export class Card extends Draggable {
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save();
         const c = this.getCenter();
-        ctx.translate(c.x, c.y);
-        ctx.scale(this.scale.x, this.scale.y);
-        ctx.translate(-c.x, -c.y);
+        transformTo(ctx, c.x, c.y, 0, this.scale.x, this.scale.y);
         if(this.hovered && this.selectable) {
             ctx.translate(0, -10);
         }
@@ -263,9 +262,7 @@ export class Card extends Draggable {
         if(this.selected) {
             ctx.strokeStyle = "#fff";
             ctx.save();
-            ctx.translate(c.x, c.y);
-            ctx.scale(2, 2.5);
-            ctx.translate(-c.x, -c.y);
+            transformTo(ctx, c.x, c.y, 0, 2, 2.5);
             drawCorners(ctx, this.p.x, this.p.y, 4);
             ctx.restore();
         }

@@ -11,6 +11,7 @@ import { ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { Level } from "./level";
 import { TextEntity } from "./text";
+import { transformTo, transformToCenter } from "./engine/transformer";
 
 export const WIDTH = 800;
 export const HEIGHT = 600;
@@ -40,7 +41,7 @@ const ui: TextEntity[] = [
   new TextEntity("0", 50, WIDTH - 15, 55, -1, ZERO, { shadow: 4, align: "right" }),
 ];
 
-const p = dude.getPosition();
+const p = dude.p;
 level.starter = new Card(p.x, p.y, level, game, { directions: ["u", "r", "d", "l"], gem: "n"});
 level.starter.lock();
 level.board[2].content = level.starter;
@@ -108,10 +109,8 @@ function tick(t: number) {
   ui[1].content = game.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   requestAnimationFrame(tick);
   ctx.resetTransform();
-  ctx.translate(WIDTH * 0.5, HEIGHT * 0.5);
-  ctx.scale(zoom, zoom);
-  ctx.rotate(game.camera.rotation);
-  ctx.translate(-WIDTH * 0.5, -HEIGHT * 0.5 + (game.started ? 0 : 30));
+  transformToCenter(ctx, game.camera.rotation, zoom, zoom)
+  ctx.translate(0, game.started ? 0 : 30);
   game.camera.update();
   ctx.translate(game.camera.offset.x, game.camera.offset.y);
   ctx.fillStyle = "#74be75";

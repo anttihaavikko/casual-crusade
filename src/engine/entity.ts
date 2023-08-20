@@ -6,8 +6,8 @@ export abstract class Entity {
     public scale: Vector = { x: 1, y: 1};
     public d = 0;
     public dead: boolean;
-
-    protected p: Vector;
+    public p: Vector;
+    
     protected s: Vector;
 
     protected tween: Tween;
@@ -30,10 +30,6 @@ export abstract class Entity {
             x: this.p.x + this.s.x * 0.5,
             y: this.p.y + this.s.y * 0.5
         };
-    }
-
-    public getPosition(): Vector {
-        return this.p;
     }
 
     public setPosition(x: number, y: number): void {
