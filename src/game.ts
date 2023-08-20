@@ -438,7 +438,7 @@ export class Game extends Entity {
     private moveEntity(e: Entity, x: number, y: number): void {
         if (!e) return;
         const p = e.p;
-        e.setPosition(p.x + x, p.y + y);
+        e.p = offset(p, x, y);
     }
 
     public restart(): void {
