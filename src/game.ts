@@ -177,7 +177,12 @@ export class Game extends Entity {
                 "LAND CONQUERED",
                 "INFIDELS MASSACRED",
                 "MIGHTY RIGHTEOUS",
-                "SUCCESS"
+                "SUCCESS",
+                "REPORTING TO POPE",
+                "GREAT SUCCESS",
+                "RECONQUISTA",
+                "HERETICS LIQUIDATED",
+                "THE CHURCH PREVAILS"
             ]));
             this.splash.show();
             this.audio.win();
