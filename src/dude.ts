@@ -113,12 +113,16 @@ export class Dude extends Entity {
     private findNext(from: Tile, to: Tile, visited: Tile[], free: Gem): void {
         const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || tile.content.is(free) && visited.filter(t => t == tile).length < 5);
         if(from == to) {
-            if(this.path.length < visited.length) {
+            if(this.evaluate(this.path) < this.evaluate(visited)) {
                 this.path = [...visited];
             }
             return;
         }
         if(steps.length <= 0) return;
         steps.forEach(step => this.findNext(step, to, [...visited, step], free));
+    }
+
+    private evaluate(path: Tile[]): number {
+        return path.map((tile, i) => tile.content.getScore(i + 1)).reduce((a, b) => a + b, 0);
     }
 }

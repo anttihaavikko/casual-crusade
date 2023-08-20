@@ -150,6 +150,8 @@ export class Card extends Draggable {
             return;
         }
 
+        if(this.game.dude.isMoving) console.log('blocking...');
+
         if(this.tile && !this.game.dude.isMoving) {
             this.game.multi = 1;
             this.locked = true;
@@ -303,8 +305,7 @@ export class Card extends Draggable {
 
     private addScore(amt: number, ): void {
         const isYellow = this.is(Gem.Yellow);
-        const mod = isYellow ? 10 : 1;
-        const addition = amt * mod * this.game.multi * this.level.level;
+        const addition = this.getScore(amt);
         this.game.score += addition;
         const p = {
             x: this.p.x + this.s.x * 0.5,
@@ -338,6 +339,11 @@ export class Card extends Draggable {
         ctx.moveTo(this.p.x + this.s.x * 0.5, this.p.y + this.s.y * 0.5);
         ctx.lineTo(x, y);
         ctx.stroke();
+    }
+
+    public getScore(step: number): number {
+        const mod = this.is(Gem.Yellow) ? 10 : 1;
+        return step * mod * this.game.multi * this.level.level;
     }
 }
 
