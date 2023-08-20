@@ -40,8 +40,8 @@ export class Dude extends Entity {
             y: this.p.y + this.s.y * 0.5 - 30 - 5 * this.phase
         };
         ctx.save();
-        ctx.translate(0, Math.sin(-this.tween.time * Math.PI) * 25);
         drawEllipse(ctx, center, 24, 12, "#00000033");
+        ctx.translate(0, Math.sin(-this.tween.time * Math.PI) * 25);
         drawCircle(ctx, head, 14, "#000");
         ctx.beginPath();
         ctx.moveTo(center.x, this.p.y - 10 - 5 * this.phase);
@@ -67,6 +67,10 @@ export class Dude extends Entity {
         ctx.lineTo(head.x + 4, head.y - 2 * this.phase);
         ctx.stroke();
         ctx.restore();
+    }
+
+    public hop(): void {
+        this.tween.move(this.getPosition(), 0.3);
     }
 
     public findPath(to: Tile, game: Game, level: Level): void {

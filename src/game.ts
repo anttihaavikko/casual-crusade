@@ -166,6 +166,8 @@ export class Game extends Entity {
             setTimeout(() => {
                 this.splash.show();
                 this.audio.win();
+                this.dude.hop();
+                this.audio.move();
             }, hits.length * delay + 100);
             
             setTimeout(() => {
