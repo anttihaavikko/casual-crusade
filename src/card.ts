@@ -19,7 +19,7 @@ export const CARD_GAP = 2;
 export type Gem = "none" | "blue" | "purple" | "red" | "yellow" | "orange" | "green";
 
 export const gemColors: {[K in Gem]: string} = {
-    none: null,
+    none: "#fff",
     blue: "#00BDE5",
     purple: "#846AC1",
     red: "#E93988",
@@ -29,7 +29,7 @@ export const gemColors: {[K in Gem]: string} = {
 };
 
 export const gemNames: {[K in Gem]: string} = {
-    none: null,
+    none: "",
     blue: "FIBONACCI'S BOON",
     purple: "PENANCE",
     red: "POPE'S BLESSING",
@@ -39,7 +39,7 @@ export const gemNames: {[K in Gem]: string} = {
 };
 
 const gemDescriptions: {[K in Gem]: string} = {
-    none: null,
+    none: "",
     blue: "|Draw extra| card when |placed|.",
     purple: "|Recycle |random card when |stepping| on.",
     red: "|Heal| for one when |placed|.",
@@ -191,15 +191,16 @@ export class Card extends Draggable {
     }
 
     public exit(): void {
-        if(this.data.gem) {
+        if(this.data.gem != "none") {
             this.game.tooltip.visible = false;
         }
     }
 
     public hover(): void {
-        if(this.data.gem) {
+        if(this.data.gem != "none") {
             setTimeout(() => {
-                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scale.y), [gemColors[this.data.gem]]);
+                const colors = this.data.gem != "none" ? [gemColors[this.data.gem]] : [];
+                this.game.tooltip.show(gemNames[this.data.gem], gemDescriptions[this.data.gem], offset(this.getCenter(), 0, -50 * this.scale.y), colors);
             }, 5);
         }
         this.game.audio.thud();
@@ -254,7 +255,7 @@ export class Card extends Draggable {
             drawCircle(ctx, p, 8, "#000");
         }
 
-        if(this.data.gem) {
+        if(this.data.gem != "none") {
             drawCircle(ctx, p, 12, "#000");
             drawCircle(ctx, p, 6, gemColors[this.data.gem]);
         }
