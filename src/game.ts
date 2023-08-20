@@ -59,9 +59,7 @@ export class Game extends Entity {
         new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
     ]);
 
-    private splash = new Container(WIDTH * 0.5, 150, [
-        new TextEntity("", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 5 })
-    ]);
+    private splash = new Container(WIDTH * 0.5, 140, [new TextEntity("", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 5 })]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
         super(360, 500, 0, 0);
@@ -77,7 +75,7 @@ export class Game extends Entity {
     }
 
     public pick(card: Card): void {
-        if(this.picker.rewards <= 0) return;
+        if (this.picker.rewards <= 0) return;
         this.add(card.data, true, true);
         this.picker.remove(card);
         this.fill();
@@ -89,16 +87,16 @@ export class Game extends Entity {
     }
 
     public addRelic(relic: RelicIcon): void {
-        if(this.picker.rewards <= 0) return;
+        if (this.picker.rewards <= 0) return;
 
-        if(relic.data.name == WILD_NAME) {
+        if (relic.data.name == WILD_NAME) {
             this.wilds.push({
                 first: relic.data.gems[0],
                 second: relic.data.gems[1]
             });
         }
 
-        if(relic.data.name == HOME_NAME) {
+        if (relic.data.name == HOME_NAME) {
             this.freeMoveOn = relic.data.gems[0]
         }
 
@@ -106,7 +104,7 @@ export class Game extends Entity {
         this.picker.remove(relic);
         this.relics.push(relic.data.name);
         this.icons.push(relic);
-        
+
         setTimeout(() => {
             relic.icon = true;
             relic.scale = { x: 0.8, y: 0.8 };
@@ -118,7 +116,7 @@ export class Game extends Entity {
         this.life = Math.min(this.maxLife, this.life + amount);
         this.audio.heal();
 
-        for(var i = 0; i < 50; i++) {
+        for (var i = 0; i < 50; i++) {
             const p = this.dude.getCenter();
             const x = p.x + random() * 40 - 20;
             const y = p.y + random() * 40 - 30;
@@ -135,84 +133,84 @@ export class Game extends Entity {
         this.tooltip.visible = false;
 
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
-            const delay = 200;
+        const delay = 200;
 
-            if(hits.length > 0 && this.canRedraw && !this.level.retried) {
-                this.audio.deadEnd();
-                this.level.retried = true;
-                setTimeout(() => this.redraw(), 500); 
-                return;
-            }
+        if (hits.length > 0 && this.canRedraw && !this.level.retried) {
+            this.audio.deadEnd();
+            this.level.retried = true;
+            setTimeout(() => this.redraw(), 500);
+            return;
+        }
 
-            if(hits.length > 0) {
-                this.audio.deadEnd();
-            }
+        if (hits.length > 0) {
+            this.audio.deadEnd();
+        }
 
-            [...hits].sort(randomSorter).forEach((hit, i) => {
-                const p = hit.getCenter();
-                setTimeout(() => {
-                    this.audio.explode();
-                    this.camera.shake(15, 0.15, 3);
-                    this.effects.add(new Pulse(p.x, p.y, random(30, 80), 0.5, 0, 120));
-                    this.addBits(p);
-                    const sky:Vector = { x: WIDTH * 0.5, y: -100 };
-                    this.effects.add(new LineParticle(sky, p, 0.4, 10, "#ffffcc99", random(10, 20)));
-                    this.life--;
-                    hit.hidden = true;
-                    this.audio.boom();
-                }, 100 + i * delay + 750);
-            });
-
-            const extra = hits.length > 0 ? 1300 : 100;
-
-            if(this.life - hits.length <= 0) {
-                setTimeout(() => {
-                    this.gameOver.toggle(true);
-                    this.camera.shake(7, 0.3, 2);
-                    this.audio.lose();
-                }, hits.length * delay + extra);
-                return;
-            }
-
+        [...hits].sort(randomSorter).forEach((hit, i) => {
+            const p = hit.getCenter();
             setTimeout(() => {
-                this.setSplash(randomCell([
-                    "LAND CONQUERED",
-                    "INFIDELS MASSACRED",
-                    "MIGHTY RIGHTEOUS",
-                    "SUCCESS"
-                ]));
-                this.splash.show();
-                this.audio.win();
-                this.dude.hop(this);
-                this.audio.move();
+                this.audio.explode();
+                this.camera.shake(15, 0.15, 3);
+                this.effects.add(new Pulse(p.x, p.y, random(30, 80), 0.5, 0, 120));
+                this.addBits(p);
+                const sky: Vector = { x: WIDTH * 0.5, y: -100 };
+                this.effects.add(new LineParticle(sky, p, 0.4, 10, "#ffffcc99", random(10, 20)));
+                this.life--;
+                hit.hidden = true;
+                this.audio.boom();
+            }, 100 + i * delay + 750);
+        });
+
+        const extra = hits.length > 0 ? 1300 : 100;
+
+        if (this.life - hits.length <= 0) {
+            setTimeout(() => {
+                this.gameOver.toggle(true);
+                this.camera.shake(7, 0.3, 2);
+                this.audio.lose();
             }, hits.length * delay + extra);
-            
-            setTimeout(() => {
-                this.splash.hide(0.6);
-                this.blinders.close(() => {
+            return;
+        }
 
-                    this.blinders.open();
-                    this.mouse.dragging = false;
-                    this.level.next();
-                    this.cards = [];
-                    this.dude.reset(this.level.board[2]);
-                    this.shuffle();
-                    this.fill();
-                    this.showIntro();
+        setTimeout(() => {
+            this.setSplash(randomCell([
+                "LAND CONQUERED",
+                "INFIDELS MASSACRED",
+                "MIGHTY RIGHTEOUS",
+                "SUCCESS"
+            ]));
+            this.splash.show();
+            this.audio.win();
+            this.dude.hop(this);
+            this.audio.move();
+        }, hits.length * delay + extra);
 
-                    const sortedX = [...this.level.board].filter(t => !t.reward).map(t => t.index.x).sort((a, b) => a - b);
-                    const sortedY = [...this.level.board].filter(t => !t.reward).map(t => t.index.y).sort((a, b) => a - b);
-                    const x = -(sortedX[0] - 1 + sortedX[sortedX.length - 1] - 1) * 0.5 * TILE_WIDTH;
-                    const y = -(sortedY[0] - 1 + sortedY[sortedY.length - 1] - 1) * 0.5 * TILE_HEIGHT;
-                    this.level.board.forEach(t => {
-                        this.moveEntity(t, x, y);
-                        this.moveEntity(t.content, x, y);
-                        this.moveEntity(t.getLid(), x, y);
-                    });
-                    const p = this.level.board[2].getPosition();
-                    this.dude.setPosition(p.x, p.y);
+        setTimeout(() => {
+            this.splash.hide(0.6);
+            this.blinders.close(() => {
+
+                this.blinders.open();
+                this.mouse.dragging = false;
+                this.level.next();
+                this.cards = [];
+                this.dude.reset(this.level.board[2]);
+                this.shuffle();
+                this.fill();
+                this.showIntro();
+
+                const sortedX = [...this.level.board].filter(t => !t.reward).map(t => t.index.x).sort((a, b) => a - b);
+                const sortedY = [...this.level.board].filter(t => !t.reward).map(t => t.index.y).sort((a, b) => a - b);
+                const x = -(sortedX[0] - 1 + sortedX[sortedX.length - 1] - 1) * 0.5 * TILE_WIDTH;
+                const y = -(sortedY[0] - 1 + sortedY[sortedY.length - 1] - 1) * 0.5 * TILE_HEIGHT;
+                this.level.board.forEach(t => {
+                    this.moveEntity(t, x, y);
+                    this.moveEntity(t.content, x, y);
+                    this.moveEntity(t.getLid(), x, y);
                 });
-            }, hits.length * delay + 1500 + extra);
+                const p = this.level.board[2].getPosition();
+                this.dude.setPosition(p.x, p.y);
+            });
+        }, hits.length * delay + 1500 + extra);
     }
 
     public showIntro(): void {
@@ -235,12 +233,13 @@ export class Game extends Entity {
     }
 
     public checkLevelEnd(): void {
-        if(this.picker.rewards > 0) {
+        if(this.dude.isMoving) return;
+        if (this.picker.rewards > 0) {
             this.endCheckTimer = setTimeout(() => this.checkLevelEnd(), 500);
             return;
         }
         const handCards = this.cards.filter(c => !c.isLocked());
-        if(handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0))  {
+        if (handCards.length == 0 || this.level.isFull() || !handCards.some(c => c.getPossibleSpots().length > 0)) {
             this.nextLevel();
         }
     }
@@ -252,7 +251,7 @@ export class Game extends Entity {
     public fill(): void {
         this.helps.hide();
         const handCards = this.cards.filter(c => !c.isLocked());
-        for(var i = 0; i < this.handSize - handCards.length; i++) {
+        for (var i = 0; i < this.handSize - handCards.length; i++) {
             setTimeout(() => {
                 this.pull();
                 this.reposition();
@@ -272,20 +271,20 @@ export class Game extends Entity {
         tile.content = card;
         this.cards.push(card);
         card.pulse();
-        if(this.canRemoteOpen) {
+        if (this.canRemoteOpen) {
             this.loot(tile);
         }
     }
 
     public add(card: CardData, shuffles = true, permanent = false): void {
-        if(permanent) this.all.push(card);
+        if (permanent) this.all.push(card);
         this.deck.push(card);
-        if(shuffles) this.deck = [...this.deck].sort(() => Math.random() < 0.5 ? 1 : -1);
+        if (shuffles) this.deck = [...this.deck].sort(() => Math.random() < 0.5 ? 1 : -1);
         this.reposition();
     }
 
     public pull(): void {
-        if(this.deck.length <= 0) return;
+        if (this.deck.length <= 0) return;
         this.audio.swoosh();
         const card = this.deck.pop();
         const p = this.pile.getPosition();
@@ -296,7 +295,7 @@ export class Game extends Entity {
     public update(tick: number, mouse: Mouse): void {
         this.dude.update(tick, mouse);
         this.blinders.update(tick, mouse);
-        if(!this.started) return;
+        if (!this.started) return;
         this.cards.forEach(c => c.update(tick, mouse));
         this.pile.update(tick, mouse);
         this.level.board.forEach(tile => tile.update(tick, mouse));
@@ -309,7 +308,7 @@ export class Game extends Entity {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        if(!this.started) {
+        if (!this.started) {
             this.dude.draw(ctx);
             return;
         }
@@ -337,7 +336,7 @@ export class Game extends Entity {
     public discard(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
         const card = handCards[Math.floor(Math.random() * handCards.length)];
-        if(!card) return;
+        if (!card) return;
         card.move(this.pile.getPosition(), 0.3);
         setTimeout(() => {
             this.cards = this.cards.filter(c => c != card);
@@ -347,7 +346,7 @@ export class Game extends Entity {
     }
 
     public addBits(p: Vector): void {
-        for(let i = 0; i < 20; i++) {
+        for (let i = 0; i < 20; i++) {
             const size = 1 + Math.random() * 3;
             const opts = { force: { x: 0, y: 0.1 }, depth: 20 };
             this.effects.add(new RectParticle(p.x, p.y, size, size, 0.2 + Math.random() * 0.5, { x: -3 + Math.random() * 6, y: -7 * Math.random() }, opts));
@@ -356,7 +355,7 @@ export class Game extends Entity {
 
     public loot(tile: Tile): void {
         const chests = tile.getChests(this.level.board).filter(n => n.reward && !n.looted);
-        if(chests.length > 0) {
+        if (chests.length > 0) {
             setTimeout(() => {
                 this.audio.frog();
                 this.audio.open();
@@ -366,7 +365,7 @@ export class Game extends Entity {
                     this.camera.shake(10, 0.3);
                     const p = offset(c.getCenter(), 0, -15);
                     const duration = 0.5;
-                    const sky:Vector = { x: p.x, y: p.y - 20 };
+                    const sky: Vector = { x: p.x, y: p.y - 20 };
                     this.effects.add(new LineParticle(p, offset(sky, 0, -10), duration, 10, "#ffffff55"));
                     this.effects.add(new LineParticle(offset(p, -5, 0), offset(sky, -10, 0), duration, 7, "#ffffff55"));
                     this.effects.add(new LineParticle(offset(p, 5, 0), offset(sky, 10, 0), duration, 7, "#ffffff55"));
@@ -397,7 +396,7 @@ export class Game extends Entity {
     }
 
     private moveEntity(e: Entity, x: number, y: number): void {
-        if(!e) return;
+        if (!e) return;
         const p = e.getPosition();
         e.setPosition(p.x + x, p.y + y);
     }
@@ -439,6 +438,6 @@ export class Game extends Entity {
         ];
         this.shuffle();
         this.fill();
-        if(this.level.level == 1) this.helps.show();
+        if (this.level.level == 1) this.helps.show();
     }
 }
