@@ -107,7 +107,7 @@ export class Dude extends Entity {
                     game.loot(tile);
 
                     if(game.remoteMulti) {
-                        const neighbours = tile.getNeighbours(level.board).filter(t => t.content && t.content.data.gem == Gem.Orange);
+                        const neighbours = tile.getNeighbours(level.board).filter(t => t.content && t.content.data.gem == "orange");
                         neighbours.forEach(n => n.content.activate());
                     }
                 }
@@ -121,7 +121,7 @@ export class Dude extends Entity {
     }
 
     private findNext(from: Tile, to: Tile, visited: Tile[], free: Gem): void {
-        const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || tile.content.is(free) && visited.filter(t => t == tile).length < 5);
+        const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || free != "none" && tile.content.is(free) && visited.filter(t => t == tile).length < 5);
         if(from == to) {
             if(this.evaluate(this.path) < this.evaluate(visited)) {
                 this.path = [...visited];
@@ -136,7 +136,7 @@ export class Dude extends Entity {
         let multi = 1;
         let total = 0;
         path.forEach((tile, i) => {
-            if(tile.content.is(Gem.Orange)) multi *= 2;
+            if(tile.content.is("orange")) multi *= 2;
             total += tile.content.getScore((i + 1) * multi);
         }) 
         return total;

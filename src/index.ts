@@ -41,7 +41,7 @@ const ui: TextEntity[] = [
 ];
 
 const p = dude.getPosition();
-level.starter = new Card(p.x, p.y, level, game, { directions: [Direction.Up, Direction.Right, Direction.Down, Direction.Left], gem: Gem.None });
+level.starter = new Card(p.x, p.y, level, game, { directions: ["up", "right", "down", "left"], gem: "none"});
 level.starter.lock();
 level.board[2].content = level.starter;
 
@@ -51,6 +51,9 @@ canvas.height = HEIGHT;
 // canvas.width = window.innerWidth;
 // canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
+
+canvas.style.transformOrigin = "top left";
+canvas.style.transform = `scale(${window.innerWidth / WIDTH})`;
 
 let isFull = false;
 document.onfullscreenchange = () => isFull = !isFull;

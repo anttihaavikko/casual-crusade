@@ -2,11 +2,7 @@ import { Entity } from "./entity";
 import { clamp01 } from "./math";
 import { Vector, lerp } from "./vector";
 
-enum TweenType {
-    None,
-    Move,
-    Scale
-}
+type TweenType = "none" | "move" | "scale";
 
 export class Tween {
     public time = 0;
@@ -15,20 +11,20 @@ export class Tween {
     private startTime: number;
     private duration: number;
     private active: boolean;
-    private type: TweenType;
+    private type: TweenType = "none";
 
     constructor(private entity: Entity) {
     }
 
     public scale(target: Vector, duration: number): void {
-        this.type = TweenType.Scale;
+        this.type = "scale";
         const p = this.entity.scale;
         this.start = { x: p.x, y: p.y };
         this.startTween(target, duration);
     }
 
     public move(target: Vector, duration: number): void {
-        this.type = TweenType.Move;
+        this.type = "move";
         const p = this.entity.getPosition();
         this.start = { x: p.x, y: p.y };
         this.startTween(target, duration);
@@ -42,7 +38,7 @@ export class Tween {
     }
 
     public update(tick: number): void {
-        if(this.startTime < 0 || this.type == TweenType.None) {
+        if(this.startTime < 0 || this.type == "none") {
             this.startTime = tick;
             return;
         }
@@ -51,8 +47,8 @@ export class Tween {
         if(!this.start || !this.target) return;
         const p = lerp(this.start, this.target, this.time);
         
-        if(this.type == TweenType.Move) this.entity.setPosition(p.x, p.y);
-        if(this.type == TweenType.Scale) this.entity.scale = { x: p.x, y: p.y };
+        if(this.type == "move") this.entity.setPosition(p.x, p.y);
+        if(this.type == "scale") this.entity.scale = { x: p.x, y: p.y };
 
         this.active = this.time < 1;
     }

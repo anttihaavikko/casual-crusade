@@ -41,7 +41,7 @@ export class Game extends Entity {
     public canRedraw: boolean;
     public wilds: { first: Gem, second: Gem }[] = [];
     public blinders = new Blinders();
-    public freeMoveOn = -1;
+    public freeMoveOn: Gem = "none";
     private endCheckTimer: any;
     private selectedCard: Card;
 
@@ -308,7 +308,7 @@ export class Game extends Entity {
 
     public createBlank(tile: Tile): void {
         const p = tile.getPosition();
-        const card = new Card(p.x, p.y, this.level, this, { directions: [], gem: Gem.None });
+        const card = new Card(p.x, p.y, this.level, this, { directions: [], gem: "none" });
         card.lock();
         tile.content = card;
         this.cards.push(card);
@@ -461,7 +461,7 @@ export class Game extends Entity {
             this.gemChance = 1;
             this.canRedraw = false;
             this.wilds = [];
-            this.freeMoveOn = -1;
+            this.freeMoveOn = "none";
         });
     }
 
@@ -472,10 +472,10 @@ export class Game extends Entity {
         this.rewardOptions = 3;
         this.rewardPicks = 1;
         this.all = [
-            { directions: [Direction.Up, Direction.Down], gem: Gem.None },
-            { directions: [Direction.Up, Direction.Down], gem: Gem.None },
-            { directions: [Direction.Left, Direction.Right], gem: Gem.None },
-            { directions: [Direction.Left, Direction.Right], gem: Gem.None },
+            { directions: ["up", "down"], gem: "none" },
+            { directions: ["up", "down"], gem: "none" },
+            { directions: ["left", "right"], gem: "none" },
+            { directions: ["left", "right"], gem: "none" },
             randomCard(1, true)
         ];
         this.shuffle();
