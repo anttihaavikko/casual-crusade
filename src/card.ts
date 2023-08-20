@@ -1,5 +1,5 @@
 import { Draggable } from "./engine/draggable";
-import { drawCircle } from "./engine/drawing";
+import { drawCircle, roundRect } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { random } from "./engine/random";
@@ -213,7 +213,8 @@ export class Card extends Draggable {
                 y: this.p.y + CARD_GAP
             };
             const dir = normalize({ x: p.x - center.x, y: p.y - center.y });
-            ctx.fillRect(p.x + dir.x * 12, p.y + dir.y * 24, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
+            roundRect(ctx, p.x + dir.x * 12, p.y + dir.y * 24, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2, 3);
+            ctx.fill();
         }
         
         ctx.fillStyle = "#000";
