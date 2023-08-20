@@ -207,7 +207,7 @@ export class Card extends Draggable {
         }
         if(this.dragging) {
             ctx.fillStyle = "#00000022";
-            const center =  { x: WIDTH * 0.5, y: HEIGHT * 0.5 };
+            const center =  { x: WIDTH * 0.5, y: 0 };
             const p = {
                 x: this.p.x + CARD_GAP,
                 y: this.p.y + CARD_GAP
