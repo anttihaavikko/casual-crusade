@@ -147,7 +147,7 @@ export class Card extends Draggable {
         setTimeout(() => this.d = 0, 100);
 
         if(this.game.picker.rewards > 0) {
-            this.move(this.getStartPosition(), 0.1);
+            this.move(this.start, 0.1);
             return;
         }
 
@@ -178,7 +178,7 @@ export class Card extends Draggable {
             return;
         }
 
-        this.move(this.getStartPosition(), 0.1);
+        this.move(this.start, 0.1);
     }
 
     public exit(): void {

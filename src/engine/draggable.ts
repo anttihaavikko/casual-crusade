@@ -57,10 +57,6 @@ export abstract class Draggable extends Entity {
         }
     }
 
-    protected getStartPosition(): Vector {
-        return this.start;
-    }
-
     protected abstract hover(): void;
 
     protected abstract exit(): void;
