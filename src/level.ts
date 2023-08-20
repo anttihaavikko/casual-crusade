@@ -1,4 +1,5 @@
 import { Card, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { randomCell, randomSorter } from "./engine/random";
 import { Vector, ZERO, distance } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
 import { Tile } from "./tile";
@@ -60,8 +61,8 @@ export class Level {
         }
 
         const center = this.board[2].p;
-        const tiles = this.getPossibleRewardSpots().sort(() => Math.random() < 0.5 ? 1 : -1).sort((a, b) => {
-            return distance(a.p, center) < distance(b.p, center) ? 1 : -1;
+        const tiles = this.getPossibleRewardSpots().sort(randomSorter).sort((a, b) => {
+            return distance(a.p, center) - distance(b.p, center);
         });
         tiles.slice(0, Math.max(0, this.level - Math.max(0, this.level - 8) * 3)).forEach(tile => {
             const edge = this.getEdgeTile(tile);
@@ -88,7 +89,7 @@ export class Level {
                 this.edgeOrZero(tile, { x: 0, y: -1 })
             ].filter(v => v != ZERO));
         });
-        return spots[Math.floor(Math.random() * spots.length)];
+        return randomCell(spots);
     }
 
     private getEdgeTile(tile: Tile): Vector {
@@ -98,7 +99,7 @@ export class Level {
             this.edgeOrZero(tile, { x: 0, y: 1 }),
             this.edgeOrZero(tile, { x: 0, y: -1 })
         ].filter(v => v != ZERO);
-        return spots[Math.floor(Math.random() * spots.length)];
+        return randomCell(spots);
     }
 
     private getPossibleRewardSpots(): Tile[] {
