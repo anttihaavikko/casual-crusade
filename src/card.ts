@@ -51,15 +51,9 @@ const gemDescriptions = new Map([
 
 export type Direction = "u" | "r" | "d" | "l";
 
-export const getRandomGem = () => randomInt(1, 5);
-
 export interface CardData {
     directions: Direction[];
     gem: Gem;
-}
-
-export function randomGem(): Gem {
-    return randomCell(["b", "p", "r", "y", "o", "g"]);
 }
 
 export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): CardData {
@@ -68,7 +62,7 @@ export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): C
     const gemChance = directions.length == 1 ? 0.6 * chance : 0.2 * chance;
     return {
         directions,
-        gem: canHaveGem && Math.random() < gemChance ? randomGem() : "n"
+        gem: canHaveGem && Math.random() < gemChance ? randomCell(["b", "p", "r", "y", "o", "g"]) : "n"
     }
 }
 
