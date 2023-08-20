@@ -82,14 +82,14 @@ export class Level {
         const tiles = this.board.filter(tile => tile.getNeighbours(this.board).length < 4).filter(t => this.isInRange(t/*, minX, maxX, minY, maxY*/));
         const spots: Vector[] = [];
         tiles.forEach(tile => {
-            spots.push(...[
+            spots.push(
                 this.edgeOrZero(tile, { x: 1, y: 0 }),
                 this.edgeOrZero(tile, { x: -1, y: 0 }),
                 this.edgeOrZero(tile, { x: 0, y: 1 }),
                 this.edgeOrZero(tile, { x: 0, y: -1 })
-            ].filter(v => v != ZERO));
+            );
         });
-        return randomCell(spots);
+        return randomCell(spots.filter(v => v != ZERO));
     }
 
     private getEdgeTile(tile: Tile): Vector {
@@ -98,8 +98,8 @@ export class Level {
             this.edgeOrZero(tile, { x: -1, y: 0 }),
             this.edgeOrZero(tile, { x: 0, y: 1 }),
             this.edgeOrZero(tile, { x: 0, y: -1 })
-        ].filter(v => v != ZERO);
-        return randomCell(spots);
+        ];
+        return randomCell(spots.filter(v => v != ZERO));
     }
 
     private getPossibleRewardSpots(): Tile[] {
