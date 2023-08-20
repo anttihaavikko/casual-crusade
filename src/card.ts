@@ -92,7 +92,7 @@ export class Card extends Draggable {
     }
 
     public is(color: Gem): boolean {
-        return this.data.gem != Gem.None && [this.data.gem, this.game.getWild(this.data.gem)].includes(color);
+        return this.data.gem != Gem.None && [this.data.gem, ...this.game.getWilds(this.data.gem)].includes(color);
     }
 
     public isLocked(): boolean {
@@ -302,7 +302,7 @@ export class Card extends Draggable {
     }
 
     private addScore(amt: number, ): void {
-        const isYellow = this.data.gem == Gem.Yellow;
+        const isYellow = this.is(Gem.Yellow);
         const mod = isYellow ? 10 : 1;
         const addition = amt * mod * this.game.multi * this.level.level;
         this.game.score += addition;

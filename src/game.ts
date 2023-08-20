@@ -16,7 +16,7 @@ import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
 import { Pile } from "./pile";
-import { RelicIcon, WILD_NAME } from "./relic";
+import { HOME_NAME, RelicIcon, WILD_NAME } from "./relic";
 import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { Tooltip } from "./tooltip";
@@ -39,8 +39,9 @@ export class Game extends Entity {
     public remoteMulti: boolean;
     public gemChance = 1;
     public canRedraw: boolean;
-    public wild = { first: Gem.None, second: Gem.None };
+    public wilds: { first: Gem, second: Gem }[] = [];
     public blinders = new Blinders();
+    public freeMoveOn = -1;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -70,10 +71,8 @@ export class Game extends Entity {
         this.init();
     }
 
-    public getWild(gem: Gem): Gem {
-        if(gem == this.wild.first) return this.wild.second;
-        if(gem == this.wild.second) return this.wild.first;
-        return gem;
+    public getWilds(gem: Gem): Gem[] {
+        return [...this.wilds.filter(w => w.first == gem).map(w => w.second), ...this.wilds.filter(w => w.second == gem).map(w => w.first)];
     }
 
     public pick(card: Card): void {
@@ -92,10 +91,14 @@ export class Game extends Entity {
         if(this.picker.rewards <= 0) return;
 
         if(relic.data.name == WILD_NAME) {
-            this.wild = {
+            this.wilds.push({
                 first: relic.data.gems[0],
                 second: relic.data.gems[1]
-            };
+            });
+        }
+
+        if(relic.data.name == HOME_NAME) {
+            this.freeMoveOn = relic.data.gems[0]
         }
 
         const pos = this.icons.length;
@@ -374,7 +377,8 @@ export class Game extends Entity {
             this.remoteMulti = false;
             this.gemChance = 1;
             this.canRedraw = false;
-            this.wild = { first: Gem.None, second: Gem.None };
+            this.wilds = [];
+            this.freeMoveOn = -1;
         });
     }
 

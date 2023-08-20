@@ -85,7 +85,7 @@ export class Picker extends Entity {
         for(var i = 0; i < amount; i++) {
             if(!relicOptions[i]) break;
             const reward = relic ?
-                new RelicIcon(this.p.x + 6 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.p.y + PICK_OFFSET, this.game, relicOptions[i]) :
+                new RelicIcon(this.p.x + 6 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.p.y + PICK_OFFSET, this.game, { ...relicOptions[i] }) :
                 new Card(this.p.x + 6 - TILE_WIDTH * 1.3 * 0.5 * amount + TILE_WIDTH * 1.3 * i, this.p.y + PICK_OFFSET, this.level, this.game, randomCard(this.game.gemChance));
             reward.scale = { x: 1.3, y: 1.3 };
             this.picks.push(reward);

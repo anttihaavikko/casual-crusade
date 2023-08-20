@@ -13,9 +13,11 @@ interface Relic {
     repeatable?: boolean;
     pickup: (game: Game) => void;
     gems?: Gem[];
+    varies?: boolean;
 }
 
 export const WILD_NAME = "WILDCARD";
+export const HOME_NAME = "HOME";
 
 export const relics: Relic[] = [
     { name: "BENEVOLENT", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
@@ -30,7 +32,8 @@ export const relics: Relic[] = [
     { name: "LOOT", description: "Passing by |ORANGE| activates it.", color: "#F89F00", bg: "⇲", fill: "", pickup: (g) => g.remoteMulti = true },
     { name: "MANNA", description: "Get increased |GEM| chance.", color: "#F3DC00", bg: "◓", fill: "", repeatable: true, pickup: (g) => g.gemChance *= 1.3 },
     { name: "SIN", description: "Once per level, |redraw| your hand if |stuck|.", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true },
-    { name: WILD_NAME, description: "|!1| ⇆ |!2|.", bg: "!", fill: "", pickup: (g) => {} }
+    { name: WILD_NAME, description: "|!1| ⇆ |!2|.", bg: "ೞ", fill: "", repeatable: true, varies: true, pickup: (g) => {} },
+    { name: HOME_NAME, description: "Freely revisit |!1| tiles.", bg: "ಹ", fill: "", repeatable: true, varies: true, pickup: (g) => {} },
 ];
 
 export class RelicIcon extends Draggable {
@@ -41,7 +44,7 @@ export class RelicIcon extends Draggable {
         this.selectable = true;
         this.locked = true;
         this.data.gems = [1, 2, 3, 4, 5, 6].sort(() => Math.random() < 0.5 ? 1 : -1);
-        this.data.color = this.data.name == WILD_NAME ? gemColors[this.data.gems[0]] : this.data.color;
+        this.data.color = this.data.varies ? gemColors[this.data.gems[0]] : this.data.color;
     }
 
     public isInside(point: Vector): boolean {
@@ -116,6 +119,15 @@ export class RelicIcon extends Draggable {
         ctx.fillStyle = "#000";
         ctx.fillText(this.data.bg, c.x + 2 + 15 - 15, c.y + 2 + 12);
         ctx.fillStyle = this.data.color;
+        if(this.data.name == WILD_NAME) {
+            const c = this.getCenter();
+            const gradient = ctx.createLinearGradient(c.x - 20, 0, c.x + 20, 0);
+            gradient.addColorStop(0, gemColors[this.data.gems[0]]);
+            gradient.addColorStop(0.49, gemColors[this.data.gems[0]]);
+            gradient.addColorStop(0.51, gemColors[this.data.gems[1]]);
+            gradient.addColorStop(1, gemColors[this.data.gems[1]]);
+            ctx.fillStyle = gradient;
+        }
         ctx.fillText(this.data.bg, c.x + 15 - 15, c.y + 12);
         ctx.fillStyle = "#000";
         ctx.font = "10px arial black";

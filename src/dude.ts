@@ -71,7 +71,7 @@ export class Dude extends Entity {
 
     public findPath(to: Tile, game: Game, level: Level): void {
         this.path = [];
-        this.findNext(this.tile, to, [this.tile]);
+        this.findNext(this.tile, to, [this.tile], game.freeMoveOn);
         this.tile = this.path[this.path.length - 1];
         this.isMoving = true;
         const moveDuration = 0.3;
@@ -110,8 +110,8 @@ export class Dude extends Entity {
         setTimeout(() => game.checkLevelEnd(), this.path.length * moveDuration * 1000 + 600);
     }
 
-    private findNext(from: Tile, to: Tile, visited: Tile[]): void {
-        const steps = from.content.getConnections().filter(tile => !visited.includes(tile));
+    private findNext(from: Tile, to: Tile, visited: Tile[], free: Gem): void {
+        const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || tile.content.is(free) && visited.filter(t => t == tile).length < 5);
         if(from == to) {
             if(this.path.length < visited.length) {
                 this.path = [...visited];
@@ -119,6 +119,6 @@ export class Dude extends Entity {
             return;
         }
         if(steps.length <= 0) return;
-        steps.forEach(step => this.findNext(step, to, [...visited, step]));
+        steps.forEach(step => this.findNext(step, to, [...visited, step], free));
     }
 }
