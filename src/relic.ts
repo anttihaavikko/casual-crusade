@@ -22,19 +22,19 @@ export const HOME_NAME = "HOME";
 
 export const relics: Relic[] = [
     // { name: "BENEVOLENT", description: "Increase your |LIFE| by |1|.", color: gemColors.get("r"), bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
-    { name: "SAINTHOOD", description: "Increase your |LIFE| by |2|.", color: gemColors.get("r"), bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
-    { name: "DEMIDEITY", description: "Increase your |LIFE| by |3|.", color: gemColors.get("r"), bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
-    { name: "MAGNA CARTA", description: "Increase your |MAX HAND SIZE| by |1|.", color: gemColors.get("b"), bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
-    { name: "SACRAMENT", description: "Increases the presented |reward options|.", color: gemColors.get("o"), bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
-    { name: "MIRACLE", description: "Allows you to pick an |extra| reward.", color: gemColors.get("o"), bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
-    { name: "CAVALRY", description: "Your |empty cards| can open chests.", color: gemColors.get("g"), bg: "✿", offset: -1, fill: "", pickup: (g) => g.canRemoteOpen = true },
-    { name: "FAITH", description: "Stepping on |RED| also |HEALS|.", color: gemColors.get("r"), bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true },
-    { name: "PILLAGE", description: "Double your step |SCORE|.", color: gemColors.get("y"), bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
-    { name: "LOOT", description: "Passing by |ORANGE| activates it.", color: gemColors.get("o"), bg: "⇲", fill: "", offset: -3, pickup: (g) => g.remoteMulti = true },
-    { name: "MANNA", description: "Get increased |GEM| chance.", color: gemColors.get("y"), bg: "◓", fill: "", repeatable: true, offset: -3, pickup: (g) => g.gemChance *= 1.3 },
-    { name: "SIN", description: "Once per level, |redraw| your hand if |stuck|.", color: gemColors.get("p"), bg: "✟", fill: "", pickup: (g) => g.canRedraw = true },
-    { name: WILD_NAME, description: "|!1| ⇆ |!2|.", bg: "ೞ", fill: "", repeatable: true, varies: true, offset: -2, pickup: (g) => {} },
-    { name: HOME_NAME, description: "Freely revisit |!1| tiles.", bg: "ಹ", fill: "", repeatable: true, varies: true, pickup: (g) => {} },
+    { name: "SAINTHOOD", description: "Increase your |LIFE| by |2", color: gemColors.get("r"), bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
+    { name: "DEMIDEITY", description: "Increase your |LIFE| by |3", color: gemColors.get("r"), bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
+    { name: "MAGNA CARTA", description: "Increase your |MAX HAND SIZE| by |1", color: gemColors.get("b"), bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
+    { name: "SACRAMENT", description: "Increases the presented |reward options", color: gemColors.get("o"), bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
+    { name: "MIRACLE", description: "Allows you to pick an |extra| reward", color: gemColors.get("o"), bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
+    { name: "CAVALRY", description: "Your |empty cards| can open chests", color: gemColors.get("g"), bg: "✿", offset: -1, fill: "", pickup: (g) => g.canRemoteOpen = true },
+    { name: "FAITH", description: "Stepping on |RED| also |HEALS", color: gemColors.get("r"), bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true },
+    { name: "PILLAGE", description: "Double your step |SCORE", color: gemColors.get("y"), bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
+    { name: "LOOT", description: "Passing by |ORANGE| activates it", color: gemColors.get("o"), bg: "⇲", fill: "", offset: -3, pickup: (g) => g.remoteMulti = true },
+    { name: "MANNA", description: "Get increased |GEM| chance", color: gemColors.get("y"), bg: "◓", fill: "", repeatable: true, offset: -3, pickup: (g) => g.gemChance *= 1.3 },
+    { name: "SIN", description: "Once per level, |redraw| your hand if |stuck", color: gemColors.get("p"), bg: "✟", fill: "", pickup: (g) => g.canRedraw = true },
+    { name: WILD_NAME, description: "|!1| ⇆ |!2|", bg: "ೞ", fill: "", repeatable: true, varies: true, offset: -2, pickup: (g) => {} },
+    { name: HOME_NAME, description: "Freely revisit |!1| tiles", bg: "ಹ", fill: "", repeatable: true, varies: true, pickup: (g) => {} },
 ];
 
 export class RelicIcon extends Draggable {

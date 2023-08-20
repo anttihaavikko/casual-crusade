@@ -40,12 +40,12 @@ export const gemNames = new Map([
 
 const gemDescriptions = new Map([
     ["n", ""],
-    ["b", "|Draw extra| card when |placed|."],
-    ["p", "|Recycle |random card when |stepping| on."],
-    ["r", "|Heal| for one when |placed|."],
-    ["y", "|Score earned| for stepping on is |tenfold|."],
-    ["o", "|Doubles| move scores when |stepping| on."],
-    ["g", "Fill neighbours with |blank cards|."]
+    ["b", "|Draw extra| card when |placed"],
+    ["p", "|Recycle |random card when |stepping| o"],
+    ["r", "|Heal| for one when |placed"],
+    ["y", "|Score earned| for stepping on is |tenfold"],
+    ["o", "|Doubles| move scores when |stepping| on"],
+    ["g", "Fill neighbours with |blank cards"]
 ]);
 
 export type Direction = "u" | "r" | "d" | "l";
