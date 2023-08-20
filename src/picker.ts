@@ -1,7 +1,7 @@
 import { Card, TILE_WIDTH, randomCard } from "./card";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
-import { Vector, ZERO } from "./engine/vector";
+import { Vector, ZERO, distance } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
@@ -41,13 +41,18 @@ export class Picker extends Entity {
         ctx.restore();
     }
 
+    public pickAt(x: number, y: number): void {
+        const card = [...this.picks].sort((a, b) => distance(a.getCenter(), { x, y }) - distance(b.getCenter(), { x, y }))[0];
+        if(card && distance(card.getCenter(), { x, y }) < 100) {
+            this.remove(card);
+        }
+    }
+
     public remove(reward: Card | RelicIcon): void {
         if(this.locked || !reward) return;
 
         reward.move(reward.getMoveTarget(), 0.2);
         this.locked = true;
-
-        
         
         setTimeout(() => {
             this.picks = this.picks.filter(c => c != reward);

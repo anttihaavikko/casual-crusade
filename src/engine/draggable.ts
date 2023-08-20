@@ -7,9 +7,9 @@ export abstract class Draggable extends Entity {
     protected dragging: boolean;
     protected locked: boolean;
     protected selectable: boolean;
+    protected start: Vector;
 
     private offset: Vector = { x: 0, y: 0 };
-    private start: Vector;
     private pressed: boolean;
 
     public update(tick: number, mouse: Mouse): void {

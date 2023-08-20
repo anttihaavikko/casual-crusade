@@ -60,18 +60,6 @@ document.onmousemove = (e: MouseEvent) => {
   mouse.y = isFull ? (e.y / window.innerHeight * HEIGHT) : e.offsetY;
 };
 
-document.ontouchstart = (e: TouchEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
-};
-
-document.ontouchmove = (e: TouchEvent) => {
-  e.preventDefault();
-  e.stopPropagation();
-  mouse.x = e.touches[0].clientX;
-  mouse.y = e.touches[0].clientY;
-};
-
 document.onkeydown = (e: KeyboardEvent) => {
   game.audio.prepare();
   if(e.key == 'n') {
@@ -90,6 +78,10 @@ document.onkeydown = (e: KeyboardEvent) => {
     game.picker.create(0);
   }
 }
+
+document.ontouchstart = (e: TouchEvent) => {
+  game.click(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+};
 
 document.onmousedown = (e: MouseEvent) => {
   game.audio.play();

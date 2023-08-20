@@ -84,6 +84,7 @@ export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): C
 
 export class Card extends Draggable {
     public visited: boolean;
+    public selected: boolean;
 
     private tile: Tile;
 
@@ -106,9 +107,15 @@ export class Card extends Draggable {
 
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
+        this.updateTile();
+    }
+
+    public updateTile(): void {
         const sorted = [...this.level.board]
             .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.p, tile.getPosition()) < 100)
             .sort((a, b) => distance(this.p, a.getPosition()) - distance(this.p, b.getPosition()));
+
+        if(sorted.length <= 0) return;
 
         const prev = this.tile;
         this.tile = sorted.length > 0 ? sorted[0]: null;
@@ -135,15 +142,23 @@ export class Card extends Draggable {
         this.game.tooltip.visible = false;
     }
 
-    protected pick(): void {
+    public pick(): void {
+        this.start = {
+            x: this.p.x,
+            y: this.p.y
+        };
+        this.game.clearSelect();
         this.game.audio.click();
         this.getPossibleSpots().forEach(tile => tile.marked = true);
     }
 
-    protected drop(): void {
-        this.game.audio.pong();
+    public drop(): void {
         this.level.board.forEach(tile => tile.marked = false);
+        
+        this.selected = false;
+        this.game.audio.pong();
         this.level.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
+
         this.d = 100;
         setTimeout(() => this.d = 0, 100);
 
@@ -177,6 +192,7 @@ export class Card extends Draggable {
                     this.pulse();
                 }
             }
+            this.tile = null;
             return;
         }
 
@@ -250,6 +266,16 @@ export class Card extends Draggable {
         if(this.data.gem) {
             drawCircle(ctx, p, 12, "#000");
             drawCircle(ctx, p, 6, gemColors[this.data.gem]);
+        }
+
+        if(this.selected) {
+            ctx.strokeStyle = "#fff";
+            ctx.save();
+            ctx.translate(c.x, c.y);
+            ctx.scale(2, 2.5);
+            ctx.translate(-c.x, -c.y);
+            drawCorners(ctx, this.p.x, this.p.y, 4);
+            ctx.restore();
         }
 
         ctx.restore();
@@ -350,9 +376,8 @@ export class Card extends Draggable {
     }
 }
 
-export function drawCorners(ctx: CanvasRenderingContext2D, x: number, y: number): void {
-    ctx.strokeStyle = "#00000022";
-    ctx.lineWidth = 4;
+export function drawCorners(ctx: CanvasRenderingContext2D, x: number, y: number, width = 4): void {
+    ctx.lineWidth = width;
     ctx.lineDashOffset = 5;
     ctx.setLineDash([10, 40, 10, 20, 10, 40, 10, 20]);
     ctx.strokeRect(x + 15, y + 15, TILE_WIDTH - 30, TILE_HEIGHT - 30);

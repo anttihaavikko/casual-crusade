@@ -31,6 +31,7 @@ export class Pile extends Entity {
         ctx.fillStyle = "#fff";
         ctx.fillRect(this.p.x + CARD_BORDER + CARD_GAP, this.p.y + CARD_BORDER + CARD_GAP - height, this.s.x - CARD_BORDER * 2 - CARD_GAP * 2, this.s.y - CARD_BORDER * 2 - CARD_GAP * 2);
 
+        ctx.strokeStyle = "#00000022";
         drawCorners(ctx, this.p.x, this.p.y - height);
 
         ctx.font =`30px ${font}`;

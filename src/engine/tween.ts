@@ -48,6 +48,7 @@ export class Tween {
         }
         if(!this.active) return;
         this.time = clamp01((tick - this.startTime) / this.duration);
+        if(!this.start || !this.target) return;
         const p = lerp(this.start, this.target, this.time);
         
         if(this.type == TweenType.Move) this.entity.setPosition(p.x, p.y);

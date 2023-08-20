@@ -11,7 +11,7 @@ import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
 import { random, randomCell, randomSorter } from "./engine/random";
 import { RectParticle } from "./engine/rect";
-import { Vector, ZERO, offset } from "./engine/vector";
+import { Vector, ZERO, distance, offset } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
@@ -43,6 +43,7 @@ export class Game extends Entity {
     public blinders = new Blinders();
     public freeMoveOn = -1;
     private endCheckTimer: any;
+    private selectedCard: Card;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -221,6 +222,36 @@ export class Game extends Entity {
                 this.dude.setPosition(p.x, p.y);
             });
         }, hits.length * delay + 1500 + extra);
+    }
+
+    public click(x: number, y: number): void {
+        if(this.picker.rewards > 0) {
+            this.picker.pickAt(x, y);
+            return;
+        }
+
+        this.cards.forEach(c => c.selected = false);
+        const hand = this.cards.filter(c => !c.isLocked());
+        const card = [...hand].sort((a, b) => distance(a.getCenter(), { x, y }) - distance(b.getCenter(), { x, y }))[0];
+        if(card && distance(card.getCenter(), { x, y }) < 100) {
+            card.pick();
+            card.selected = true;
+            this.selectedCard = card;
+            return;
+        }
+
+        if(this.selectedCard) {
+            this.selectedCard.selected = false;
+            this.selectedCard.setPosition(x - TILE_WIDTH * 0.5, y - TILE_HEIGHT * 0.5);
+            this.selectedCard.updateTile();
+            this.selectedCard.drop();
+            this.selectedCard = null;
+            return;
+        }
+    }
+
+    public clearSelect(): void {
+        this.cards.forEach(c => c.selected = false);
     }
 
     public showIntro(): void {
