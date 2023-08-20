@@ -42,6 +42,7 @@ export class Game extends Entity {
     public wilds: { first: Gem, second: Gem }[] = [];
     public blinders = new Blinders();
     public freeMoveOn = -1;
+    private endCheck: any;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -58,8 +59,8 @@ export class Game extends Entity {
         new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
     ]);
 
-    private splash = new Container(WIDTH * 0.5, HEIGHT * 0.5 - 50, [
-        new TextEntity("LAND CONQUERED", 60, WIDTH * 0.5, HEIGHT * 0.5 - 140, -1, ZERO, { shadow: 6 })
+    private splash = new Container(WIDTH * 0.5, 150, [
+        new TextEntity("LAND CONQUERED", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 6 })
     ]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
@@ -126,6 +127,7 @@ export class Game extends Entity {
     }
 
     public nextLevel(): void {
+        clearTimeout(this.endCheck);
         this.tooltip.visible = false;
 
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
@@ -194,7 +196,7 @@ export class Game extends Entity {
 
     public checkLevelEnd(): void {
         if(this.picker.rewards > 0) {
-            setTimeout(() => this.checkLevelEnd(), 500);
+            this.endCheck = setTimeout(() => this.checkLevelEnd(), 500);
             return;
         }
         const handCards = this.cards.filter(c => !c.isLocked());
