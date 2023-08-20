@@ -21,7 +21,7 @@ export const WILD_NAME = "WILDCARD";
 export const HOME_NAME = "HOME";
 
 export const relics: Relic[] = [
-    { name: "BENEVOLENT", description: "Increase your |LIFE| by |1|.", color: gemColors.red, bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
+    // { name: "BENEVOLENT", description: "Increase your |LIFE| by |1|.", color: gemColors.red, bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
     { name: "SAINTHOOD", description: "Increase your |LIFE| by |2|.", color: gemColors.red, bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
     { name: "DEMIDEITY", description: "Increase your |LIFE| by |3|.", color: gemColors.red, bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
     { name: "MAGNA CARTA", description: "Increase your |MAX HAND SIZE| by |1|.", color: gemColors.blue, bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
