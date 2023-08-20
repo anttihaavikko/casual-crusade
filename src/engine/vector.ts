@@ -5,19 +5,19 @@ export interface Vector {
 
 export const ZERO = { x: 0, y: 0 };
 
-export function normalize(v: Vector): Vector {
+export const normalize = (v: Vector): Vector => {
     const magnitude = Math.sqrt(v.x * v.x + v.y * v.y);
     if(magnitude == 0) return ZERO;
     return { x: v.x / magnitude, y: v.y / magnitude };
 }
 
-export function distance(a: Vector, b: Vector): number {
+export const distance = (a: Vector, b: Vector): number => {
     const dx = Math.abs(a.x - b.x);
     const dy = Math.abs(a.y - b.y);
     return Math.sqrt(dx * dx + dy * dy);
 }
 
-export function lerp(a: Vector, b: Vector, t: number): Vector {
+export const lerp = (a: Vector, b: Vector, t: number): Vector => {
     const ease = bounce(t);
     return {
         x: a.x + ease * (b.x - a.x),
@@ -25,8 +25,7 @@ export function lerp(a: Vector, b: Vector, t: number): Vector {
     };
 }
 
-export function bounce(p: number): number
-{
+export const bounce = (p: number): number => {
     if(p < 4/11.0)
     {
         return (121 * p * p)/16.0;
@@ -45,7 +44,7 @@ export function bounce(p: number): number
     }
 }
 
-export function offset(v: Vector, x: number, y: number): Vector {
+export const offset = (v: Vector, x: number, y: number): Vector => {
     return {
         x: v.x + x,
         y: v.y + y

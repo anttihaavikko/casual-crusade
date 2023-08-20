@@ -1,17 +1,17 @@
 import { Vector } from "./vector";
 
-export function drawCircle(ctx: CanvasRenderingContext2D, pos: Vector, radius: number, color: string): void {
+export const drawCircle = (ctx: CanvasRenderingContext2D, pos: Vector, radius: number, color: string): void => {
     drawEllipse(ctx, pos, radius, radius, color);
 }
 
-export function drawEllipse(ctx: CanvasRenderingContext2D, pos: Vector, x: number, y: number, color: string): void {
+export const drawEllipse = (ctx: CanvasRenderingContext2D, pos: Vector, x: number, y: number, color: string): void => {
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.ellipse(pos.x, pos.y, x, y, 0, 0, Math.PI * 2);
     ctx.fill();
 }
 
-export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
+export const roundRect = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void => {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.lineTo(x + width - radius, y);
@@ -25,7 +25,7 @@ export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w
     ctx.closePath();
 }
 
-export function drawColoredText(ctx: CanvasRenderingContext2D, content: string, x: number, y: number, baseColor: string, colors: string[]) {
+export const drawColoredText = (ctx: CanvasRenderingContext2D, content: string, x: number, y: number, baseColor: string, colors: string[]): void => {
     const parts = content.split('|');
     let color = false;
     let pos = 0;

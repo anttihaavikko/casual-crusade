@@ -56,7 +56,7 @@ export interface CardData {
     gem: Gem;
 }
 
-export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): CardData {
+export const randomCard = (chance = 1, canHaveGem = true, dirs?: Direction[]): CardData => {
     const count = Math.random() < 0.1 ? 4 : (1 + Math.floor(Math.random() * 3));
     const directions = dirs ?? ["u", "r", "d", "l"].sort(() =>  Math.random() - 0.5).slice(0, count) as Direction[];
     const gemChance = directions.length == 1 ? 0.6 * chance : 0.2 * chance;
@@ -355,7 +355,7 @@ export class Card extends Draggable {
     }
 }
 
-export function drawCorners(ctx: CanvasRenderingContext2D, x: number, y: number, width = 4): void {
+export const drawCorners = (ctx: CanvasRenderingContext2D, x: number, y: number, width = 4): void => {
     ctx.lineWidth = width;
     ctx.lineDashOffset = 5;
     ctx.setLineDash([10, 40, 10, 20, 10, 40, 10, 20]);

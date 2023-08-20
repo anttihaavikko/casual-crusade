@@ -104,7 +104,7 @@ document.onmouseup = (e: MouseEvent) => mouse.pressing = false;
 
 let zoom = 1.2;
 
-function tick(t: number) {
+const tick = (t: number) => {
   ui[0].content = `LIFE: ${game.life}/${game.maxLife}`;
   ui[1].content = game.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   requestAnimationFrame(tick);

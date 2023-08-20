@@ -1,7 +1,6 @@
-import { HEIGHT, WIDTH } from "./index";
 import { transformToCenter } from "./engine/transformer";
 
-export function tartan(ctx: CanvasRenderingContext2D) {
+export const tartan = (ctx: CanvasRenderingContext2D): void => {
     ctx.save();
     transformToCenter(ctx, -Math.PI * 0.25, 1.5, 1.5)
     ctx.fillStyle = "#ffffff22";
