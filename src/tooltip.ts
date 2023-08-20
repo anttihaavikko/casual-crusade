@@ -1,3 +1,4 @@
+import { drawColoredText } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
@@ -54,17 +55,7 @@ export class Tooltip extends Entity {
         ctx.lineTo(c.x + dx, c.y + dy + (this.flipped ? -15 : 15));
         ctx.fill();
 
-        const parts = this.content.split('|');
-        let color = false;
-        let pos = 0;
-        let n = 0;
-        parts.forEach(p => {
-            ctx.fillStyle = color ? this.colors[n] : "#fff";
-            if(color) n = (n + 1) % this.colors.length;
-            ctx.fillText(p, c.x + 15 + pos, c.y + 40 + 30);
-            color = !color;
-            pos += ctx.measureText(p).width;
-        });
+        drawColoredText(ctx, this.content, c.x + 15, c.y + 40 + 30, this.colors);
         ctx.restore();
     }
 }

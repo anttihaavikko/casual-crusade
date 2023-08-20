@@ -2,6 +2,7 @@ import { Draggable } from "./engine/draggable";
 import { drawCircle } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
+import { random } from "./engine/random";
 import { Vector, distance, normalize, offset } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
@@ -326,7 +327,7 @@ export class Card extends Draggable {
             p.y,
             0.5 + Math.random(),
             { x: 0, y: -1 - Math.random() },
-            { shadow: 4, align: "center", scales: true, color, angle: Math.random() * 0.1 * 2 - 0.1 }
+            { shadow: 4, align: "center", scales: true, color, angle: random(-0.1, 0.1) }
         ));
     }
 

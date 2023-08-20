@@ -17,12 +17,12 @@ export class Container extends Entity {
         }
     }
 
-    public hide(): void {
-        this.tween.scale({ x: 0, y: 0 }, 0.3);
+    public hide(duration = 0.3): void {
+        this.tween.scale({ x: 0, y: 0 }, duration);
     }
 
-    public show(): void {
-        this.tween.scale({ x: 1, y: 1 }, 0.3);
+    public show(duration = 0.3): void {
+        this.tween.scale({ x: 1, y: 1 }, duration);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -33,6 +33,10 @@ export class Container extends Entity {
         ctx.translate(-p.x, -p.y);
         this.children.forEach(c => c.draw(ctx));
         ctx.restore();
+    }
+
+    public getChild(index: number): Entity {
+        return this.children[index];
     }
 
     public getChildren(): Entity[] {

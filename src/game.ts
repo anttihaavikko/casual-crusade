@@ -53,8 +53,12 @@ export class Game extends Entity {
     private icons: RelicIcon[] = [];
 
     private helps = new Container(WIDTH * 0.5, HEIGHT * 0.5 + 155, [
-        new TextEntity("USE YOUR CARDS TO SPREAD THE GOOD WORD", 25, WIDTH * 0.5, HEIGHT * 0.5 + 134, -1, ZERO, { shadow: 3 }),
-        new TextEntity("THROUGHOUT THE LANDS...", 22, WIDTH * 0.5, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3 })
+        new TextEntity("USE YOUR |CARDS| TO CARVE |A PATH| AND", 25, 110, HEIGHT * 0.5 + 134, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" }),
+        new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
+    ]);
+
+    private splash = new Container(WIDTH * 0.5, HEIGHT * 0.5, [
+        new TextEntity("LAND CONQUERED", 50, WIDTH * 0.5, HEIGHT * 0.5, -1, ZERO, { shadow: 6 })
     ]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
@@ -154,9 +158,13 @@ export class Game extends Entity {
                 return;
             }
 
-            setTimeout(() => this.audio.win(), hits.length * delay + 100);
+            setTimeout(() => {
+                this.splash.show();
+                this.audio.win();
+            }, hits.length * delay + 100);
             
             setTimeout(() => {
+                this.splash.hide(0.1);
                 this.blinders.close(() => {
                     this.blinders.open();
                     this.mouse.dragging = false;
@@ -178,7 +186,7 @@ export class Game extends Entity {
                     const p = this.level.board[2].getPosition();
                     this.dude.setPosition(p.x, p.y);
                 });
-            }, hits.length * delay + 600);
+            }, hits.length * delay + 1500);
     }
 
     public checkLevelEnd(): void {
@@ -252,6 +260,7 @@ export class Game extends Entity {
         this.icons.forEach(i => i.update(tick, mouse));
         this.tooltip.update(tick, mouse);
         this.helps.update(tick, mouse);
+        this.splash.update(tick, mouse);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -263,6 +272,7 @@ export class Game extends Entity {
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
+        this.splash.draw(ctx);
         this.gameOver.draw(ctx);
         this.tooltip.draw(ctx);
     }
@@ -369,6 +379,7 @@ export class Game extends Entity {
     }
 
     private init(): void {
+        this.splash.scale = { x: 0, y: 0 };
         this.life = this.maxLife = 5;
         this.handSize = 3;
         this.rewardOptions = 3;

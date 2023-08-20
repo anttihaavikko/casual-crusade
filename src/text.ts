@@ -1,3 +1,4 @@
+import { drawColoredText } from "./engine/drawing";
 import { Particle } from "./engine/particle";
 import { Vector } from "./engine/vector";
 
@@ -14,10 +15,12 @@ export class TextEntity extends Particle {
         ctx.textAlign = this.options?.align ?? "center";
         if(this.options?.shadow) {
             ctx.fillStyle = "#000";
-            ctx.fillText(this.content, this.p.x + this.options.shadow, this.p.y + this.options.shadow);
+            ctx.fillText(this.content.replace(/\|/g, ""), this.p.x + this.options.shadow, this.p.y + this.options.shadow);
         }
         ctx.fillStyle = this.options?.color ?? "#fff";
-        ctx.fillText(this.content, this.p.x, this.p.y);
+
+        drawColoredText(ctx, this.content, this.p.x, this.p.y, this.options?.markColors ?? []);
+
         ctx.restore();
     }
 }
@@ -28,4 +31,5 @@ export interface TextOptions {
     shadow?: number;
     scales?: boolean;
     angle?: number;
+    markColors?: string[];
 }
