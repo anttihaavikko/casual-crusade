@@ -1,6 +1,6 @@
 import { Entity } from "./entity";
 import { Mouse } from "./mouse";
-import { Vector } from "./vector";
+import { Vector, offset } from "./vector";
 
 export abstract class Draggable extends Entity {
     protected hovered: boolean;
@@ -30,23 +30,19 @@ export abstract class Draggable extends Entity {
             return;
         }
         if(this.locked) return;
-        if(this.hovered && mouse.pressing && !mouse.dragging && !this.dragging) {
+        if(!this.hovered && mouse.pressing && !mouse.dragging && !this.dragging) {
             this.pick();
             this.start = {
                 x: this.p.x,
                 y: this.p.y
             };
             this.dragging = true;
-            this.offset = {
-                x: mouse.x - this.p.x,
-                y: mouse.y - this.p.y
-            };
+            this.offset = offset(mouse, this.p.x, this.p.y);
             mouse.dragging = true;
             this.d = 100;
         }
         if(this.dragging) {
-            this.p.x = mouse.x - this.offset.x;
-            this.p.y = mouse.y - this.offset.y;
+            this.p = offset(mouse, this.offset.x, this.offset.y);
 
             if(!mouse.pressing) {
                 this.dragging = false;

@@ -235,11 +235,7 @@ export class Card extends Draggable {
             this.lineTo(ctx, this.p.x + CARD_BORDER + CARD_GAP, this.p.y + this.s.y * 0.5);
         }
 
-        const p = {
-            x: this.p.x + this.s.x * 0.5,
-            y: this.p.y + this.s.y * 0.5
-        };
-
+        const p = this.getCenter();
         if(this.data.directions.length > 0) {
             drawCircle(ctx, p, 8, "#000");
         }
