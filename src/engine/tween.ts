@@ -47,7 +47,7 @@ export class Tween {
         if(!this.start || !this.target) return;
         const p = lerp(this.start, this.target, this.time);
         
-        if(this.type == "move") this.entity.setPosition(p.x, p.y);
+        if(this.type == "move") this.entity.p = { x: p.x, y: p.y };
         if(this.type == "scale") this.entity.scale = { x: p.x, y: p.y };
 
         this.active = this.time < 1;
