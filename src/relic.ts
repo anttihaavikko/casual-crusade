@@ -1,4 +1,5 @@
 import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, drawCorners, gemColors, gemNames } from "./card";
+import { font } from "./engine/constants";
 import { Draggable } from "./engine/draggable";
 import { Vector, offset } from "./engine/vector";
 import { Game } from "./game";
@@ -115,7 +116,7 @@ export class RelicIcon extends Draggable {
             drawCorners(ctx, this.p.x, this.p.y);
         }
 
-        ctx.font = "35px arial black";
+        ctx.font = `35px ${font}`;
         ctx.textAlign = "center";
 
         const off = this.data.offset ?? 0;
@@ -133,7 +134,7 @@ export class RelicIcon extends Draggable {
         }
         ctx.fillText(this.data.bg, c.x + 15 - 15, c.y + 12 + off);
         ctx.fillStyle = "#000";
-        ctx.font = "10px arial black";
+        ctx.font = `10px ${font}`;
         ctx.fillText(this.data.fill, c.x + 1, c.y + 4 + off);
 
         ctx.restore();

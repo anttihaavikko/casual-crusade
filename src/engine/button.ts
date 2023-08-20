@@ -1,4 +1,5 @@
 import { AudioManager } from "./audio";
+import { font } from "./constants";
 import { Entity } from "./entity"
 import { Mouse } from "./mouse";
 
@@ -43,7 +44,7 @@ export class ButtonEntity extends Entity {
         ctx.fillStyle = this.hovered ? "#ffff77" : "#fff";
         ctx.fillRect(this.p.x + BORDER_THICKNESS, this.p.y + BORDER_THICKNESS, this.s.x - BORDER_THICKNESS * 2, this.s.y - BORDER_THICKNESS * 2);
 
-        ctx.font =`30px arial black`;
+        ctx.font =`30px ${font}`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#000";
         ctx.fillText(this.content, this.p.x + this.s.x * 0.5, this.p.y + this.s.y * 0.5 + 10);

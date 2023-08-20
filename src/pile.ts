@@ -1,4 +1,5 @@
 import { CARD_BORDER, CARD_GAP, TILE_HEIGHT, TILE_WIDTH, drawCorners } from "./card";
+import { font } from "./engine/constants";
 import { Entity } from "./engine/entity";
 import { Vector } from "./engine/vector";
 
@@ -32,7 +33,7 @@ export class Pile extends Entity {
 
         drawCorners(ctx, this.p.x, this.p.y - height);
 
-        ctx.font =`30px arial black`;
+        ctx.font =`30px ${font}`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#000";
         ctx.fillText(this.count.toString(), this.p.x + this.s.x * 0.5, this.p.y + this.s.y * 0.5 + 10 - height);

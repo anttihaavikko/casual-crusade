@@ -1,3 +1,4 @@
+import { font } from "./engine/constants";
 import { drawColoredText } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
@@ -36,14 +37,14 @@ export class Tooltip extends Entity {
         ctx.translate(0, this.phase * (this.flipped ? -7 : -7));
         ctx.fillStyle = "#000000";
         ctx.fillRect(this.p.x, this.p.y, this.s.x, this.s.y);
-        ctx.font = "30px arial black";
+        ctx.font = `30px ${font}`;
         ctx.textAlign = "left";
         const c = this.getPosition();
         ctx.fillStyle = "#000";
         ctx.fillText(this.title, c.x + 5 + 15, c.y + 5 + 40);
         ctx.fillStyle = this.colors[0];
         ctx.fillText(this.title, c.x + 15, c.y + 40);
-        ctx.font = "20px arial black";
+        ctx.font = `20px ${font}`;
         ctx.fillStyle = "#000";
         ctx.fillText(this.content, c.x + 4 + 15, c.y + 4 + 40 + 30);
 

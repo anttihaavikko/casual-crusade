@@ -1,0 +1,1 @@
+export const font = "Arial Black, HelveticaNeue-CondensedBlack, Arial, sans-serif";

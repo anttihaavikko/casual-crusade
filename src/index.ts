@@ -60,6 +60,18 @@ document.onmousemove = (e: MouseEvent) => {
   mouse.y = isFull ? (e.y / window.innerHeight * HEIGHT) : e.offsetY;
 };
 
+document.ontouchstart = (e: TouchEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+};
+
+document.ontouchmove = (e: TouchEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+};
+
 document.onkeydown = (e: KeyboardEvent) => {
   game.audio.prepare();
   if(e.key == 'n') {

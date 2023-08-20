@@ -1,3 +1,4 @@
+import { font } from "./engine/constants";
 import { drawColoredText } from "./engine/drawing";
 import { Particle } from "./engine/particle";
 import { Vector } from "./engine/vector";
@@ -11,7 +12,7 @@ export class TextEntity extends Particle {
         ctx.save();
         ctx.rotate(this.options?.angle ?? 0);
         const mod = this.options?.scales ? this.ratio : 1;
-        ctx.font =`${this.fontSize * mod}px arial black`;
+        ctx.font =`${this.fontSize * mod}px ${font}`;
         ctx.textAlign = this.options?.align ?? "center";
         if(this.options?.shadow) {
             ctx.fillStyle = "#000";
