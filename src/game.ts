@@ -134,9 +134,14 @@ export class Game extends Entity {
             const delay = 200;
 
             if(hits.length > 0 && this.canRedraw && !this.level.retried) {
+                this.audio.deadEnd();
                 this.level.retried = true;
-                this.redraw();
+                setTimeout(() => this.redraw(), 500); 
                 return;
+            }
+
+            if(hits.length > 0) {
+                this.audio.deadEnd();
             }
 
             [...hits].sort(randomSorter).forEach((hit, i) => {
@@ -151,15 +156,17 @@ export class Game extends Entity {
                     this.life--;
                     hit.hidden = true;
                     this.audio.boom();
-                }, 100 + i * delay);
+                }, 100 + i * delay + 750);
             });
+
+            const extra = hits.length > 0 ? 1300 : 100;
 
             if(this.life - hits.length <= 0) {
                 setTimeout(() => {
                     this.gameOver.toggle(true);
                     this.camera.shake(7, 0.3, 2);
                     this.audio.lose();
-                }, hits.length * delay + 800);
+                }, hits.length * delay + extra);
                 return;
             }
 
@@ -168,7 +175,7 @@ export class Game extends Entity {
                 this.audio.win();
                 this.dude.hop();
                 this.audio.move();
-            }, hits.length * delay + 100);
+            }, hits.length * delay + extra);
             
             setTimeout(() => {
                 this.splash.hide(0.6);
@@ -193,7 +200,7 @@ export class Game extends Entity {
                     const p = this.level.board[2].getPosition();
                     this.dude.setPosition(p.x, p.y);
                 });
-            }, hits.length * delay + 1500);
+            }, hits.length * delay + 1500 + extra);
     }
 
     public checkLevelEnd(): void {
