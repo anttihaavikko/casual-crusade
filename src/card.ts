@@ -144,6 +144,8 @@ export class Card extends Draggable {
         this.game.audio.pong();
         this.level.board.forEach(tile => tile.marked = false);
         this.level.board.filter(tile => tile.content === this).forEach(tile => tile.content = null);
+        this.d = 100;
+        setTimeout(() => this.d = 0, 100);
 
         if(this.game.picker.rewards > 0) {
             this.move(this.getStartPosition(), 0.1);
