@@ -66,7 +66,7 @@ export function randomGem(): Gem {
 
 export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): CardData {
     const count = Math.random() < 0.1 ? 4 : (1 + Math.floor(Math.random() * 3));
-    const directions = dirs ?? ["u" as Direction, "r" as Direction, "d" as Direction, "l" as Direction].sort(() =>  Math.random() - 0.5).slice(0, count);
+    const directions = dirs ?? ["u", "r", "d", "l"].sort(() =>  Math.random() - 0.5).slice(0, count) as Direction[];
     const gemChance = directions.length == 1 ? 0.6 * chance : 0.2 * chance;
     return {
         directions,
