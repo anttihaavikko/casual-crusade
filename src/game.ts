@@ -182,7 +182,9 @@ export class Game extends Entity {
                 "GREAT SUCCESS",
                 "RECONQUISTA",
                 "HERETICS LIQUIDATED",
-                "THE CHURCH PREVAILS"
+                "THE CHURCH PREVAILS",
+                "PAGANS MURDERED",
+                "SINS FORGIVEN"
             ]));
             this.splash.show();
             this.audio.win();
