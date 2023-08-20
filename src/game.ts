@@ -184,7 +184,10 @@ export class Game extends Entity {
                 "HERETICS LIQUIDATED",
                 "THE CHURCH PREVAILS",
                 "PAGANS MURDERED",
-                "SINS FORGIVEN"
+                "SINS FORGIVEN",
+                "SIGNED BY THE CROSS",
+                "CRUX TRANSMARINA",
+                "CRUX CISMARINA"
             ]));
             this.splash.show();
             this.audio.win();
@@ -227,6 +230,7 @@ export class Game extends Entity {
             "CRUSADE OF FREDERICK II",
             "THE BARONS' CRUSADE",
             "CRUSADE OF LOUIS IX",
+            "THE SHEPHERDS' CRUSADE OF 1251",
             "THE CRUSADE OF 1267",
             "THE INFANTS OF ARAGON",
             "THE EIGHTH CRUSADE",
@@ -234,7 +238,7 @@ export class Game extends Entity {
             "THE FALL OF OUTREMER",
             "THE CRUSADES AFTER ACRE",
             "THE ARAGONESE CRUSADE"
-        ][(this.level.level - 1) % 12]);
+        ][(this.level.level - 1) % 13]);
         this.splash.show();
         setTimeout(() => this.splash.hide(), 2500);
     }
