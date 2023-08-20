@@ -57,8 +57,8 @@ export class Game extends Entity {
         new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
     ]);
 
-    private splash = new Container(WIDTH * 0.5, HEIGHT * 0.5, [
-        new TextEntity("LAND CONQUERED", 50, WIDTH * 0.5, HEIGHT * 0.5, -1, ZERO, { shadow: 6 })
+    private splash = new Container(WIDTH * 0.5, HEIGHT * 0.5 - 50, [
+        new TextEntity("LAND CONQUERED", 60, WIDTH * 0.5, HEIGHT * 0.5 - 140, -1, ZERO, { shadow: 6 })
     ]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
@@ -164,7 +164,7 @@ export class Game extends Entity {
             }, hits.length * delay + 100);
             
             setTimeout(() => {
-                this.splash.hide(0.1);
+                this.splash.hide(0.6);
                 this.blinders.close(() => {
                     this.blinders.open();
                     this.mouse.dragging = false;
