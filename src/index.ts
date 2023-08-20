@@ -41,7 +41,7 @@ const ui: TextEntity[] = [
 ];
 
 const p = dude.getPosition();
-level.starter = new Card(p.x, p.y, level, game, { directions: ["u", "r", "d", "l"], gem: "none"});
+level.starter = new Card(p.x, p.y, level, game, { directions: ["u", "r", "d", "l"], gem: "n"});
 level.starter.lock();
 level.board[2].content = level.starter;
 
@@ -76,10 +76,10 @@ document.onkeydown = (e: KeyboardEvent) => {
   //   game.picker.rewards = 1;
   //   game.picker.create(1);
   // }
-  // if(e.key == 'c') {
-  //   game.picker.rewards = 1;
-  //   game.picker.create(0);
-  // }
+  if(e.key == 'c') {
+    game.picker.rewards = 1;
+    game.picker.create(0);
+  }
 }
 
 document.ontouchstart = (e: TouchEvent) => {

@@ -23,7 +23,7 @@ export class Lid extends Entity {
         ctx.rotate(this.angle * this.tween.time);
         ctx.translate(-center.x, -center.y);
         ctx.fillRect(center.x - 22, center.y - 28, 44, 20);
-        ctx.fillStyle = gemColors.yellow;
+        ctx.fillStyle = gemColors.get("y");
         ctx.fillRect(center.x - 17, center.y - 23, 34, 10);
         drawEllipse(ctx, offset(center, 0, -17), 3, 2, "#000");
         ctx.restore();
