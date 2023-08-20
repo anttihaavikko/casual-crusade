@@ -2,7 +2,7 @@ import { Draggable } from "./engine/draggable";
 import { drawCircle, roundRect } from "./engine/drawing";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
-import { random, randomCell } from "./engine/random";
+import { random, randomCell, randomInt } from "./engine/random";
 import { Vector, distance, normalize, offset } from "./engine/vector";
 import { Game } from "./game";
 import { HEIGHT, WIDTH } from "./index";
@@ -51,9 +51,7 @@ const gemDescriptions = new Map([
 
 export type Direction = "u" | "r" | "d" | "l";
 
-export const getRandomGem = () => {
-    return 1 + Math.floor(Math.random() * 5);
-}
+export const getRandomGem = () => randomInt(1, 5);
 
 export interface CardData {
     directions: Direction[];
