@@ -9,7 +9,7 @@ import { Entity, sortByDepth } from "./engine/entity";
 import { LineParticle } from "./engine/line";
 import { Mouse } from "./engine/mouse";
 import { Pulse } from "./engine/pulse";
-import { random, randomSorter } from "./engine/random";
+import { random, randomCell, randomSorter } from "./engine/random";
 import { RectParticle } from "./engine/rect";
 import { Vector, ZERO, offset } from "./engine/vector";
 import { HEIGHT, WIDTH } from "./index";
@@ -42,7 +42,7 @@ export class Game extends Entity {
     public wilds: { first: Gem, second: Gem }[] = [];
     public blinders = new Blinders();
     public freeMoveOn = -1;
-    private endCheck: any;
+    private endCheckTimer: any;
 
     public tooltip = new Tooltip(WIDTH * 0.5, HEIGHT * 0.5, 500, 90);
 
@@ -60,7 +60,7 @@ export class Game extends Entity {
     ]);
 
     private splash = new Container(WIDTH * 0.5, 150, [
-        new TextEntity("LAND CONQUERED", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 6 })
+        new TextEntity("", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 5 })
     ]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
@@ -126,8 +126,12 @@ export class Game extends Entity {
         }
     }
 
+    private setSplash(text: string): void {
+        (this.splash.getChild(0) as TextEntity).content = text;
+    }
+
     public nextLevel(): void {
-        clearTimeout(this.endCheck);
+        clearTimeout(this.endCheckTimer);
         this.tooltip.visible = false;
 
         const hits = this.level.board.filter(tile => !tile.content && !tile.reward);
@@ -171,6 +175,12 @@ export class Game extends Entity {
             }
 
             setTimeout(() => {
+                this.setSplash(randomCell([
+                    "LAND CONQUERED",
+                    "INFIDELS MASSACRED",
+                    "MIGHTY RIGHTEOUS",
+                    "SUCCESS"
+                ]));
                 this.splash.show();
                 this.audio.win();
                 this.dude.hop(this);
@@ -180,6 +190,7 @@ export class Game extends Entity {
             setTimeout(() => {
                 this.splash.hide(0.6);
                 this.blinders.close(() => {
+
                     this.blinders.open();
                     this.mouse.dragging = false;
                     this.level.next();
@@ -187,6 +198,7 @@ export class Game extends Entity {
                     this.dude.reset(this.level.board[2]);
                     this.shuffle();
                     this.fill();
+                    this.showIntro();
 
                     const sortedX = [...this.level.board].filter(t => !t.reward).map(t => t.index.x).sort((a, b) => a - b);
                     const sortedY = [...this.level.board].filter(t => !t.reward).map(t => t.index.y).sort((a, b) => a - b);
@@ -203,9 +215,28 @@ export class Game extends Entity {
             }, hits.length * delay + 1500 + extra);
     }
 
+    public showIntro(): void {
+        this.setSplash([
+            "THE FOURTH CRUSADE",
+            "THE FIFTH CRUSADE",
+            "CRUSADE OF FREDERICK II",
+            "THE BARONS' CRUSADE",
+            "CRUSADE OF LOUIS IX",
+            "THE CRUSADE OF 1267",
+            "THE INFANTS OF ARAGON",
+            "THE EIGHTH CRUSADE",
+            "LORD EDWARD'S CRUSADE",
+            "THE FALL OF OUTREMER",
+            "THE CRUSADES AFTER ACRE",
+            "THE ARAGONESE CRUSADE"
+        ][(this.level.level - 1) % 12]);
+        this.splash.show();
+        setTimeout(() => this.splash.hide(), 2500);
+    }
+
     public checkLevelEnd(): void {
         if(this.picker.rewards > 0) {
-            this.endCheck = setTimeout(() => this.checkLevelEnd(), 500);
+            this.endCheckTimer = setTimeout(() => this.checkLevelEnd(), 500);
             return;
         }
         const handCards = this.cards.filter(c => !c.isLocked());
@@ -300,7 +331,7 @@ export class Game extends Entity {
             this.fill();
         }, 300);
 
-        setTimeout(() => this.checkLevelEnd(), 1000);
+        this.endCheckTimer = setTimeout(() => this.checkLevelEnd(), 1000);
     }
 
     public discard(): void {

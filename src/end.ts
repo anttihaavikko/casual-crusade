@@ -9,7 +9,7 @@ import { TextEntity } from "./text";
 export class GameOver extends Entity {
     private visible: boolean;
     private again: ButtonEntity;
-    private gameOver = new TextEntity("GAME OVER", 100, WIDTH * 0.5, 280, -1, ZERO, { shadow: 10, align: "center" });
+    private gameOver = new TextEntity("SIEGE IS OVER!", 85, WIDTH * 0.5, 280, -1, ZERO, { shadow: 8, align: "center" });
 
     constructor(game: Game) {
         super(0, 0, 0, 0);
