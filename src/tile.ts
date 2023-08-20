@@ -90,7 +90,7 @@ export class Tile extends Entity {
             drawEllipse(ctx, this.getCenter(), 27, 12, "#00000033");
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 20, center.y - 22, 40, 25);
-            ctx.fillStyle = gemColors.y;
+            ctx.fillStyle = gemColors.yellow;
             ctx.fillRect(center.x - 15, center.y - 17, 30, 15);
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 12, center.y - 16, 24, 7);

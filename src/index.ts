@@ -41,7 +41,7 @@ const ui: TextEntity[] = [
 ];
 
 const p = dude.getPosition();
-level.starter = new Card(p.x, p.y, level, game, { directions: ["u", "r", "d", "l"], gem: "n"});
+level.starter = new Card(p.x, p.y, level, game, { directions: ["u", "r", "d", "l"], gem: "none"});
 level.starter.lock();
 level.board[2].content = level.starter;
 

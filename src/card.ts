@@ -16,36 +16,36 @@ export const TILE_HEIGHT = 60;
 export const CARD_BORDER = 7;
 export const CARD_GAP = 2;
 
-export type Gem = "n" | "b" | "p" | "r" | "y" | "o" | "g";
+export type Gem = "none" | "blue" | "purple" | "red" | "yellow" | "orange" | "green";
 
 export const gemColors: {[K in Gem]: string} = {
-    n: null,
-    b: "#00BDE5",
-    p: "#846AC1",
-    r: "#E93988",
-    y: "#F3DC00",
-    o: "#F89F00",
-    g: "#B4D000"
+    none: null,
+    blue: "#00BDE5",
+    purple: "#846AC1",
+    red: "#E93988",
+    yellow: "#F3DC00",
+    orange: "#F89F00",
+    green: "#B4D000"
 };
 
 export const gemNames: {[K in Gem]: string} = {
-    n: null,
-    b: "FIBONACCI'S BOON",
-    p: "PENANCE",
-    r: "POPE'S BLESSING",
-    y: "INDULGENCE",
-    o: "DYNASTY",
-    g: "KHAN'S LEGACY"
+    none: null,
+    blue: "FIBONACCI'S BOON",
+    purple: "PENANCE",
+    red: "POPE'S BLESSING",
+    yellow: "INDULGENCE",
+    orange: "DYNASTY",
+    green: "KHAN'S LEGACY"
 };
 
 const gemDescriptions: {[K in Gem]: string} = {
-    n: null,
-    b: "|Draw extra| card when |placed|.",
-    p: "|Recycle |random card when |stepping| on.",
-    r: "|Heal| for one when |placed|.",
-    y: "|Score earned| for stepping on is |tenfold|.",
-    o: "|Doubles| move scores when |stepping| on.",
-    g: "Fill neighbours with |blank cards|."
+    none: null,
+    blue: "|Draw extra| card when |placed|.",
+    purple: "|Recycle |random card when |stepping| on.",
+    red: "|Heal| for one when |placed|.",
+    yellow: "|Score earned| for stepping on is |tenfold|.",
+    orange: "|Doubles| move scores when |stepping| on.",
+    green: "Fill neighbours with |blank cards|."
 };
 
 export type Direction = "u" | "r" | "d" | "l";
@@ -60,7 +60,7 @@ export interface CardData {
 }
 
 export function randomGem(): Gem {
-    return randomCell(["b", "p", "r", "y", "o", "g"]);
+    return randomCell(["blue", "purple", "red", "yellow", "orange", "green"]);
 }
 
 export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): CardData {
@@ -69,7 +69,7 @@ export function randomCard(chance = 1, canHaveGem = true, dirs?: Direction[]): C
     const gemChance = directions.length == 1 ? 0.6 * chance : 0.2 * chance;
     return {
         directions,
-        gem: canHaveGem && Math.random() < gemChance ? randomGem() : "n"
+        gem: canHaveGem && Math.random() < gemChance ? randomGem() : "none"
     }
 }
 
@@ -84,7 +84,7 @@ export class Card extends Draggable {
     }
 
     public is(color: Gem): boolean {
-        return this.data.gem != "n" && [this.data.gem, ...this.game.getWilds(this.data.gem)].includes(color);
+        return this.data.gem != "none" && [this.data.gem, ...this.game.getWilds(this.data.gem)].includes(color);
     }
 
     public isLocked(): boolean {
@@ -167,14 +167,14 @@ export class Card extends Draggable {
             this.tile.content = this;
             this.game.fill();
             this.game.findPath(this.tile, this.game);
-            if(this.is("b")) {
+            if(this.is("blue")) {
                 this.game.audio.discard();
                 this.game.pull();
             }
-            if(this.is("r")) {
+            if(this.is("red")) {
                 this.game.heal(1);
             }
-            if(this.is("g")) {
+            if(this.is("green")) {
                 const neighbours = this.tile.getFreeNeighbours(this.level.board, true).filter(n => !n.content);
                 neighbours.forEach(n => this.game.createBlank(n));
                 if(neighbours.length > 0) {
@@ -292,17 +292,17 @@ export class Card extends Draggable {
     }
 
     public activate(): void {
-        if(this.is("r") && this.game.healOnStep) {
+        if(this.is("red") && this.game.healOnStep) {
             this.game.heal(1);
         }
-        if(this.is("p")) {
+        if(this.is("purple")) {
             this.game.audio.discard();
             this.game.discard();
         }
-        if(this.is("o")) {
+        if(this.is("orange")) {
             this.triggerMulti();
         }
-        if(this.is("y")) {
+        if(this.is("yellow")) {
             this.game.audio.score();
         }
     }
@@ -324,7 +324,7 @@ export class Card extends Draggable {
     }
 
     private addScore(amt: number, ): void {
-        const isYellow = this.is("y");
+        const isYellow = this.is("yellow");
         const addition = this.getScore(amt);
         this.game.score += addition;
         const p = {
@@ -362,7 +362,7 @@ export class Card extends Draggable {
     }
 
     public getScore(step: number): number {
-        const mod = this.is("y") ? 10 : 1;
+        const mod = this.is("yellow") ? 10 : 1;
         return step * mod * this.game.multi * this.level.level;
     }
 }
