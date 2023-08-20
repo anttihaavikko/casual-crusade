@@ -4,6 +4,7 @@ import { Draggable } from "./engine/draggable";
 import { Vector, offset } from "./engine/vector";
 import { Game } from "./game";
 import { transformTo } from "./engine/transformer";
+import { randomSorter } from "./engine/random";
 
 interface Relic {
     name: string;
@@ -45,8 +46,8 @@ export class RelicIcon extends Draggable {
         super(x, y, TILE_WIDTH, TILE_HEIGHT);
         this.selectable = true;
         this.locked = true;
-        this.data.gems = ["b", "p", "r", "y", "o", "g"].sort(() => Math.random() < 0.5 ? 1 : -1) as Gem[];
-        this.data.color = this.data.varies ? gemColors[this.data.gems[0]] : this.data.color;
+        this.data.gems = ["b", "p", "r", "y", "o", "g"].sort(randomSorter) as Gem[];
+        this.data.color = this.data.varies ? gemColors.get(this.data.gems[0]) : this.data.color;
     }
 
     public isInside(point: Vector): boolean {
