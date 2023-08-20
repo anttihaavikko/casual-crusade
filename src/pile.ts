@@ -1,4 +1,4 @@
-import { CARD_BORDER, CARD_GAP, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { CARD_BORDER, CARD_GAP, TILE_HEIGHT, TILE_WIDTH, drawCorners } from "./card";
 import { Entity } from "./engine/entity";
 import { Vector } from "./engine/vector";
 
@@ -29,6 +29,8 @@ export class Pile extends Entity {
         ctx.fillRect(this.p.x + CARD_GAP, this.p.y + CARD_GAP - height, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
         ctx.fillStyle = "#fff";
         ctx.fillRect(this.p.x + CARD_BORDER + CARD_GAP, this.p.y + CARD_BORDER + CARD_GAP - height, this.s.x - CARD_BORDER * 2 - CARD_GAP * 2, this.s.y - CARD_BORDER * 2 - CARD_GAP * 2);
+
+        drawCorners(ctx, this.p.x, this.p.y - height);
 
         ctx.font =`30px arial black`;
         ctx.textAlign = "center";

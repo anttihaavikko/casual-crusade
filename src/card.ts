@@ -340,3 +340,12 @@ export class Card extends Draggable {
         ctx.stroke();
     }
 }
+
+export function drawCorners(ctx: CanvasRenderingContext2D, x: number, y: number): void {
+    ctx.strokeStyle = "#00000022";
+    ctx.lineWidth = 4;
+    ctx.lineDashOffset = 5;
+    ctx.setLineDash([10, 40, 10, 20, 10, 40, 10, 20]);
+    ctx.strokeRect(x + 15, y + 15, TILE_WIDTH - 30, TILE_HEIGHT - 30);
+    ctx.setLineDash([]);
+}

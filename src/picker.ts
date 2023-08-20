@@ -14,7 +14,7 @@ export class Picker extends Entity {
     public rewards = 0;
 
     private picks: (Card | RelicIcon)[] = [];
-    private title = new TextEntity("", 55, WIDTH * 0.5, HEIGHT * 0.5 - 20, -1, ZERO, { shadow: 10 });
+    private title = new TextEntity("", 55, WIDTH * 0.5, HEIGHT * 0.5 - 20, -1, ZERO, { shadow: 7 });
     private locked: boolean;
     private ready: boolean;
     

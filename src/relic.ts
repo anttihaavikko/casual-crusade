@@ -1,4 +1,4 @@
-import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors, gemNames } from "./card";
+import { CARD_BORDER, CARD_GAP, Gem, TILE_HEIGHT, TILE_WIDTH, drawCorners, gemColors, gemNames } from "./card";
 import { Draggable } from "./engine/draggable";
 import { Vector, offset } from "./engine/vector";
 import { Game } from "./game";
@@ -108,9 +108,11 @@ export class RelicIcon extends Draggable {
 
         if(!this.icon) {
             ctx.fillStyle = "#000";
-            ctx.fillRect(this.p.x + CARD_GAP, this.p.y + CARD_GAP, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
+            ctx.fillRect(this.p.x, this.p.y + CARD_GAP, this.s.x - CARD_GAP * 2, this.s.y - CARD_GAP * 2);
             ctx.fillStyle = this.hovered ? "#ffff66" : "#ddd";
             ctx.fillRect(this.p.x + CARD_BORDER + CARD_GAP, this.p.y + CARD_BORDER + CARD_GAP, this.s.x - CARD_BORDER * 2 - CARD_GAP * 2, this.s.y - CARD_BORDER * 2 - CARD_GAP * 2);
+
+            drawCorners(ctx, this.p.x, this.p.y);
         }
 
         ctx.font = "35px arial black";
