@@ -341,7 +341,7 @@ export class Game extends Entity {
     }
 
     private reposition(): void {
-        const handCards = this.cards.filter(c => !c.isLocked());
+        const handCards = [...this.cards.filter(c => !c.isLocked())].sort((a, b) => a.getPosition().x - b.getPosition().x);
         this.pile.count = this.deck.length;
         handCards.forEach((c, i) => {
             const p: Vector = {
