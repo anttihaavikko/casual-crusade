@@ -17,10 +17,7 @@ export class TextEntity extends Particle {
             ctx.fillStyle = "#000";
             ctx.fillText(this.content.replace(/\|/g, ""), this.p.x + this.options.shadow, this.p.y + this.options.shadow);
         }
-        ctx.fillStyle = this.options?.color ?? "#fff";
-
-        drawColoredText(ctx, this.content, this.p.x, this.p.y, this.options?.markColors ?? []);
-
+        drawColoredText(ctx, this.content, this.p.x, this.p.y, this.options?.color ?? "#fff", this.options?.markColors ?? []);
         ctx.restore();
     }
 }

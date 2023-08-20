@@ -25,13 +25,13 @@ export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w
     ctx.closePath();
 }
 
-export function drawColoredText(ctx: CanvasRenderingContext2D, content: string, x: number, y: number, colors: string[]) {
+export function drawColoredText(ctx: CanvasRenderingContext2D, content: string, x: number, y: number, baseColor: string, colors: string[]) {
     const parts = content.split('|');
     let color = false;
     let pos = 0;
     let n = 0;
     parts.forEach(part => {
-        ctx.fillStyle = color ? colors[n] : "#fff";
+        ctx.fillStyle = color ? colors[n] : baseColor;
         if (color) n = (n + 1) % colors.length;
         ctx.fillText(part, x + pos, y);
         color = !color;

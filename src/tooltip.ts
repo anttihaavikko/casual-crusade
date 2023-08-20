@@ -55,7 +55,7 @@ export class Tooltip extends Entity {
         ctx.lineTo(c.x + dx, c.y + dy + (this.flipped ? -15 : 15));
         ctx.fill();
 
-        drawColoredText(ctx, this.content, c.x + 15, c.y + 40 + 30, this.colors);
+        drawColoredText(ctx, this.content, c.x + 15, c.y + 40 + 30, "#fff", this.colors);
         ctx.restore();
     }
 }
