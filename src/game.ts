@@ -118,10 +118,8 @@ export class Game extends Entity {
         this.audio.heal();
 
         for (var i = 0; i < 50; i++) {
-            const p = this.dude.getCenter();
-            const x = p.x + random() * 40 - 20;
-            const y = p.y + random() * 40 - 30;
-            this.effects.add(new RectParticle(x, y, 2, 5, random(0.1, 0.6), { x: 0, y: -0.25 - random() * 1.5 }, "#B4D000"));
+            const p = offset(this.dude.getCenter(), random(20, 40), random(10, 40));
+            this.effects.add(new RectParticle(p.x, p.y, 2, 5, random(0.1, 0.6), { x: 0, y: -0.25 - random() * 1.5 }, "#B4D000"));
         }
     }
 
