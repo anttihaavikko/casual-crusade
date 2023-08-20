@@ -40,8 +40,9 @@ export class Dude extends Entity {
             y: this.p.y + this.s.y * 0.5 - 30 - 5 * this.phase
         };
         ctx.save();
-        drawEllipse(ctx, center, 24, 12, "#00000033");
-        ctx.translate(0, Math.sin(-this.tween.time * Math.PI) * 25);
+        const height = Math.sin(-this.tween.time * Math.PI);
+        drawEllipse(ctx, center, 24 + height * 8, 12 + height * 4, "#00000033");
+        ctx.translate(0, height * 25);
         drawCircle(ctx, head, 14, "#000");
         ctx.beginPath();
         ctx.moveTo(center.x, this.p.y - 10 - 5 * this.phase);
@@ -69,8 +70,19 @@ export class Dude extends Entity {
         ctx.restore();
     }
 
-    public hop(): void {
+    public hop(game: Game): void {
         this.tween.move(this.getPosition(), 0.3);
+        this.dust(game);
+    }
+
+    private dust(game: Game): void {
+        const p = this.getCenter();
+        for(let i = 0; i < 10; i++) {
+            const size = 1 + Math.random() * 3;
+            const opts = { force: { x: 0, y: 0.1 }, depth: 20, color: "#5b7c5b44" };
+            const v = { x: -2 + Math.random() * 4, y: -4 * Math.random() };
+            game.effects.add(new RectParticle(p.x, p.y, size, size, 0.2 + Math.random() * 0.5, v, opts));
+        }
     }
 
     public findPath(to: Tile, game: Game, level: Level): void {
@@ -88,13 +100,7 @@ export class Dude extends Entity {
 
                     setTimeout(() => {
                         game.audio.move();
-                        const p = tile.getCenter();
-                        for(let i = 0; i < 10; i++) {
-                            const size = 1 + Math.random() * 3;
-                            const opts = { force: { x: 0, y: 0.1 }, depth: 20, color: "#5b7c5b44" };
-                            const v = { x: -2 + Math.random() * 4, y: -4 * Math.random() };
-                            game.effects.add(new RectParticle(p.x, p.y, size, size, 0.2 + Math.random() * 0.5, v, opts));
-                        }
+                        this.dust(game);
                     }, moveDuration * 0.25);
                     tile.content.activate();
                     tile.content.pop(index * game.stepScore);
