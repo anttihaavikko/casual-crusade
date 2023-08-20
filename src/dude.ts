@@ -1,4 +1,5 @@
-import { Gem, TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { TILE_HEIGHT, TILE_WIDTH } from "./card";
+import { GemColor } from "./gem";
 import { drawCircle, drawEllipse } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
@@ -107,7 +108,7 @@ export class Dude extends Entity {
                     game.loot(tile);
 
                     if(game.remoteMulti) {
-                        const neighbours = tile.getNeighbours(level.board).filter(t => t.content && t.content.data.gem == "o");
+                        const neighbours = tile.getNeighbours(level.board).filter(t => t.content && t.content.is("o"));
                         neighbours.forEach(n => n.content.activate());
                     }
                 }
@@ -120,7 +121,7 @@ export class Dude extends Entity {
         setTimeout(() => game.checkLevelEnd(), this.path.length * moveDuration * 1000 + 600);
     }
 
-    private findNext(from: Tile, to: Tile, visited: Tile[], free: Gem): void {
+    private findNext(from: Tile, to: Tile, visited: Tile[], free: GemColor): void {
         const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || free != "n" && tile.content.is(free) && visited.filter(t => t == tile).length < 5);
         if(from == to) {
             if(this.evaluate(this.path) < this.evaluate(visited)) {

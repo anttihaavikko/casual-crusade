@@ -1,4 +1,4 @@
-import { Card, CardData, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, randomCard } from "./card";
+import { Card, CardData, TILE_HEIGHT, TILE_WIDTH, randomCard } from "./card";
 import { Dude } from "./dude";
 import { GameOver } from "./end";
 import { AudioManager } from "./engine/audio";
@@ -12,6 +12,7 @@ import { Pulse } from "./engine/pulse";
 import { random, randomCell, randomSorter } from "./engine/random";
 import { RectParticle } from "./engine/rect";
 import { Vector, ZERO, distance, offset } from "./engine/vector";
+import { GemColor } from "./gem";
 import { HEIGHT, WIDTH } from "./index";
 import { Level } from "./level";
 import { Picker } from "./picker";
@@ -39,9 +40,9 @@ export class Game extends Entity {
     public remoteMulti: boolean;
     public gemChance = 1;
     public canRedraw: boolean;
-    public wilds: { first: Gem, second: Gem }[] = [];
+    public wilds: { first: GemColor, second: GemColor }[] = [];
     public blinders = new Blinders();
-    public freeMoveOn: Gem = "n";
+    public freeMoveOn: GemColor = "n";
     private endCheckTimer: any;
     private selectedCard: Card;
 
@@ -71,7 +72,7 @@ export class Game extends Entity {
         this.init();
     }
 
-    public getWilds(gem: Gem): Gem[] {
+    public getWilds(gem: GemColor): GemColor[] {
         return [...this.wilds.filter(w => w.first == gem).map(w => w.second), ...this.wilds.filter(w => w.second == gem).map(w => w.first)];
     }
 
@@ -92,13 +93,13 @@ export class Game extends Entity {
 
         if (relic.data.name == WILD_NAME) {
             this.wilds.push({
-                first: relic.data.gems[0],
-                second: relic.data.gems[1]
+                first: relic.data.gems[0].type,
+                second: relic.data.gems[1].type
             });
         }
 
         if (relic.data.name == HOME_NAME) {
-            this.freeMoveOn = relic.data.gems[0]
+            this.freeMoveOn = relic.data.gems[0].type
         }
 
         const pos = this.icons.length;
@@ -306,7 +307,7 @@ export class Game extends Entity {
 
     public createBlank(tile: Tile): void {
         const p = tile.p;
-        const card = new Card(p.x, p.y, this.level, this, { directions: [], gem: "n" });
+        const card = new Card(p.x, p.y, this.level, this, { directions: [] });
         card.lock();
         tile.content = card;
         this.cards.push(card);
@@ -470,10 +471,10 @@ export class Game extends Entity {
         this.rewardOptions = 3;
         this.rewardPicks = 1;
         this.all = [
-            { directions: ["u", "d"], gem: "n" },
-            { directions: ["u", "d"], gem: "n" },
-            { directions: ["l", "r"], gem: "n" },
-            { directions: ["l", "r"], gem: "n" },
+            { directions: ["u", "d"] },
+            { directions: ["u", "d"] },
+            { directions: ["l", "r"] },
+            { directions: ["l", "r"] },
             randomCard(1, true)
         ];
         this.shuffle();

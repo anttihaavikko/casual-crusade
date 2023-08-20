@@ -1,4 +1,4 @@
-import { Card, Direction, Gem, TILE_HEIGHT, TILE_WIDTH, gemColors } from "./card";
+import { Card, TILE_HEIGHT, TILE_WIDTH } from "./card";
 import { drawEllipse, roundRect } from "./engine/drawing";
 import { Entity } from "./engine/entity";
 import { Mouse } from "./engine/mouse";
@@ -90,7 +90,7 @@ export class Tile extends Entity {
             drawEllipse(ctx, this.getCenter(), 27, 12, "#00000033");
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 20, center.y - 22, 40, 25);
-            ctx.fillStyle = gemColors.get("y");
+            ctx.fillStyle = "#F3DC00";
             ctx.fillRect(center.x - 15, center.y - 17, 30, 15);
             ctx.fillStyle = "#000";
             ctx.fillRect(center.x - 12, center.y - 16, 24, 7);
