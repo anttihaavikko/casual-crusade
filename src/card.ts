@@ -159,8 +159,6 @@ export class Card extends Draggable {
             return;
         }
 
-        if(this.game.dude.isMoving) console.log('blocking...');
-
         if(this.tile && !this.game.dude.isMoving) {
             this.game.multi = 1;
             this.locked = true;
