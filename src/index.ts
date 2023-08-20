@@ -1,5 +1,5 @@
 import { tartan } from "./bg";
-import { Card, Direction, Gem } from "./card";
+import { Card } from "./card";
 import { Dude } from "./dude";
 import { AudioManager } from "./engine/audio";
 import { ButtonEntity } from "./engine/button";
@@ -11,7 +11,7 @@ import { ZERO } from "./engine/vector";
 import { Game } from "./game";
 import { Level } from "./level";
 import { TextEntity } from "./text";
-import { transformTo, transformToCenter } from "./engine/transformer";
+import { transformToCenter } from "./engine/transformer";
 
 export const WIDTH = 800;
 export const HEIGHT = 600;
