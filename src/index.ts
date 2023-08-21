@@ -75,7 +75,7 @@ document.onkeydown = (e: KeyboardEvent) => {
   //   // game.life += 100;
   // }
   // if(e.key == 'p') {
-  //   game.picker.rewards = 1;
+  //   level.level++;
   //   game.picker.create(1, 1);
   // }
   // if(e.key == 'c') {

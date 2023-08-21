@@ -110,7 +110,7 @@ export class Game extends Entity {
             relic.icon = true;
             relic.scale = { x: 0.8, y: 0.8 };
             relic.setPosition(pos % 10 * 30 - 15, 30 + 30 * Math.floor(pos / 10));
-        }, 220);
+        }, 250);
     }
 
     public heal(amount: number): void {
