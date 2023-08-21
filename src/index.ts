@@ -37,7 +37,7 @@ const startUi: Entity[] = [
 ];
 
 const ui: TextEntity[] = [
-  new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 4, align: "left" }),
+  new TextEntity("LIFE: 10", 30, 10, 35, -1, ZERO, { shadow: 3, align: "left" }),
   new TextEntity("0", 50, WIDTH - 15, 55, -1, ZERO, { shadow: 4, align: "right" }),
 ];
 

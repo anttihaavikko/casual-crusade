@@ -61,7 +61,7 @@ export class Game extends Entity {
         new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
     ]);
 
-    private splash = new Container(WIDTH * 0.5, 140, [new TextEntity("", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 5 })]);
+    private splash = new Container(WIDTH * 0.5, 140, [new TextEntity("", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 4 })]);
 
     constructor(public dude: Dude, public effects: Container, public camera: Camera, private level: Level, public audio: AudioManager, private mouse: Mouse) {
         super(360, 500, 0, 0);
