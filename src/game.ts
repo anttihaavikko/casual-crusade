@@ -418,8 +418,7 @@ export class Game extends Entity {
             }, 150);
             setTimeout(() => {
                 this.audio.chest();
-                this.picker.rewards += chests.length * this.rewardPicks;
-                this.picker.create();
+                this.picker.create(chests.length * this.rewardPicks);
             }, 600);
         }
     }

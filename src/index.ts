@@ -76,11 +76,11 @@ document.onkeydown = (e: KeyboardEvent) => {
   // }
   // if(e.key == 'p') {
   //   game.picker.rewards = 1;
-  //   game.picker.create(1);
+  //   game.picker.create(1, 1);
   // }
   // if(e.key == 'c') {
   //   game.picker.rewards = 1;
-  //   game.picker.create(0);
+  //   game.picker.create(1, 0);
   // }
 }
 

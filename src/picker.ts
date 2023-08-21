@@ -76,7 +76,9 @@ export class Picker extends Entity {
         }, 150);
     }
 
-    public create(relicChance = 0.25): void {
+    public create(amt: number, relicChance = 0.25): void {
+        this.rewards += amt;
+
         this.tween.scale({ x: 1, y: 1}, 0.3);
         setTimeout(() => this.ready = true, 300);
 
@@ -89,7 +91,7 @@ export class Picker extends Entity {
             this.title.content = "PICK YOUR REWARDS!";
         } 
 
-        const relic = Math.random() < relicChance && (relicChance > 0.9 || this.level.level > 1);
+        const relic = Math.random() < relicChance && this.level.level > 1;
 
         const relicOptions = [...relics].filter(r => r.repeatable || !this.game.relics.includes(r.name)).sort(() => Math.random() < 0.5 ? 1 : -1);
 
