@@ -100,7 +100,7 @@ export class Card extends Draggable {
         };
         this.game.clearSelect();
         this.game.audio.click();
-        this.getPossibleSpots().forEach(tile => tile.marked = true);
+        this.level.board.forEach(tile => tile.marked = !tile.content && tile.accepts(this, this.level.board))
     }
 
     public drop(): void {
