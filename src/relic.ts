@@ -12,7 +12,6 @@ interface Relic {
     description: string;
     color?: string;
     bg: string;
-    fill: string;
     repeatable?: boolean;
     pickup: (game: Game) => void;
     gems?: Gem[];
@@ -25,19 +24,19 @@ export const HOME_NAME = "HOME";
 
 export const relics: Relic[] = [
     // { name: "BENEVOLENT", description: "Increase your |LIFE| by |1|.", color: "#E93988", bg: "❤", fill: "1", repeatable: true, pickup: (g) => g.boost(1) },
-    { name: "SAINTHOOD", description: "Increase your |LIFE| by |2", color: "#E93988", bg: "❤", fill: "2", repeatable: true, pickup: (g) => g.boost(2) },
-    { name: "DEMIDEITY", description: "Increase your |LIFE| by |3", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
-    { name: "MAGNA CARTA", description: "Increase your |MAX HAND SIZE| by |1", color: "#00BDE5", bg: "❚", fill: "+", repeatable: true, pickup: (g) => g.handSize++ },
-    { name: "SACRAMENT", description: "Increases the presented |reward options", color: "#F89F00", bg: "❖", fill: "", repeatable: true, pickup: (g) => g.rewardOptions++ },
-    { name: "MIRACLE", description: "Allows you to pick an |extra| reward", color: "#F89F00", bg: "✸", fill: "+", pickup: (g) => g.rewardPicks++ },
-    { name: "CAVALRY", description: "Your |empty cards| can open chests", color: "#B4D000", bg: "✿", offset: -1, fill: "", pickup: (g) => g.canRemoteOpen = true },
-    { name: "FAITH", description: "Stepping on |RED| also |HEALS", color: "#E93988", bg: "❤", fill: "❤", pickup: (g) => g.healOnStep = true },
-    { name: "PILLAGE", description: "Double your step |SCORE", color: "#F3DC00", bg: "✱", fill: "x", repeatable: true, pickup: (g) => g.stepScore++ },
-    { name: "LOOT", description: "Passing by |ORANGE| activates it", color: "#F89F00", bg: "⇲", fill: "", offset: -3, pickup: (g) => g.remoteMulti = true },
-    { name: "MANNA", description: "Get increased |GEM| chance", color: "#F3DC00", bg: "◓", fill: "", repeatable: true, offset: -3, pickup: (g) => g.gemChance *= 1.3 },
-    { name: "SIN", description: "Once per level, |redraw| your hand if |stuck", color: "#846AC1", bg: "✟", fill: "", pickup: (g) => g.canRedraw = true },
-    { name: WILD_NAME, description: "|!1| ⇆ |!2|", bg: "ೞ", fill: "", repeatable: true, varies: true, offset: -2, pickup: (g) => {} },
-    { name: HOME_NAME, description: "Freely revisit |!1| tiles", bg: "ಹ", fill: "", repeatable: true, varies: true, pickup: (g) => {} },
+    { name: "SAINTHOOD", description: "Increase your |LIFE| by |2", color: "#E93988", bg: "ಎ", offset: -3, repeatable: true, pickup: (g) => g.boost(2) },
+    // { name: "DEMIDEITY", description: "Increase your |LIFE| by |3", color: "#E93988", bg: "❤", fill: "3", pickup: (g) => g.boost(3) },
+    { name: "MAGNA CARTA", description: "Increase your |MAX HAND SIZE| by |1", color: "#00BDE5", bg: "ಃ", offset: -3, repeatable: true, pickup: (g) => g.handSize++ },
+    { name: "SACRAMENT", description: "Increases the presented |reward options", color: "#F89F00", bg: "ಐ", offset: -2, repeatable: true, pickup: (g) => g.rewardOptions++ },
+    { name: "MIRACLE", description: "Allows you to pick an |extra| reward", color: "#F89F00", bg: "ಠ", pickup: (g) => g.rewardPicks++ },
+    { name: "CAVALRY", description: "Your |empty cards| can open chests", color: "#B4D000", bg: "ು", offset: -3, pickup: (g) => g.canRemoteOpen = true },
+    { name: "FAITH", description: "Stepping on |RED| also |HEALS", color: "#E93988", bg: "ಏ", offset: -2, pickup: (g) => g.healOnStep = true },
+    { name: "PILLAGE", description: "Double your step |SCORE", color: "#F3DC00", bg: "ಚ", offset: -1, repeatable: true, pickup: (g) => g.stepScore++ },
+    { name: "LOOT", description: "Passing by |ORANGE| activates it", color: "#F89F00", bg: "್", pickup: (g) => g.remoteMulti = true },
+    { name: "MANNA", description: "Get increased |GEM| chance", color: "#F3DC00", bg: "ಞ", offset: -3, repeatable: true, pickup: (g) => g.gemChance *= 1.3 },
+    { name: "SIN", description: "Once per level, |redraw| your hand if |stuck", color: "#846AC1", bg: "೪", pickup: (g) => g.canRedraw = true },
+    { name: WILD_NAME, description: "|!1| ⇆ |!2|", bg: "ೞ", repeatable: true, varies: true, offset: -3, pickup: (g) => {} },
+    { name: HOME_NAME, description: "Freely revisit |!1| tiles", bg: "ಹ", repeatable: true, varies: true, pickup: (g) => {} },
 ];
 
 export class RelicIcon extends Draggable {
@@ -118,12 +117,12 @@ export class RelicIcon extends Draggable {
             drawCorners(ctx, this.p.x, this.p.y);
         }
 
-        ctx.font = `35px ${font}`;
+        ctx.font = `30px sans-serif`;
         ctx.textAlign = "center";
 
         const off = this.data.offset ?? 0;
-        ctx.fillStyle = "#000";
-        ctx.fillText(this.data.bg, c.x + 2 + 15 - 15, c.y + 2 + 12 + off);
+        // ctx.fillStyle = "#000";
+        // ctx.fillText(this.data.bg, c.x + 2 + 15 - 15, c.y + 2 + 12 + off);
         ctx.fillStyle = this.data.color;
         if(this.data.name == WILD_NAME) {
             const c = this.getCenter();
@@ -134,10 +133,10 @@ export class RelicIcon extends Draggable {
             gradient.addColorStop(1, this.data.gems[1].color);
             ctx.fillStyle = gradient;
         }
+        ctx.strokeStyle = "#000000cc";
+        ctx.lineWidth = 6;
+        ctx.strokeText(this.data.bg, c.x + 15 - 15, c.y + 12 + off);
         ctx.fillText(this.data.bg, c.x + 15 - 15, c.y + 12 + off);
-        ctx.fillStyle = "#000";
-        ctx.font = `10px ${font}`;
-        ctx.fillText(this.data.fill, c.x + 1, c.y + 4 + off);
 
         ctx.restore();
     }
