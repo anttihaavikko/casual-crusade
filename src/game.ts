@@ -363,11 +363,7 @@ export class Game extends Entity {
         }
         // this.helps.draw(ctx);
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
-        this.picker.draw(ctx);
-        this.icons.forEach(i => i.draw(ctx));
-        this.splash.draw(ctx);
-        this.gameOver.draw(ctx);
-        this.tooltip.draw(ctx);
+        [this.picker, ...this.icons, this.splash, this.gameOver, this.tooltip].forEach(i => i.draw(ctx));
     }
 
     public redraw(): void {
