@@ -12,7 +12,7 @@
     "closure": "npm run build && google-closure-compiler -O ADVANCED --js ./dist/main.js --js_output_file ./dist/main.min.js && node ./scripts/roll.js && node ./scripts/zip-file.js && npm run check-file-size",
     "roadroll": "npm run build && npx roadroller ./dist/main.js -o ./dist/main.min.js && node ./scripts/roll.js && node ./scripts/zip-file.js && npm run check-file-size",
     "party": "npm run build-zipped && npm run check-file-size",
-    "upload": "npm run build && scp ./dist/index.html sahaqiel@sahaqiel.com:public_html/games/cc.html"
+    "upload": "scp ./dist/index.html sahaqiel@sahaqiel.com:public_html/games/cc.html"
   },
   "devDependencies": {
     "archiver": "^3.0.0",
