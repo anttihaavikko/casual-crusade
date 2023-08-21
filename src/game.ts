@@ -438,21 +438,21 @@ export class Game extends Entity {
     public restart(): void {
         this.blinders.close(() => {
             this.blinders.open();
-            this.cards = [];
             this.score = 0;
             this.gameOver.toggle(false);
             this.level.restart();
             this.init();
             this.dude.reset(this.level.board[2]);
+            this.cards = [];
             this.icons = [];
             this.relics = [];
-            this.canRemoteOpen = false;
-            this.healOnStep = false;
-            this.stepScore = 1;
-            this.remoteMulti = false;
-            this.gemChance = 1;
-            this.canRedraw = false;
             this.wilds = [];
+            this.stepScore = 1;
+            this.gemChance = 1;
+            this.healOnStep = false;
+            this.remoteMulti = false;
+            this.canRedraw = false;
+            this.canRemoteOpen = false;
             this.freeMoveOn = "n";
         });
     }
