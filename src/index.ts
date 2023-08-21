@@ -112,13 +112,11 @@ const tick = (t: number) => {
   ctx.resetTransform();
   transformToCenter(ctx, game.camera.rotation, zoom, zoom)
   ctx.translate(0, game.started ? 0 : 30);
-  game.camera.update();
   ctx.translate(game.camera.offset.x, game.camera.offset.y);
   ctx.fillStyle = "#74be75";
   ctx.fillRect(-100, -100, canvas.width + 200, canvas.height + 200);
   tartan(ctx);
   game.update(t, mouse);
-  game.effects.update(t, mouse);
   const all = [game, ...game.effects.getChildren(), ...level.board, level.starter];
   all.sort(sortByDepth);
   level.board.forEach(t => t.prePreDraw(ctx));

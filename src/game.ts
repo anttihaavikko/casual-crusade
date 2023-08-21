@@ -341,15 +341,19 @@ export class Game extends Entity {
         this.dude.update(tick, mouse);
         this.blinders.update(tick, mouse);
         if (!this.started) return;
-        this.cards.forEach(c => c.update(tick, mouse));
-        this.pile.update(tick, mouse);
-        this.level.board.forEach(tile => tile.update(tick, mouse));
-        this.picker.update(tick, mouse);
-        this.gameOver.update(tick, mouse);
-        this.icons.forEach(i => i.update(tick, mouse));
-        this.tooltip.update(tick, mouse);
-        // this.helps.update(tick, mouse);
-        this.splash.update(tick, mouse);
+        [
+            ...this.cards,
+            ...this.level.board,
+            ...this.icons,
+            this.tooltip,
+            this.splash,
+            this.pile,
+            this.picker,
+            this.gameOver,
+            this.effects,
+            this.camera,
+            //this.helps
+        ].forEach(c => c.update(tick, mouse));
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
