@@ -61,7 +61,7 @@ export class Picker extends Entity {
         setTimeout(() => {
             this.picks = this.picks.filter(c => c != reward);
             
-            if(this.rewards == 1 || this.picks.length == 1) {
+            if(this.rewards == 1 || this.picks.length == 0) {
                 this.tween.scale({ x: 1, y: 0}, 0.1);
                 this.ready = false;
             }
