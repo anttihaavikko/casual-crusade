@@ -224,6 +224,10 @@ export class Game extends Entity {
     }
 
     public click(x: number, y: number): void {
+        if(this.gameOver.visible) {
+            this.gameOver.click(x, y, this);
+            return;
+        }
         if(this.picker.rewards > 0) {
             this.picker.pickAt(x, y);
             return;

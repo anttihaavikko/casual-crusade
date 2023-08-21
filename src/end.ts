@@ -8,7 +8,8 @@ import { TextEntity } from "./text";
 import { transformToCenter } from "./engine/transformer";
 
 export class GameOver extends Entity {
-    private visible: boolean;
+    public visible: boolean;
+
     private again: ButtonEntity;
     private gameOver = new TextEntity("SIEGE IS OVER!", 85, WIDTH * 0.5, 280, -1, ZERO, { shadow: 8, align: "center" });
 
@@ -16,6 +17,12 @@ export class GameOver extends Entity {
         super(0, 0, 0, 0);
         this.again = new ButtonEntity("TRY AGAIN?", WIDTH * 0.5, HEIGHT * 0.5 + 90, 300, 75, () => game.restart(), game.audio);
         this.scale = { x: 1, y: 0 };
+    }
+
+    public click(x: number, y: number, game: Game): void {
+        if(this.again.isInside({ x, y})) {
+            game.restart();
+        }
     }
 
     public toggle(state: boolean): void {
