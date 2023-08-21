@@ -56,10 +56,10 @@ export class Game extends Entity {
 
     private icons: RelicIcon[] = [];
 
-    private helps = new Container(WIDTH * 0.5, HEIGHT * 0.5 + 155, [
-        new TextEntity("USE YOUR |CARDS| TO CARVE |A PATH| AND", 25, 110, HEIGHT * 0.5 + 134, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" }),
-        new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
-    ]);
+    // private helps = new Container(WIDTH * 0.5, HEIGHT * 0.5 + 155, [
+    //     new TextEntity("USE YOUR |CARDS| TO CARVE |A PATH| AND", 25, 110, HEIGHT * 0.5 + 134, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" }),
+    //     new TextEntity("SPREAD THE |GOOD WORD| THROUGHOUT THE LANDS...", 22, 60, HEIGHT * 0.5 + 170, -1, ZERO, { shadow: 3, markColors: ["yellow"], align: "left" })
+    // ]);
 
     private splash = new Container(WIDTH * 0.5, 140, [new TextEntity("", 40, WIDTH * 0.5, 120, -1, ZERO, { shadow: 4 })]);
 
@@ -294,7 +294,7 @@ export class Game extends Entity {
     }
 
     public fill(): void {
-        this.helps.hide();
+        // this.helps.hide();
         const handCards = this.cards.filter(c => !c.isLocked());
         for (var i = 0; i < this.handSize - handCards.length; i++) {
             setTimeout(() => {
@@ -348,7 +348,7 @@ export class Game extends Entity {
         this.gameOver.update(tick, mouse);
         this.icons.forEach(i => i.update(tick, mouse));
         this.tooltip.update(tick, mouse);
-        this.helps.update(tick, mouse);
+        // this.helps.update(tick, mouse);
         this.splash.update(tick, mouse);
     }
 
@@ -357,7 +357,7 @@ export class Game extends Entity {
             this.dude.draw(ctx);
             return;
         }
-        this.helps.draw(ctx);
+        // this.helps.draw(ctx);
         [...this.cards, this.dude, this.pile].sort(sortByDepth).forEach(c => c.draw(ctx));
         this.picker.draw(ctx);
         this.icons.forEach(i => i.draw(ctx));
@@ -483,6 +483,6 @@ export class Game extends Entity {
         ];
         this.shuffle();
         this.fill();
-        if (this.level.level == 1) this.helps.show();
+        // if (this.level.level == 1) this.helps.show();
     }
 }
