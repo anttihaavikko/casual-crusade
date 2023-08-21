@@ -45,7 +45,7 @@ export class AudioManager {
     }
 
     public deadEnd(): void {
-        zzfx(...[1.01,,157,.16,,0,,.35,-24,28,,,,.1,,.6,,.19,.01]);
+        zzfx(...[1.5,,157,.16,,0,,.35,-24,28,,,,.1,,.6,,.19,.01]);
     }
 
     public move(): void {
