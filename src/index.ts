@@ -87,7 +87,7 @@ document.onkeydown = (e: KeyboardEvent) => {
 }
 
 document.ontouchstart = (e: TouchEvent) => {
-  game.click(e.touches[0].clientX / ratio - x, e.touches[0].clientY / ratio - y);
+  game.click((e.touches[0].clientX - x) / ratio, (e.touches[0].clientY - y) / ratio);
 };
 
 document.onmousedown = (e: MouseEvent) => {
