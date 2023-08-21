@@ -77,6 +77,7 @@ export class Dude extends Entity {
     }
 
     private dust(game: Game): void {
+        game.audio.move();
         const p = this.getCenter();
         for(let i = 0; i < 10; i++) {
             const size = 1 + Math.random() * 3;
@@ -99,10 +100,7 @@ export class Dude extends Entity {
                 if(index > 0) {
                     this.tween.move(tile.p, moveDuration);
 
-                    setTimeout(() => {
-                        game.audio.move();
-                        this.dust(game);
-                    }, moveDuration * 0.25);
+                    setTimeout(() => this.dust(game), moveDuration * 0.25);
                     tile.content.activate();
                     tile.content.pop(index * game.stepScore);
                     game.loot(tile);
