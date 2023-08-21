@@ -55,7 +55,9 @@ document.body.appendChild(canvas);
 
 const ratio = Math.min(window.innerWidth / WIDTH, window.innerHeight / HEIGHT);
 canvas.style.transformOrigin = "top left";
-canvas.style.transform = `scale(${ratio})`;
+const x = (window.innerWidth - WIDTH * ratio) * 0.5;
+const y = (window.innerHeight - HEIGHT * ratio) * 0.5;
+canvas.style.transform = `translate(${x}px,${y}px) scale(${ratio})`;
 
 let isFull = false;
 document.onfullscreenchange = () => isFull = !isFull;
@@ -85,7 +87,7 @@ document.onkeydown = (e: KeyboardEvent) => {
 }
 
 document.ontouchstart = (e: TouchEvent) => {
-  game.click(e.touches[0].clientX / ratio, e.touches[0].clientY / ratio);
+  game.click(e.touches[0].clientX / ratio - x, e.touches[0].clientY / ratio - y);
 };
 
 document.onmousedown = (e: MouseEvent) => {
