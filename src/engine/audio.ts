@@ -10,6 +10,8 @@ export class AudioManager {
     public prepare(): void {
         if(this.started) return;
 
+        console.log('start prep')
+
         this.audio = document.createElement("audio");
         this.started = true;
 
@@ -18,21 +20,23 @@ export class AudioManager {
         player.generate();
         this.loaded = false;
 
-        setInterval(() => {
+        const timer = setInterval(() => {
             if (this.loaded) return;
             this.loaded = player.generate() >= 1;
             if (this.loaded) {
                 var wave = player.createWave();
                 this.audio.src = URL.createObjectURL(new Blob([wave], { type: "audio/wav" }));
                 this.audio.loop = true;
+                clearInterval(timer);
             }
         }, 5);
     }
 
     public play(): void {
-        setInterval(() => {
+        const timer = setInterval(() => {
             if (!this.loaded) return;
             this.audio.play();
+            clearInterval(timer);
         }, 5);
         
         // restart early for better looping
