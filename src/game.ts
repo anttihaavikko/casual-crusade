@@ -380,7 +380,7 @@ export class Game extends Entity {
 
     public discard(): void {
         const handCards = this.cards.filter(c => !c.isLocked());
-        const card = handCards[Math.floor(Math.random() * handCards.length)];
+        const card = randomCell(handCards);
         if (!card) return;
         card.move(this.pile.p, 0.3);
         setTimeout(() => {
