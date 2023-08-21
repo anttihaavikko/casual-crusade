@@ -67,21 +67,21 @@ document.onmousemove = (e: MouseEvent) => {
 
 document.onkeydown = (e: KeyboardEvent) => {
   game.audio.prepare();
-  // if(e.key == 'n') {
-  //   game.nextLevel();
-  //   game.life += 100;
-  // }
   if(e.key == 'f') {
     canvas.requestFullscreen();
+  }
+  if(e.key == 'n') {
+    game.nextLevel();
+    game.life += 100;
   }
   if(e.key == 'p') {
     game.picker.rewards = 1;
     game.picker.create(1);
   }
-  // if(e.key == 'c') {
-  //   game.picker.rewards = 1;
-  //   game.picker.create(0);
-  // }
+  if(e.key == 'c') {
+    game.picker.rewards = 1;
+    game.picker.create(0);
+  }
 }
 
 document.ontouchstart = (e: TouchEvent) => {
