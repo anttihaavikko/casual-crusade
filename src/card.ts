@@ -11,7 +11,6 @@ import { TextEntity } from "./text";
 import { Tile } from "./tile";
 import { transformTo } from "./engine/transformer";
 import { Gem, gems, GemColor } from "./gem";
-import { ContextReplacementPlugin } from "webpack";
 
 export const TILE_WIDTH = 80;
 export const TILE_HEIGHT = 60;
@@ -69,10 +68,8 @@ export class Card extends Draggable {
             .filter(tile => !tile.content && tile.accepts(this, this.level.board) && distance(this.p, tile.p) < 100)
             .sort((a, b) => distance(this.p, a.p) - distance(this.p, b.p));
 
-        if(sorted.length <= 0) return;
-
         const prev = this.tile;
-        this.tile = sorted.length > 0 ? sorted[0]: null;
+        this.tile = randomCell(sorted);
         if(this.tile && this.dragging) this.tile.hilite = true;
         if(prev && prev != this.tile) prev.hilite = false;
     }
