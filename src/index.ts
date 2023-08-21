@@ -53,8 +53,9 @@ canvas.height = HEIGHT;
 // canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
 
+const ratio = Math.min(window.innerWidth / WIDTH, window.innerHeight / HEIGHT);
 canvas.style.transformOrigin = "top left";
-canvas.style.transform = `scale(${window.innerWidth / WIDTH})`;
+canvas.style.transform = `scale(${ratio})`;
 
 let isFull = false;
 document.onfullscreenchange = () => isFull = !isFull;
@@ -73,10 +74,10 @@ document.onkeydown = (e: KeyboardEvent) => {
   if(e.key == 'f') {
     canvas.requestFullscreen();
   }
-  // if(e.key == 'p') {
-  //   game.picker.rewards = 1;
-  //   game.picker.create(1);
-  // }
+  if(e.key == 'p') {
+    game.picker.rewards = 1;
+    game.picker.create(1);
+  }
   // if(e.key == 'c') {
   //   game.picker.rewards = 1;
   //   game.picker.create(0);
@@ -84,7 +85,7 @@ document.onkeydown = (e: KeyboardEvent) => {
 }
 
 document.ontouchstart = (e: TouchEvent) => {
-  game.click(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+  game.click(e.touches[0].clientX / ratio, e.touches[0].clientY / ratio);
 };
 
 document.onmousedown = (e: MouseEvent) => {
