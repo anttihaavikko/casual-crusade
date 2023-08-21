@@ -439,8 +439,6 @@ export class Game extends Entity {
             this.blinders.open();
             this.score = 0;
             this.gameOver.toggle(false);
-            this.init();
-            this.dude.reset(this.level.board[2]);
             this.cards = [];
             this.icons = [];
             this.relics = [];
@@ -452,7 +450,9 @@ export class Game extends Entity {
             this.canRedraw = false;
             this.canRemoteOpen = false;
             this.freeMoveOn = null;
+            this.init();
             this.level.restart();
+            this.dude.reset(this.level.board[2]);
         });
     }
 

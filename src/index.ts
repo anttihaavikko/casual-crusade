@@ -72,7 +72,7 @@ document.onkeydown = (e: KeyboardEvent) => {
   }
   // if(e.key == 'n') {
   //   game.nextLevel();
-  //   game.life += 100;
+  //   // game.life += 100;
   // }
   // if(e.key == 'p') {
   //   game.picker.rewards = 1;
