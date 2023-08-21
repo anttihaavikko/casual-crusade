@@ -42,7 +42,7 @@ export class Game extends Entity {
     public canRedraw: boolean;
     public wilds: { first: GemColor, second: GemColor }[] = [];
     public blinders = new Blinders();
-    public freeMoveOn: GemColor;
+    public freeMoveOn: GemColor[] = [];
     private endCheckTimer: any;
     private selectedCard: Card;
 
@@ -98,7 +98,7 @@ export class Game extends Entity {
         }
 
         if (relic.data.name == HOME_NAME) {
-            this.freeMoveOn = relic.data.gems[0].type
+            this.freeMoveOn.push(relic.data.gems[0].type)
         }
 
         const pos = this.icons.length;
@@ -443,13 +443,13 @@ export class Game extends Entity {
             this.icons = [];
             this.relics = [];
             this.wilds = [];
+            this.freeMoveOn = [];
             this.stepScore = 1;
             this.gemChance = 1;
             this.healOnStep = false;
             this.remoteMulti = false;
             this.canRedraw = false;
             this.canRemoteOpen = false;
-            this.freeMoveOn = null;
             this.init();
             this.level.restart();
             this.dude.reset(this.level.board[2]);
