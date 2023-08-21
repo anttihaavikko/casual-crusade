@@ -122,7 +122,7 @@ export class Dude extends Entity {
     }
 
     private findNext(from: Tile, to: Tile, visited: Tile[], free: GemColor): void {
-        const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || free != "n" && tile.content.is(free) && visited.filter(t => t == tile).length < 5);
+        const steps = from.content.getConnections().filter(tile => !visited.includes(tile) || free && tile.content.is(free) && visited.filter(t => t == tile).length < 5);
         if(from == to) {
             if(this.evaluate(this.path) < this.evaluate(visited)) {
                 this.path = [...visited];

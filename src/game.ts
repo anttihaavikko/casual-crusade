@@ -42,7 +42,7 @@ export class Game extends Entity {
     public canRedraw: boolean;
     public wilds: { first: GemColor, second: GemColor }[] = [];
     public blinders = new Blinders();
-    public freeMoveOn: GemColor = "n";
+    public freeMoveOn: GemColor;
     private endCheckTimer: any;
     private selectedCard: Card;
 
@@ -53,7 +53,6 @@ export class Game extends Entity {
     private cards: Card[] = [];
     private all: CardData[];
     private deck: CardData[] = [];
-
     private icons: RelicIcon[] = [];
 
     // private helps = new Container(WIDTH * 0.5, HEIGHT * 0.5 + 155, [
@@ -452,7 +451,7 @@ export class Game extends Entity {
             this.remoteMulti = false;
             this.canRedraw = false;
             this.canRemoteOpen = false;
-            this.freeMoveOn = "n";
+            this.freeMoveOn = null;
             this.level.restart();
         });
     }

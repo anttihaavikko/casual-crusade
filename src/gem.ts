@@ -1,5 +1,5 @@
 
-export type GemColor = "n" | "b" | "p" | "r" | "y" | "o" | "g";
+export type GemColor = "b" | "p" | "r" | "y" | "o" | "g";
 
 export interface Gem {
     type: GemColor;
