@@ -426,17 +426,8 @@ export class Game extends Entity {
     private reposition(): void {
         const handCards = [...this.cards.filter(c => !c.isLocked())].sort((a, b) => a.p.x - b.p.x);
         this.pile.count = this.deck.length;
-        handCards.forEach((c, i) => {
-            const p: Vector = {
-                x: this.p.x + (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH,
-                y: this.p.y
-            };
-            c.move(p, 0.15);
-        });
-        this.pile.move({
-            x: this.p.x - (handCards.length * 0.5 + 1) * TILE_WIDTH,
-            y: this.p.y
-        }, 0.15);
+        handCards.forEach((c, i) => c.move(offset(this.p, (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH, 0), 0.15));
+        this.pile.move(offset(this.p, -(handCards.length * 0.5 + 1) * TILE_WIDTH, 0), 0.15);
     }
 
     private moveEntity(e: Entity, x: number, y: number): void {
