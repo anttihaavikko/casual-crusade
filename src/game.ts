@@ -440,7 +440,6 @@ export class Game extends Entity {
             this.blinders.open();
             this.score = 0;
             this.gameOver.toggle(false);
-            this.level.restart();
             this.init();
             this.dude.reset(this.level.board[2]);
             this.cards = [];
@@ -454,6 +453,7 @@ export class Game extends Entity {
             this.canRedraw = false;
             this.canRemoteOpen = false;
             this.freeMoveOn = "n";
+            this.level.restart();
         });
     }
 
