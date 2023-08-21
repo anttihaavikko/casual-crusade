@@ -3,7 +3,7 @@ import { Mouse } from "./mouse";
 import { Vector, offset } from "./vector";
 
 export abstract class Draggable extends Entity {
-    protected hovered: boolean;
+    public hovered: boolean;
     protected dragging: boolean;
     protected locked: boolean;
     protected selectable: boolean;

@@ -43,7 +43,12 @@ export class Picker extends Entity {
     public pickAt(x: number, y: number): void {
         const card = [...this.picks].sort((a, b) => distance(a.getCenter(), { x, y }) - distance(b.getCenter(), { x, y }))[0];
         if(card && distance(card.getCenter(), { x, y }) < 100) {
-            this.remove(card);
+            if(!card.hovered) {
+                card.hovered = true;
+                return;
+            }
+            if(card instanceof Card) this.game.pick(card);
+            if(card instanceof RelicIcon) this.game.addRelic(card);
         }
     }
 
