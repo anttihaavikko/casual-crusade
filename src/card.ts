@@ -69,7 +69,7 @@ export class Card extends Draggable {
             .sort((a, b) => distance(this.p, a.p) - distance(this.p, b.p));
 
         const prev = this.tile;
-        this.tile = randomCell(sorted);
+        this.tile = sorted[0];
         if(this.tile && this.dragging) this.tile.hilite = true;
         if(prev && prev != this.tile) prev.hilite = false;
     }
