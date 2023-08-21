@@ -43,6 +43,11 @@ ZzFX Features
   
 */
 
+/*
+* Edited by Antti Haavikko 2023,
+* Removed some unused parts to save on final file size.
+*/
+
 'use strict';
 
 // play a zzfx sound
@@ -180,9 +185,9 @@ export const ZZFX =
     },
     
     // get frequency of a musical note on a diatonic scale
-    getNote: function(semitoneOffset=0, rootNoteFrequency=440)
-    {
-        return rootNoteFrequency * 2**(semitoneOffset/12);
-    }
+    // getNote: function(semitoneOffset=0, rootNoteFrequency=440)
+    // {
+    //     return rootNoteFrequency * 2**(semitoneOffset/12);
+    // }
 
 } // ZZFX
