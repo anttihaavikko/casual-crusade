@@ -302,7 +302,7 @@ export class Card extends Draggable {
             p.y,
             0.5 + Math.random(),
             { x: 0, y: -1 - Math.random() },
-            { shadow: 4, align: "center", scales: true, color, angle: random(-0.1, 0.1) }
+            { shadow: 4, scales: true, color, angle: random(-0.1, 0.1) }
         ));
     }
 
