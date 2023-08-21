@@ -260,7 +260,7 @@ export class Game extends Entity {
             "CRUSADE OF FREDERICK II",
             "THE BARONS' CRUSADE",
             "CRUSADE OF LOUIS IX",
-            "THE SHEPHERDS' CRUSADE OF 1251",
+            "THE SHEPHERDS' CRUSADE",
             "THE CRUSADE OF 1267",
             "THE INFANTS OF ARAGON",
             "THE EIGHTH CRUSADE",
