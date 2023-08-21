@@ -10,8 +10,6 @@ export class AudioManager {
     public prepare(): void {
         if(this.started) return;
 
-        console.log('start prep')
-
         this.audio = document.createElement("audio");
         this.started = true;
 
