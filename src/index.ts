@@ -109,7 +109,7 @@ let zoom = 1.2;
 
 const tick = (t: number) => {
   ui[0].content = `LIFE: ${game.life}/${game.maxLife}`;
-  ui[1].content = game.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  ui[1].content = game.score.toString()/*.replace(/\B(?=(\d{3})+(?!\d))/g, " ")*/;
   requestAnimationFrame(tick);
   ctx.resetTransform();
   transformToCenter(ctx, game.camera.rotation, zoom, zoom)
