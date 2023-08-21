@@ -34,7 +34,7 @@ export class Pile extends Entity {
         ctx.strokeStyle = "#00000022";
         drawCorners(ctx, this.p.x, this.p.y - height);
 
-        ctx.font =`30px ${font}`;
+        ctx.font =`27px ${font}`;
         ctx.textAlign = "center";
         ctx.fillStyle = "#000";
         ctx.fillText(this.count.toString(), this.p.x + this.s.x * 0.5, this.p.y + this.s.y * 0.5 + 10 - height);
