@@ -127,7 +127,6 @@ export class Dude extends Entity {
             }
             return;
         }
-        if(steps.length <= 0) return;
         steps.forEach(step => this.findNext(step, to, [...visited, step], free));
     }
 
