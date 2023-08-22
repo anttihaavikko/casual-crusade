@@ -45,20 +45,22 @@ export class Dude extends Entity {
         drawEllipse(ctx, center, 24 + height * 8, 12 + height * 4, "#00000033");
         ctx.translate(0, height * 25);
         drawCircle(ctx, head, 14, "#000");
+
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 5;
+        ctx.fillStyle = "#fff";
+
         ctx.beginPath();
         ctx.moveTo(center.x, this.p.y - 10 - 5 * this.phase);
         ctx.lineTo(center.x + 14, this.p.y + 32);
-        ctx.lineTo(center.x, this.p.y + 34);
+        ctx.quadraticCurveTo(center.x, this.p.y + 40, center.x - 14, this.p.y + 32);
         ctx.lineTo(center.x - 14, this.p.y + 32);
+        ctx.lineTo(center.x, this.p.y - 1 - 5 * this.phase);
         ctx.fill();
-        drawCircle(ctx, head, 8, "#fff");
-        ctx.beginPath();
-        ctx.moveTo(center.x, this.p.y - 2 - 5 * this.phase);
-        ctx.lineTo(center.x + 6, this.p.y + 26);
-        ctx.lineTo(center.x, this.p.y + 28);
-        ctx.lineTo(center.x - 6, this.p.y + 26);
-        ctx.fill();
-        ctx.strokeStyle = "#000";
+        ctx.stroke();
+
+        drawCircle(ctx, head, 9, "#fff");
+
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(head.x, head.y + 5);
