@@ -119,6 +119,7 @@ let zoom = 1.2;
 const tick = (t: number) => {
   ui[0].content = `LIFE: ${game.life}/${game.maxLife}`;
   ui[1].content = game.score.toString()/*.replace(/\B(?=(\d{3})+(?!\d))/g, " ")*/;
+  requestAnimationFrame(tick);
   ctx.resetTransform();
   transformToCenter(ctx, game.camera.rotation, zoom, zoom)
   ctx.translate(0, game.started ? 0 : 30);
@@ -144,7 +145,6 @@ const tick = (t: number) => {
   zoom = Math.max(1, zoom - 0.02);
   ui.forEach(e => e.draw(ctx));
   game.blinders.draw(ctx);
-  requestAnimationFrame(tick);
 }
 
 requestAnimationFrame(tick);
