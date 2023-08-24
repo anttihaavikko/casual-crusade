@@ -1,6 +1,7 @@
 import { font } from "./engine/constants";
 import { drawColoredText } from "./engine/drawing";
 import { Entity } from "./engine/entity";
+import { clamp } from "./engine/math";
 import { Mouse } from "./engine/mouse";
 import { Vector } from "./engine/vector";
 
@@ -12,6 +13,7 @@ export class Tooltip extends Entity {
     private colors: string[];
     private flipped: boolean;
     private phase = 0;
+    private diff = 0;
 
     constructor(x: number, y: number, width: number, height: number) {
         super(x - width * 0.5, y - height * 0.5, width, height);
@@ -19,9 +21,12 @@ export class Tooltip extends Entity {
     }
 
     public show(title: string, content: string, pos: Vector, colors: string[], flipped = false): void {
+        const x = pos.x - this.s.x * 0.5;
+        const clamped = clamp(x, 10, 800 - this.s.x - 10);
+        this.diff = clamped - x;
         this.title = title;
         this.content = content;
-        this.p = { x: pos.x - this.s.x * 0.5, y: pos.y - this.s.y };
+        this.p = { x: clamped, y: pos.y - this.s.y };
         this.visible = true;
         this.colors = colors;
         this.flipped = flipped;
@@ -49,7 +54,7 @@ export class Tooltip extends Entity {
         ctx.fillText(this.content, c.x + 4 + 15, c.y + 4 + 40 + 30);
 
         ctx.beginPath();
-        const dx = this.flipped ? 25 : 250;
+        const dx = this.flipped ? 25 : (250 - this.diff);
         const dy = this.flipped ? 5 : 85;
         ctx.moveTo(c.x - 15 + dx, c.y + dy);
         ctx.lineTo(c.x + 15 + dx, c.y + dy);
