@@ -381,11 +381,16 @@ export class Game extends Entity {
         const handCards = this.cards.filter(c => !c.isLocked());
         const card = randomCell(handCards);
         if (!card) return;
+        if(this.mouse.dragging) {
+            this.mouse.dragging = false;
+            card.cancelDrag();
+        }
         card.move(this.pile.p, 0.3);
         setTimeout(() => {
             this.cards = this.cards.filter(c => c != card);
             this.add(card.data, true, false);
             this.fill();
+            card.unlock();
         }, 300);
     }
 
@@ -422,7 +427,7 @@ export class Game extends Entity {
         }
     }
 
-    private reposition(): void {
+    public reposition(): void {
         const handCards = [...this.cards.filter(c => !c.isLocked())].sort((a, b) => a.p.x - b.p.x);
         this.pile.count = this.deck.length;
         handCards.forEach((c, i) => c.move(offset(this.p, (i - handCards.length * 0.5 + 0.5) * TILE_WIDTH, 0), 0.15));

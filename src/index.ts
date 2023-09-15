@@ -81,18 +81,21 @@ document.onkeydown = (e: KeyboardEvent) => {
   if(e.key == 'f') {
     canvas.requestFullscreen();
   }
-  // if(e.key == 'n') {
+  // if(e.key == 'd') {
+  //   game.discard();
+  // }
+  // if(e.key == 'n') {Fix 
   //   game.nextLevel();
   //   // game.life += 100;
   // }
-  if(e.key == 'p') {
-    level.level++;
-    game.picker.create(1, 1);
-  }
-  if(e.key == 'c') {
-    game.picker.rewards = 1;
-    game.picker.create(1, 0);
-  }
+  // if(e.key == 'p') {
+  //   level.level++;
+  //   game.picker.create(1, 1);
+  // }
+  // if(e.key == 'c') {
+  //   game.picker.rewards = 1;
+  //   game.picker.create(1, 0);
+  // }
 }
 
 document.ontouchstart = (e: TouchEvent) => {

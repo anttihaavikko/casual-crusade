@@ -60,7 +60,10 @@ export class Card extends Draggable {
 
     public update(tick: number, mouse: Mouse): void {
         super.update(tick, mouse);
-        this.updateTile();
+
+        if(this.dragging) {
+            this.updateTile();
+        }
     }
 
     public updateTile(): void {
@@ -101,6 +104,21 @@ export class Card extends Draggable {
         this.game.clearSelect();
         this.game.audio.click();
         this.level.board.forEach(tile => tile.marked = !tile.content && tile.accepts(this, this.level.board))
+    }
+
+    public unlock(): void {
+        this.locked = false;
+    }
+
+    public cancelDrag(): void {
+        if(!this.dragging) return;
+        this.level.board.forEach(tile => tile.marked = false);
+        this.locked = true;
+        this.selected = false;
+        this.dragging = false;
+        this.d = 0;
+        this.tile = null;
+        this.game.clearSelect();
     }
 
     public drop(): void {
@@ -146,6 +164,7 @@ export class Card extends Draggable {
         }
 
         this.move(this.start, 0.1);
+        this.game.reposition();
     }
 
     public exit(): void {
